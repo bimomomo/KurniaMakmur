@@ -45,6 +45,18 @@ let routes = [
         path: "/master-gudang",
         component: require("./components/master/gudang.vue").default,
     },
+    {
+        path: "/master-satuan",
+        component: require("./components/master/satuan.vue").default,
+    },
+    {
+        path: "/master-barang",
+        component: require("./components/master/barang.vue").default,
+    },
+    {
+        path: "/mutasi-stock-masuk",
+        component: require("./components/mutasi/mutasistockmasuk.vue").default,
+    },
 ]
 
 const router = new VueRouter({

@@ -35,6 +35,25 @@
 				<li>
 					<router-link to="master-gudang"><i class="bx bx-right-arrow-alt"></i>Data Gudang</router-link>
 				</li>
+				<li>
+					<router-link to="master-satuan"><i class="bx bx-right-arrow-alt"></i>Data Satuan</router-link>
+				</li>
+				<li>
+					<router-link to="master-barang"><i class="bx bx-right-arrow-alt"></i>Data Barang</router-link>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="javascript:;" class="has-arrow">
+				<div class="parent-icon"><i class='bx bx-archive'></i>
+				</div>
+				<div class="menu-title">Mutasi</div>
+			</a>
+			<ul>
+				<li>
+					<router-link to="mutasi-stock-masuk"><i class="bx bx-right-arrow-alt"></i>Mutasi Stock Masuk</router-link>
+				</li>
+
 			</ul>
 		</li>
 	</ul>
