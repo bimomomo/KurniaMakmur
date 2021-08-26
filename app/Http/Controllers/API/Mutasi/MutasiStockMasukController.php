@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Master\Mutasi;
+namespace App\Http\Controllers\API\Mutasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Mutasi\Mutasi_stock_masuk;

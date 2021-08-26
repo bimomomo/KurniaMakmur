@@ -21,6 +21,19 @@
 		</li>
 		<li>
 			<a href="javascript:;" class="has-arrow">
+				<div class="parent-icon"><i class='bx bx-store'></i>
+				</div>
+				<div class="menu-title">Menu Penjualan</div>
+			</a>
+			<ul>
+				<li>
+					<router-link to="tambah-invoice"><i class="bx bx-right-arrow-alt"></i>Tambah Invoice</router-link>
+				</li>
+
+			</ul>
+		</li>
+		<li>
+			<a href="javascript:;" class="has-arrow">
 				<div class="parent-icon"><i class='bx bx-cog'></i>
 				</div>
 				<div class="menu-title">Master</div>

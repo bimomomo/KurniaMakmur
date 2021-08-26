@@ -15,7 +15,7 @@ class BarangController extends Controller
     public function index()
     {
         // return Barang::get();
-        return Barang::select('barang.*', 'gudang.gudang', 'brand.brand', 'kategori.kategori', 'satuan.satuan_isi')
+        return Barang::select('barang.*', 'gudang.gudang', 'brand.brand', 'kategori.kategori', 'satuan.satuan_isi', 'satuan.satuan_jual')
             ->join('gudang', 'gudang.uuid', '=', 'barang.gudang_id')
             ->join('brand', 'brand.uuid', '=', 'barang.brand_id')
             ->join('kategori', 'kategori.uuid', '=', 'barang.kategori_id')

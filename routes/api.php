@@ -4,8 +4,10 @@ use App\Http\Controllers\API\Master\BarangController;
 use App\Http\Controllers\API\Master\BrandController;
 use App\Http\Controllers\API\Master\GudangController;
 use App\Http\Controllers\API\Master\KategoriController;
-use App\Http\Controllers\API\Master\Mutasi\MutasiStockMasukController;
+use App\Http\Controllers\API\Mutasi\MutasiStockMasukController;
 use App\Http\Controllers\API\Master\SatuanController;
+use App\Http\Controllers\API\Penjualan\InvoiceJualController;
+use App\Http\Controllers\API\Penjualan\SaleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,3 +49,10 @@ Route::put('/updatestock/{id}', [BarangController::class, 'updatestock']);
 
 // Mutasi stock masuk
 Route::apiResources(['mutasistockmasuk' => MutasiStockMasukController::class,]);
+
+// Invoice Jual
+Route::apiResources(['invoicejual' => InvoiceJualController::class,]);
+Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
+
+// Sale Jual
+Route::apiResources(['sale' => SaleController::class,]);

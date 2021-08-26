@@ -57,7 +57,26 @@ let routes = [
         path: "/mutasi-stock-masuk",
         component: require("./components/mutasi/mutasistockmasuk.vue").default,
     },
+    {
+        path: "/tambah-invoice",
+        component: require("./components/penjualan/invoicejual.vue").default,
+    },
+    {
+        path: "/checkout-invoice",
+        component: require("./components/penjualan/checkout.vue").default,
+    },
 ]
+Vue.mixin({
+    methods: {
+        formatRupiah(isisan) {
+            var isi = new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            }).format(isisan);
+            return isi;
+        },
+    },
+});
 
 const router = new VueRouter({
     mode: "history",
