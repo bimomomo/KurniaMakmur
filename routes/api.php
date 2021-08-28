@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\API\Master\BarangController;
 use App\Http\Controllers\API\Master\BrandController;
+use App\Http\Controllers\API\Master\DriverController;
 use App\Http\Controllers\API\Master\GudangController;
 use App\Http\Controllers\API\Master\KategoriController;
+use App\Http\Controllers\API\Master\PelangganController;
 use App\Http\Controllers\API\Mutasi\MutasiStockMasukController;
 use App\Http\Controllers\API\Master\SatuanController;
 use App\Http\Controllers\API\Penjualan\InvoiceJualController;
@@ -56,3 +58,11 @@ Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
 
 // Sale Jual
 Route::apiResources(['sale' => SaleController::class,]);
+
+// Pelanggan 
+Route::apiResources(['pelanggan' => PelangganController::class,]);
+Route::post('/deletepelanggan/{id}', [PelangganController::class, 'deleteall']);
+
+// Driver
+Route::apiResources(['driver' => DriverController::class,]);
+Route::post('/deletedriver/{id}', [DriverController::class, 'deleteall']);

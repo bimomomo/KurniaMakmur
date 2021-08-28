@@ -54,6 +54,12 @@
 				<li>
 					<router-link to="master-barang"><i class="bx bx-right-arrow-alt"></i>Data Barang</router-link>
 				</li>
+				<li>
+					<router-link to="data-pelanggan"><i class="bx bx-right-arrow-alt"></i>Data Pelanggan</router-link>
+				</li>
+				<li>
+					<router-link to="data-pegawai"><i class="bx bx-right-arrow-alt"></i>Data Pegawai</router-link>
+				</li>
 			</ul>
 		</li>
 		<li>

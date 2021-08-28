@@ -65,6 +65,14 @@ let routes = [
         path: "/checkout-invoice",
         component: require("./components/penjualan/checkout.vue").default,
     },
+    {
+        path: "/data-pelanggan",
+        component: require("./components/master/pelanggan.vue").default,
+    },
+    {
+        path: "/data-pegawai",
+        component: require("./components/master/driver.vue").default,
+    },
 ]
 Vue.mixin({
     methods: {

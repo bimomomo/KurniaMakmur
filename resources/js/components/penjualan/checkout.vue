@@ -65,7 +65,7 @@
               <input
                 class="form-control"
                 type="date"
-                v-model="form.jatuh_tampo"
+                v-model="form.jatuh_tempo"
                 :class="{
                   'is-invalid': form.errors.has('jatuh_tampo'),
                 }"
@@ -141,31 +141,41 @@
               <label for="form-control">Pelanggan</label>
             </div>
             <div class="col-lg-9">
-              <select
-                class="form-control"
+              <multiselect
                 v-model="form.pelanggan_id"
-                :class="{
-                  'is-invalid': form.errors.has('pelanggan_id'),
-                }"
+                label="nama"
+                track-by="nama"
+                :searchable="true"
+                :options="pelanggans"
+                placeholder="Pilih Pelanggan"
+                :class="{ 'is-invalid': form.errors.has('pelanggan_id') }"
+                required
               >
-                <option value="">Pilih Pelanggan</option>
-              </select>
+                <template slot="singleLabel" slot-scope="{ option }"
+                  >Pelanggan : <strong>{{ option.nama }}</strong></template
+                >
+              </multiselect>
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-lg-3">
-              <label for="form-control">Supir</label>
+              <label for="form-control">Pegawai</label>
             </div>
             <div class="col-lg-9">
-              <select
-                class="form-control"
+              <multiselect
                 v-model="form.driver_id"
-                :class="{
-                  'is-invalid': form.errors.has('driver_id'),
-                }"
+                label="driver"
+                track-by="driver"
+                :searchable="true"
+                :options="drivers"
+                placeholder="Pilih Pegawai"
+                :class="{ 'is-invalid': form.errors.has('driver_id') }"
+                required
               >
-                <option value="">Pilih Supir</option>
-              </select>
+                <template slot="singleLabel" slot-scope="{ option }"
+                  >Pegawai : <strong>{{ option.driver }}</strong></template
+                >
+              </multiselect>
             </div>
           </div>
           <div class="row mb-2">
@@ -184,15 +194,45 @@
           </div>
           <div class="row mb-2">
             <div class="col-lg-3">
+              <label for="form-control">Diskon (%)</label>
+            </div>
+            <div class="col-lg-9">
+              <input
+                class="form-control"
+                type="number"
+                min="0"
+                max="70"
+                v-model="form.diskon"
+                :class="{
+                  'is-invalid': form.errors.has('diskon'),
+                }"
+              />
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-lg-3">
+              <label for="form-control">Harga Setelah Diskon</label>
+            </div>
+            <div class="col-lg-9">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Harga Setelah Diskon"
+                v-model="form.hargastlhdiskon"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-lg-3">
               <label for="form-control">PPN (%)</label>
             </div>
             <div class="col-lg-9">
               <input
                 class="form-control"
                 type="number"
-                placeholder="PPN"
                 min="0"
-                max="60"
+                max="20"
                 v-model="form.ppn"
                 :class="{
                   'is-invalid': form.errors.has('ppn'),
@@ -202,21 +242,18 @@
           </div>
           <div class="row mb-2">
             <div class="col-lg-3">
-              <label for="form-control">Potongan</label>
+              <label for="form-control">Harga Setelah PPN</label>
             </div>
             <div class="col-lg-9">
               <input
                 class="form-control"
                 type="text"
-                placeholder="Potongan"
-                v-model="form.potongan"
-                :class="{
-                  'is-invalid': form.errors.has('potongan'),
-                }"
+                v-model="form.hargastlhppn"
                 readonly
               />
             </div>
           </div>
+
           <div class="row mb-2">
             <div class="col-lg-3">
               <label for="form-control">Biaya Kirim</label>
@@ -225,7 +262,6 @@
               <input
                 class="form-control"
                 type="text"
-                placeholder="Biaya Kirim"
                 v-model="form.biaya_kirim"
                 :class="{
                   'is-invalid': form.errors.has('biaya_kirim'),
@@ -270,6 +306,10 @@
   </div>
 </template>
 <script>
+import Multiselect from "vue-multiselect";
+
+// register globally
+Vue.component("multiselect", Multiselect);
 export default {
   created() {
     this.loadUsers();
@@ -280,25 +320,28 @@ export default {
   data() {
     return {
       checkouts: {},
+      drivers: [],
+      pelanggans: [],
       subtotals: "",
       subtotalfunc: "",
       form: new Form({
-        ppn: "",
-        total: "",
-        potongan: "",
         invoivejual_id: [],
         pelanggan_id: "",
+        driver_id: "",
         tgl_sale: "",
         jatuh_tempo: "",
         nomor_invoice: "",
         faktur_pajak: "",
         nomor_po: "",
         nomor_surat_jalan: "",
-        total: "",
-        diskon: "",
-        biaya_kirim: "",
-        driver_id: "",
+        subttl: "",
         biaya_kirims: "",
+        diskon: "",
+        hargastlhdiskon: "",
+        ppn: "",
+        hargastlhppn: "",
+        biaya_kirim: "",
+        total: "",
       }),
     };
   },
@@ -306,6 +349,8 @@ export default {
   methods: {
     loadUsers() {
       axios.get("api/invoicejual").then(({ data }) => (this.checkouts = data));
+      axios.get("api/driver").then(({ data }) => (this.drivers = data));
+      axios.get("api/pelanggan").then(({ data }) => (this.pelanggans = data));
       axios
         .get("api/subtotal")
         .then(({ data }) => (this.subtotals = this.formatRupiah(data * 1000)));
@@ -322,13 +367,19 @@ export default {
 
     hitungtotal() {
       var subtotal = this.subtotalfunc;
-      var ppn = this.form.ppn;
-      var hasilppn = (subtotal * ppn) / 100;
+      // var ppns = this.form.ppn;
+      var diskon = this.form.diskon;
+      var hasildiskon = (subtotal * diskon) / 100;
+      var hasil = subtotal - hasildiskon;
+      var ppns = this.form.ppn;
+      var ppn = (hasil * ppns) / 100;
+      var hasilsetelahppn = hasil + ppn;
       var biayakirim = this.form.biaya_kirims / 1000;
-      var hasil = hasilppn + biayakirim;
-      // console.log(hasil);
-      this.form.potongan = this.formatRupiah(hasilppn * 1000);
-      this.form.total = this.formatRupiah(hasil * 1000);
+      // console.log(biayakirim);
+      var grandtotal = hasilsetelahppn + biayakirim;
+      this.form.hargastlhdiskon = this.formatRupiah(hasil * 1000);
+      this.form.hargastlhppn = this.formatRupiah(hasilsetelahppn * 1000);
+      this.form.total = this.formatRupiah(grandtotal * 1000);
     },
 
     // CREATE
@@ -336,14 +387,18 @@ export default {
       this.loading = true;
       this.disabled = true;
       this.form.invoivejual_id = this.checkouts;
+      this.form.subttl = this.subtotals;
       this.form
         .post("api/sale")
         .then(() => {
           Fire.$emit("reloadUsers");
           // $("#exampleModal").modal("hide");
-          Swal.fire({ icon: "success", title: "Data Berhasil Tersimpan" });
-          this.loading = false;
-          this.disabled = false;
+          Swal.fire({ icon: "success", title: "Data Berhasil Tersimpan" }).then(
+            function () {
+              // Redirect the user
+              window.location.href = "/data-invoice";
+            }
+          );
         })
         .catch(() => {
           this.loading = false;
@@ -353,3 +408,4 @@ export default {
   },
 };
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

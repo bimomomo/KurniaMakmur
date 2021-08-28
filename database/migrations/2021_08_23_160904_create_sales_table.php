@@ -26,6 +26,7 @@ class CreateSalesTable extends Migration
             $table->string('nomor_surat_jalan', 50)->nullable();
             $table->double('total')->nullable();
             $table->double('diskon')->nullable();
+            $table->double('ppn')->nullable();
             $table->double('potongan')->nullable();
             $table->double('biaya_kirim')->nullable();
             $table->string('status_bayar', 12)->nullable();
