@@ -29,6 +29,9 @@
 				<li>
 					<router-link to="tambah-invoice"><i class="bx bx-right-arrow-alt"></i>Tambah Invoice</router-link>
 				</li>
+				<li>
+					<router-link to="data-invoice"><i class="bx bx-right-arrow-alt"></i>Data Invoice</router-link>
+				</li>
 
 			</ul>
 		</li>

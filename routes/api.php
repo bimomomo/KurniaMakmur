@@ -55,6 +55,7 @@ Route::apiResources(['mutasistockmasuk' => MutasiStockMasukController::class,]);
 // Invoice Jual
 Route::apiResources(['invoicejual' => InvoiceJualController::class,]);
 Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
+Route::post('/deleteInvoice', [InvoiceJualController::class, 'deleteInvoice']);
 
 // Sale Jual
 Route::apiResources(['sale' => SaleController::class,]);

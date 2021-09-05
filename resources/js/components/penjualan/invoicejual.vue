@@ -4,15 +4,6 @@
       <div class="card-body">
         <form @submit.prevent="simpandata()" @keydown="form.onKeydown($event)">
           <div class="row mb-2">
-            <!-- <div class="col-lg-3">
-              <label for="form-control">Jatuh Tempo</label>
-              <input
-                type="date"
-                class="form-control"
-                v-model="form.jatuh_tempo"
-                :class="{ 'is-invalid': form.errors.has('jatuh_tempo') }"
-              />
-            </div> -->
             <div class="col-lg-6">
               <label for="form-control">Pilih Barang</label>
               <multiselect
@@ -133,6 +124,7 @@
           </div>
         </form>
         <!-- Daftar Barang Di beli -->
+
         <div class="row mt-3">
           <div class="table-responsive">
             <table class="table table-bordered">
@@ -168,7 +160,10 @@
                     }}
                   </td>
                   <td>
-                    <button class="btn btn-danger btn-sm">
+                    <button
+                      class="btn btn-danger btn-sm"
+                      @click="deleteInvoice(item.uuid)"
+                    >
                       <i class="bx bx-trash"></i>
                     </button>
                   </td>
@@ -214,7 +209,6 @@ export default {
       invoicejuals: {},
       form: new Form({
         uuid: "",
-        // jatuh_tempo: "",
         produk: "",
         harga: "",
         sisa: "",
@@ -244,14 +238,8 @@ export default {
       this.form.harga = this.formatRupiah(this.form.hargas);
     },
     checkout() {
-      // var a = this.invoicejuals;
-      // for (let i = 0; i < a.length; i++) {
-      //   const elm = a[i];
-      //   var uuid = elm.uuid;
-      // }
       this.$router.push({
         path: "/checkout-invoice",
-        // query: { plan: uuid },
       });
     },
     setmultiselect(value) {
@@ -288,6 +276,35 @@ export default {
           this.loading = false;
           this.disabled = false;
         });
+    },
+
+    deleteInvoice(uuid) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.value) {
+          axios
+            .delete("api/invoicejual/" + uuid)
+            .then(() => {
+              Fire.$emit("reloadUsers");
+              Swal.fire("Deleted!", "User deleted successfully", "success");
+            })
+            .catch(() => {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+                footer: "<a href>Why do I have this issue?</a>",
+              });
+            });
+        }
+      });
     },
   },
 };

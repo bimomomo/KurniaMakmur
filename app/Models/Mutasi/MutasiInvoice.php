@@ -12,6 +12,7 @@ class MutasiInvoice extends Model
     protected $table = 'mutasi_invoice';
     protected $fillable = [
         'uuid',
+        'invoicejual_id',
         'barang_id',
         'gudang_id',
         'keterangan',

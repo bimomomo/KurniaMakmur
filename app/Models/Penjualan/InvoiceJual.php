@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InvoiceJual extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     protected $table = 'invoice_jual';
     protected $fillable = [
         'uuid',

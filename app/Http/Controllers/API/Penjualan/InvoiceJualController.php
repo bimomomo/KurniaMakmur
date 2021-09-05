@@ -7,6 +7,7 @@ use App\Models\Master\Barang;
 use App\Models\Mutasi\MutasiInvoice;
 use App\Models\Penjualan\InvoiceJual;
 use App\Models\Penjualan\Sale;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -65,6 +66,7 @@ class InvoiceJualController extends Controller
 
             MutasiInvoice::create([
                 "uuid" => Str::uuid(),
+                "invoicejual_id" => $data["uuid"],
                 "barang_id" => $barang_id,
                 "gudang_id" => $gudang_id,
                 "keterangan" => $keterangan,
@@ -81,5 +83,31 @@ class InvoiceJualController extends Controller
             $var += $value->harga_akhir;
         }
         return $var;
+    }
+    public function destroy($id)
+    {
+        $data = InvoiceJual::where("uuid", $id)->get();
+        $barang = Barang::where("uuid", $data[0]["barang_id"])->get();
+        $stockjual = $data[0]["total_satuan_jual"];
+        $sisa = $barang[0]["sisa"];
+        $terjual = $barang[0]["terjual"];
+        $updatesisa = $sisa + $stockjual;
+        $updateterjual = $terjual - $stockjual;
+        $date = Carbon::now();
+        // return $date->toDateTimeString();
+
+        InvoiceJual::where("uuid", $data[0]["uuid"])->delete();
+
+        Barang::where("uuid", $data[0]["barang_id"])->update([
+            "sisa" => $updatesisa,
+            "terjual" => $updateterjual
+        ]);
+
+        MutasiInvoice::where("invoicejual_id", $data[0]["uuid"])->update([
+            "deleted_at" => $date->toDateTimeString(),
+            "keterangan" => "Batal Invoice"
+        ]);
+        // MutasiInvoice::where("uuid", $data[0]["barang_id"])->delete();
+        // return $barang;
     }
 }

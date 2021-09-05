@@ -16,6 +16,7 @@ class CreateMutasiInvoicesTable extends Migration
         Schema::create('mutasi_invoice', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
+            $table->uuid('invoicejual_id');
             $table->uuid('barang_id');
             $table->uuid('gudang_id');
             $table->text('keterangan');

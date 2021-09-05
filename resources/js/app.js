@@ -66,6 +66,10 @@ let routes = [
         component: require("./components/penjualan/checkout.vue").default,
     },
     {
+        path: "/data-invoice",
+        component: require("./components/penjualan/datainvoice.vue").default,
+    },
+    {
         path: "/data-pelanggan",
         component: require("./components/master/pelanggan.vue").default,
     },

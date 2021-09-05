@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API\Penjualan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Pelanggan;
 use App\Models\Penjualan\InvoiceJual;
 use App\Models\Penjualan\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -13,13 +15,11 @@ class SaleController extends Controller
 {
     public function index()
     {
-        // $data = InvoiceJual::select('invoice_jual.*', 'barang.nama')
-        //     ->join('barang', 'barang.uuid', '=', 'invoice_jual.barang_id')->get();;
-        // $var = [];
-        // foreach ($data as $key => $value) {
-        //     $var[$value->uuid] = sale::where('invoicejual_id', $value->uuid)->get();
-        // }
-        // return $var;
+
+        return Sale::select('sale.tgl_sale', 'sale.nomor_invoice', 'sale.total', 'sale.jatuh_tempo', 'pelanggan.nama')
+            ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
+            ->distinct()
+            ->get();
     }
 
     public function store(Request $request)
