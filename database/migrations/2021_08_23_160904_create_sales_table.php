@@ -17,6 +17,7 @@ class CreateSalesTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->uuid('invoicejual_id');
+            $table->uuid('driver_id')->nullable();
             $table->uuid('pelanggan_id')->nullable();
             $table->date('tgl_sale')->nullable();
             $table->date('jatuh_tempo');
@@ -25,12 +26,13 @@ class CreateSalesTable extends Migration
             $table->string('nomor_po', 50)->nullable();
             $table->string('nomor_surat_jalan', 50)->nullable();
             $table->double('total')->nullable();
+            $table->double('subtotal')->nullable();
             $table->double('diskon')->nullable();
             $table->double('ppn')->nullable();
             $table->double('potongan')->nullable();
             $table->double('biaya_kirim')->nullable();
-            $table->string('status_bayar', 12)->nullable();
-            $table->string('status_pengiriman', 12)->nullable();
+            $table->integer('status_bayar')->default(0)->nullable();
+            $table->integer('status_pengiriman')->default(0)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

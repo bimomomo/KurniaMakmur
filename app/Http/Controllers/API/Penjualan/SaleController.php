@@ -16,7 +16,7 @@ class SaleController extends Controller
     public function index()
     {
 
-        return Sale::select('sale.tgl_sale', 'sale.nomor_invoice', 'sale.total', 'sale.jatuh_tempo', 'pelanggan.nama')
+        return Sale::select('sale.tgl_sale', 'sale.nomor_invoice', 'sale.nomor_po', 'sale.total', 'sale.jatuh_tempo', 'sale.status_bayar', 'pelanggan.nama')
             ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
             ->distinct()
             ->get();
@@ -66,5 +66,32 @@ class SaleController extends Controller
                     'status' => 1
                 ]);
         }
+    }
+    public function updatebayar($id, Request $request)
+    {
+        Sale::where('nomor_invoice', $id)->update([
+            'status_bayar' => $request->status_bayar,
+        ]);
+    }
+    public function detailinvoice($id)
+    {
+        return Sale::select('sale.nomor_invoice', 'invoice_jual.uuid', 'invoice_jual.barang_id', 'invoice_jual.satuan_id', 'invoice_jual.harga', 'invoice_jual.harga_akhir', 'invoice_jual.total_satuan_jual', 'invoice_jual.jumlah_satuan_dijual', 'invoice_jual.jumlah_satuan_isi', 'invoice_jual.satuan_jual', 'satuan.satuan_isi', 'barang.nama as produk')
+            ->join('invoice_jual', 'invoice_jual.uuid', '=', 'sale.invoicejual_id')
+            ->join('satuan', 'satuan.uuid', '=', 'invoice_jual.satuan_id')
+            ->join('barang', 'barang.uuid', '=', 'invoice_jual.barang_id')
+            ->where('sale.nomor_invoice', $id)
+            ->get();
+        // return Sale::select('sale.*', 'pelanggan.nama', 'pelanggan.alamat', 'pelanggan.nohp')
+        //     ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
+        //     ->where('sale.nomor_invoice', $id)
+        //     ->get();
+    }
+    public function test($id)
+    {
+        return Sale::select('sale.tgl_sale', 'sale.nomor_invoice', 'sale.nomor_po', 'sale.faktur_pajak', 'sale.ppn', 'sale.biaya_kirim', 'sale.diskon', 'sale.subtotal', 'sale.jatuh_tempo', 'sale.status_bayar', 'pelanggan.nama', 'pelanggan.alamat')
+            ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
+            ->where('nomor_invoice', $id)
+            ->distinct()
+            ->get();
     }
 }

@@ -59,6 +59,9 @@ Route::post('/deleteInvoice', [InvoiceJualController::class, 'deleteInvoice']);
 
 // Sale Jual
 Route::apiResources(['sale' => SaleController::class,]);
+Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
+Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
+Route::get('test/{id}', [SaleController::class, 'test']);
 
 // Pelanggan 
 Route::apiResources(['pelanggan' => PelangganController::class,]);
