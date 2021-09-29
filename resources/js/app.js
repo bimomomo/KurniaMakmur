@@ -89,6 +89,10 @@ let routes = [
         path: "/transaksi-pelanggan",
         component: require("./components/laporan/transaksipelanggan.vue").default,
     },
+    {
+        path: "/my-notes",
+        component: require("./components/notes/myNotes.vue").default,
+    },
 ]
 Vue.mixin({
     methods: {

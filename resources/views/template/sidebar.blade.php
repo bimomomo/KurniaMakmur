@@ -73,7 +73,8 @@
 			</a>
 			<ul>
 				<li>
-					<router-link to="mutasi-stock-masuk"><i class="bx bx-right-arrow-alt"></i>Mutasi Stock Masuk</router-link>
+					<router-link to="mutasi-stock-masuk"><i class="bx bx-right-arrow-alt"></i>Mutasi Stock Masuk
+					</router-link>
 				</li>
 
 			</ul>
@@ -86,13 +87,28 @@
 			</a>
 			<ul>
 				<li>
-					<router-link to="invoice-penjualan"><i class="bx bx-right-arrow-alt"></i>Invoice Penjualan</router-link>
+					<router-link to="invoice-penjualan"><i class="bx bx-right-arrow-alt"></i>Invoice Penjualan
+					</router-link>
 				</li>
 				<li>
-					<router-link to="invoice-pengiriman"><i class="bx bx-right-arrow-alt"></i>Invoice Pengiriman</router-link>
+					<router-link to="invoice-pengiriman"><i class="bx bx-right-arrow-alt"></i>Invoice Pengiriman
+					</router-link>
 				</li>
 				<li>
-					<router-link to="transaksi-pelanggan"><i class="bx bx-right-arrow-alt"></i>Transaksi Pelanggann</router-link>
+					<router-link to="transaksi-pelanggan"><i class="bx bx-right-arrow-alt"></i>Transaksi Pelanggann
+					</router-link>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="javascript:;" class="has-arrow">
+				<div class="parent-icon"><i class='bx bx-note'></i>
+				</div>
+				<div class="menu-title">Notes</div>
+			</a>
+			<ul>
+				<li>
+					<router-link to="my-notes"><i class="bx bx-right-arrow-alt"></i>My Notes</router-link>
 				</li>
 			</ul>
 		</li>

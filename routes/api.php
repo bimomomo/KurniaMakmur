@@ -9,6 +9,7 @@ use App\Http\Controllers\API\Master\KategoriController;
 use App\Http\Controllers\API\Master\PelangganController;
 use App\Http\Controllers\API\Mutasi\MutasiStockMasukController;
 use App\Http\Controllers\API\Master\SatuanController;
+use App\Http\Controllers\API\Note\myNotesController;
 use App\Http\Controllers\API\Penjualan\InvoiceJualController;
 use App\Http\Controllers\API\Penjualan\SaleController;
 use Illuminate\Http\Request;
@@ -77,3 +78,7 @@ Route::apiResources(['laporan' => laporanTransaksiController::class,]);
 Route::get('/GetlaporanInvoice', [laporanTransaksiController::class, 'GetlaporanInvoice']);
 Route::get('/GetLaporanPengiriman', [laporanTransaksiController::class, 'GetLaporanPengiriman']);
 Route::get('/GetTransaksiPelanggan', [laporanTransaksiController::class, 'GetTransaksiPelanggan']);
+
+// Note
+Route::apiResources(['notes' => myNotesController::class,]);
+Route::post('/multiDeleteNotes/{id}', [myNotesController::class, 'deletebanyak']);
