@@ -33,6 +33,25 @@ let routes = [
         path: "/home",
         component: require("./components/DashboardMain.vue").default,
     },
+	//USER
+	{
+        path: "/user",
+        component: require("./components/user/user.vue").default,
+	},
+	{
+        path: "/pengumuman",
+        component: require("./components/user/pengumuman.vue").default,
+	},
+	//SETTING
+	{
+        path: "/metodebayar",
+        component: require("./components/setting/metodebayar.vue").default,
+	},
+	{
+        path: "/generalsetting",
+        component: require("./components/setting/generalsetting.vue").default,
+	},
+	//MASTER
     {
         path: "/master-kategori",
         component: require("./components/master/kategori.vue").default,
@@ -90,6 +109,7 @@ let routes = [
         component: require("./components/laporan/transaksipelanggan.vue").default,
     },
 ]
+
 Vue.mixin({
     methods: {
         formatRupiah(isisan) {
@@ -101,6 +121,41 @@ Vue.mixin({
         },
     },
 });
+
+//Axios Default/Global
+axios.defaults.headers.common['Authorization'] = 'Bearer '+API_TOKEN;
+//Axios Error Success Handler
+const isHandlerEnabled = (config={}) => {
+	return config.hasOwnProperty('handlerEnabled') && !config.handlerEnabled ? false : true
+}
+const successHandler = (response) => {
+	if (isHandlerEnabled(response.config)) {
+	  
+	}
+	return response
+}
+const errorHandler = (error) => {
+	if (isHandlerEnabled(error.config)) {
+		if (error.response) {
+			var r = error.response;
+			if (r.data.message=='Unauthenticated.' && r.status == '401') {
+				location.reload();
+			}
+			if (r.status == '400') {
+				var altx = '';
+				for (const k in r.data) {
+					altx+= r.data[k]+"\n"
+				}
+				Swal.fire("Error!", altx, "error");
+			}
+		}
+	}
+	return Promise.reject({ ...error })
+}
+axios.interceptors.response.use(
+	response => successHandler(response),
+	error => errorHandler(error)
+)
 
 const router = new VueRouter({
     mode: "history",

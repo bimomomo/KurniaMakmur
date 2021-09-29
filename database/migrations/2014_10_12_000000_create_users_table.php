@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
 			$table->string('api_token', 80)->unique()->nullable()->default(null);
             $table->uuid('hak_akses_id')->nullable();
+            $table->text('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
