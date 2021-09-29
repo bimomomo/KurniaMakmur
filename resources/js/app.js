@@ -58,6 +58,10 @@ let routes = [
         component: require("./components/mutasi/mutasistockmasuk.vue").default,
     },
     {
+        path: "/mutasi-stock-keluar",
+        component: require("./components/mutasi/mutasiStokKeluar.vue").default,
+    },
+    {
         path: "/tambah-invoice",
         component: require("./components/penjualan/invoicejual.vue").default,
     },

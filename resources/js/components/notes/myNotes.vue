@@ -19,7 +19,7 @@
                 v-model="all_select"
               />
             </th>
-            <th>No</th>
+            <th width="1%">No</th>
             <th>Nama Barang</th>
             <th>Judul</th>
             <th>Tanggal</th>
@@ -289,7 +289,7 @@ export default {
             .delete(`api/notes/` + uuid)
             .then(() => {
               Fire.$emit("reloadUsers");
-              Swal.fire("Deleted!", "User deleted successfully", "success");
+              Swal.fire("Deleted!", "Data deleted successfully", "success");
             })
             .catch(() => {
               Swal.fire({
@@ -318,7 +318,7 @@ export default {
             .post(`api/multiDeleteNotes/` + this.deleteItems)
             .then(() => {
               Fire.$emit("reloadUsers");
-              Swal.fire("Deleted!", "User deleted successfully", "success");
+              Swal.fire("Deleted!", "Data deleted successfully", "success");
               // this.getUser();
               this.deleteItems = [];
               this.all_select == true
