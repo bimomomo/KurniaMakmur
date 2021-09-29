@@ -78,6 +78,24 @@
 
 			</ul>
 		</li>
+		<li>
+			<a href="javascript:;" class="has-arrow">
+				<div class="parent-icon"><i class='bx bx-file'></i>
+				</div>
+				<div class="menu-title">Laporan</div>
+			</a>
+			<ul>
+				<li>
+					<router-link to="invoice-penjualan"><i class="bx bx-right-arrow-alt"></i>Invoice Penjualan</router-link>
+				</li>
+				<li>
+					<router-link to="invoice-pengiriman"><i class="bx bx-right-arrow-alt"></i>Invoice Pengiriman</router-link>
+				</li>
+				<li>
+					<router-link to="transaksi-pelanggan"><i class="bx bx-right-arrow-alt"></i>Transaksi Pelanggann</router-link>
+				</li>
+			</ul>
+		</li>
 	</ul>
 	<!--end navigation-->
 </div>

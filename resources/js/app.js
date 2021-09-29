@@ -77,6 +77,18 @@ let routes = [
         path: "/data-pegawai",
         component: require("./components/master/driver.vue").default,
     },
+    {
+        path: "/invoice-penjualan",
+        component: require("./components/laporan/invoicepenjualan.vue").default,
+    },
+    {
+        path: "/invoice-pengiriman",
+        component: require("./components/laporan/invoicepengiriman.vue").default,
+    },
+    {
+        path: "/transaksi-pelanggan",
+        component: require("./components/laporan/transaksipelanggan.vue").default,
+    },
 ]
 Vue.mixin({
     methods: {

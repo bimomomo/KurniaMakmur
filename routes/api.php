@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Laporan\laporanTransaksiController;
 use App\Http\Controllers\API\Master\BarangController;
 use App\Http\Controllers\API\Master\BrandController;
 use App\Http\Controllers\API\Master\DriverController;
@@ -70,3 +71,9 @@ Route::post('/deletepelanggan/{id}', [PelangganController::class, 'deleteall']);
 // Driver
 Route::apiResources(['driver' => DriverController::class,]);
 Route::post('/deletedriver/{id}', [DriverController::class, 'deleteall']);
+
+// laporan
+Route::apiResources(['laporan' => laporanTransaksiController::class,]);
+Route::get('/GetlaporanInvoice', [laporanTransaksiController::class, 'GetlaporanInvoice']);
+Route::get('/GetLaporanPengiriman', [laporanTransaksiController::class, 'GetLaporanPengiriman']);
+Route::get('/GetTransaksiPelanggan', [laporanTransaksiController::class, 'GetTransaksiPelanggan']);
