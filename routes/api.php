@@ -61,6 +61,7 @@ Route::post('/deleteInvoice', [InvoiceJualController::class, 'deleteInvoice']);
 // Sale Jual
 Route::apiResources(['sale' => SaleController::class,]);
 Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
+Route::post('kirim/{id}', [SaleController::class, 'updatekirim']);
 Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
 Route::get('test/{id}', [SaleController::class, 'test']);
 
@@ -77,3 +78,4 @@ Route::apiResources(['laporan' => laporanTransaksiController::class,]);
 Route::get('/GetlaporanInvoice', [laporanTransaksiController::class, 'GetlaporanInvoice']);
 Route::get('/GetLaporanPengiriman', [laporanTransaksiController::class, 'GetLaporanPengiriman']);
 Route::get('/GetTransaksiPelanggan', [laporanTransaksiController::class, 'GetTransaksiPelanggan']);
+Route::get('GetDetail/{id}', [laporanTransaksiController::class, 'GetDetail']);

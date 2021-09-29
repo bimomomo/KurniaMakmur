@@ -2332,6 +2332,172 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
  //Datatable Modules
 
@@ -2352,8 +2518,15 @@ __webpack_require__.r(__webpack_exports__);
     return {
       editmode: false,
       GetTransaksiPelanggan: {},
+      GetDetail: {},
+      pelanggans: [],
+      invoice: "",
+      filter: "",
+      pelanggan: "",
       form: new Form({
-        uuid: ""
+        tanggal: "",
+        bulan: "",
+        nama: ""
       })
     };
   },
@@ -2361,13 +2534,83 @@ __webpack_require__.r(__webpack_exports__);
     loadUsers: function loadUsers() {
       var _this2 = this;
 
-      axios.get("api/GetTransaksiPelanggan").then(function (res) {
+      axios.get("api/GetTransaksiPelanggan", {
+        params: {
+          tanggal: this.form.tanggal,
+          bulan: this.form.bulan,
+          nama: this.form.nama
+        }
+      }).then(function (res) {
         jquery__WEBPACK_IMPORTED_MODULE_4___default()("#example").DataTable().destroy();
         _this2.GetTransaksiPelanggan = res.data;
+
+        _this2.hideselect();
+
         setTimeout(function () {
           jquery__WEBPACK_IMPORTED_MODULE_4___default()("#example").DataTable();
         }, 1000);
       });
+      axios.get("api/pelanggan").then(function (res) {
+        _this2.pelanggans = res.data;
+      });
+    },
+    ShowModal: function ShowModal() {
+      jquery__WEBPACK_IMPORTED_MODULE_4___default()("#modelId").modal("show");
+    },
+    detail: function detail(nomor_invoice) {
+      var _this3 = this;
+
+      this.ShowModal();
+      axios.get("api/GetDetail/" + nomor_invoice).then(function (res) {
+        jquery__WEBPACK_IMPORTED_MODULE_4___default()("#example2").DataTable().destroy();
+        _this3.GetDetail = res.data;
+        setTimeout(function () {
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#example2").DataTable();
+        }, 1000);
+      });
+    },
+    hideselect: function hideselect() {
+      jquery__WEBPACK_IMPORTED_MODULE_4___default()("#filter").on("change", function () {
+        if (this.value == "") {
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#tanggal").hide();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#bulan").hide();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#cari").hide();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#nama").hide();
+        } else if (this.value == "tanggal") {
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#tanggal").show();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#bulan").hide();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#nama").hide();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#cari").show();
+        } else if (this.value == "bulan") {
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#bulan").show();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#tanggal").hide();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#nama").hide();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#cari").show();
+        } else if (this.value == "pelanggan") {
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#bulan").hide();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#tanggal").hide();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#nama").show();
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#cari").show();
+        }
+      }).trigger("change");
+    },
+    refresh: function refresh() {
+      var _this4 = this;
+
+      this.form.reset();
+      axios.get("api/GetTransaksiPelanggan").then(function (res) {
+        jquery__WEBPACK_IMPORTED_MODULE_4___default()("#example").DataTable().destroy();
+        _this4.GetTransaksiPelanggan = res.data;
+
+        _this4.hideselect();
+
+        setTimeout(function () {
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#example").DataTable();
+        }, 1000);
+      });
+    },
+    setmultiselect: function setmultiselect(value) {
+      this.form.nama = value.nama;
     }
   }
 });
@@ -6254,6 +6497,162 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // Import boostrap and jquery
 //Bootstrap and jQuery libraries
 
@@ -6290,7 +6689,10 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
       terbilangs: "",
       sales: {},
       details: {},
-      gols: {}
+      gols: {},
+      form: new Form({
+        driver: ""
+      })
     };
   },
   methods: {
@@ -6326,9 +6728,7 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
         _this3.hitungppn();
 
         _this3.terbilangs = angka.toTerbilang("" + _this3.totaldefault + "");
-      }); // setTimeout(() => {
-      //   this.printinvoice();
-      // }, 1000);
+      });
     },
     cetak: function cetak(event) {
       this.printinvoice(event);
@@ -6336,6 +6736,22 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
     },
     printinvoice: function printinvoice() {
       this.$refs.html2Pdf.generatePdf();
+    },
+    suratjalan: function suratjalan(nomor_invoice) {
+      var _this4 = this;
+
+      jquery__WEBPACK_IMPORTED_MODULE_4___default()("#openmodal").modal("show");
+      axios.get("api/detail/" + nomor_invoice).then(function (_ref3) {
+        var data = _ref3.data;
+        _this4.gols = data;
+      });
+      axios.get("api/test/" + nomor_invoice).then(function (_ref4) {
+        var data = _ref4.data;
+        _this4.details = data;
+      });
+    },
+    edityuk: function edityuk(item) {
+      console.log(this.form.driver = item.driver);
     },
     hitungdiskon: function hitungdiskon() {
       var a = this.details;
@@ -6368,7 +6784,7 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
       }
     },
     updatebayar: function updatebayar(nomor_invoice, status) {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.post("/api/bayar/" + nomor_invoice, {
         status_bayar: status
@@ -6379,15 +6795,38 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
           icon: "success",
           title: "Pembayaran Berhasil"
         });
-        _this4.loading = false;
-        _this4.disabled = false;
+        _this5.loading = false;
+        _this5.disabled = false;
       })["catch"](function () {
         Swal.fire({
           icon: "error",
           title: "Data Gagal Tersimpan"
         });
-        _this4.loading = false;
-        _this4.disabled = false;
+        _this5.loading = false;
+        _this5.disabled = false;
+      });
+    },
+    updatekirim: function updatekirim(nomor_invoice, status_pengiriman) {
+      var _this6 = this;
+
+      axios.post("/api/kirim/" + nomor_invoice, {
+        status_pengiriman: status_pengiriman
+      }).then(function () {
+        Fire.$emit("reloadUsers"); // $("#merchantssModal").modal("hide");
+
+        Swal.fire({
+          icon: "success",
+          title: "Barang Telah Dikirim"
+        });
+        _this6.loading = false;
+        _this6.disabled = false;
+      })["catch"](function () {
+        Swal.fire({
+          icon: "error",
+          title: "Data Gagal Tersimpan"
+        });
+        _this6.loading = false;
+        _this6.disabled = false;
       });
     }
   }
@@ -73775,19 +74214,413 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row mb-3" }, [
+          _c("div", { staticClass: "col-lg-2" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filter,
+                    expression: "filter"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { id: "filter" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.filter = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [_vm._v("pilih")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "tanggal" } }, [
+                  _vm._v("Tanggal")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "bulan" } }, [_vm._v("Bulan")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "pelanggan" } }, [
+                  _vm._v("Pelanggan")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3", attrs: { id: "tanggal" } }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.tanggal,
+                  expression: "form.tanggal"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "date" },
+              domProps: { value: _vm.form.tanggal },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "tanggal", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-3", attrs: { id: "bulan" } }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.bulan,
+                  expression: "form.bulan"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "month" },
+              domProps: { value: _vm.form.bulan },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "bulan", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-lg-4", attrs: { id: "nama" } },
+            [
+              _c("multiselect", {
+                class: { "is-invalid": _vm.form.errors.has("nama") },
+                attrs: {
+                  label: "nama",
+                  "track-by": "nama",
+                  options: _vm.pelanggans,
+                  searchable: true,
+                  multiple: false,
+                  "close-on-select": false,
+                  "show-labels": true,
+                  "hide-selected": false,
+                  placeholder: "Pilih Pelanggan"
+                },
+                on: { input: _vm.setmultiselect },
+                model: {
+                  value: _vm.pelanggan,
+                  callback: function($$v) {
+                    _vm.pelanggan = $$v
+                  },
+                  expression: "pelanggan"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-2", attrs: { id: "cari" } }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-sm",
+                on: {
+                  click: function($event) {
+                    return _vm.loadUsers()
+                  }
+                }
+              },
+              [_c("i", { staticClass: "bx bx-search-alt-2" })]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-warning btn-sm",
+                on: {
+                  click: function($event) {
+                    return _vm.refresh()
+                  }
+                }
+              },
+              [_c("i", { staticClass: "bx bx-refresh" })]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "table-responsive-lg" }, [
+          _c(
+            "table",
+            {
+              staticClass: "table table-bordered table-striped",
+              attrs: { id: "example" }
+            },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.GetTransaksiPelanggan, function(item, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(item.nomor_invoice))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(
+                            new Date(item.tgl_sale).toLocaleDateString(
+                              "id-ID",
+                              {
+                                dateStyle: "full"
+                              }
+                            )
+                          ) +
+                          "\n              "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.nama))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-info btn-sm",
+                          on: {
+                            click: function($event) {
+                              return _vm.detail(item.nomor_invoice)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "bx bx-detail" })]
+                      )
+                    ])
+                  ])
+                }),
+                0
+              )
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "modelId",
+              tabindex: "-1",
+              role: "dialog",
+              "aria-labelledby": "modelTitleId",
+              "aria-hidden": "true"
+            }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "modal-dialog modal-xl",
+                attrs: { role: "document" }
+              },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "table-responsive-lg" }, [
+                      _c(
+                        "table",
+                        {
+                          staticClass: "table table-striped table-bordered",
+                          attrs: { id: "example2" }
+                        },
+                        [
+                          _vm._m(2),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.GetDetail, function(items, index) {
+                              return _c("tr", { key: index }, [
+                                _c("td", [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(
+                                        new Date(
+                                          items.tgl_sale
+                                        ).toLocaleDateString("id-ID", {
+                                          dateStyle: "full"
+                                        })
+                                      ) +
+                                      "\n                      "
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(items.jumlah_satuan_dijual) +
+                                      "\n                        " +
+                                      _vm._s(items.satuan_isi) +
+                                      "\n                      "
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(items.total_satuan_jual) +
+                                      " " +
+                                      _vm._s(items.satuan_jual) +
+                                      "\n                      "
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(items.produk))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("id-ID", {
+                                          style: "currency",
+                                          currency: "IDR"
+                                        }).format(items.harga * 1000)
+                                      ) +
+                                      "\n                      "
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("id-ID", {
+                                          style: "currency",
+                                          currency: "IDR"
+                                        }).format(items.harga_akhir * 1000)
+                                      ) +
+                                      "\n                      "
+                                  )
+                                ])
+                              ])
+                            }),
+                            0
+                          )
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(3)
+                ])
+              ]
+            )
+          ]
+        )
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "table-responsive" })
-        ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { width: "15%" } }, [_vm._v("No. Invoice")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "30%" } }, [_vm._v("Tanggal transaksi")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Pelanggan")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "2%" } }, [_vm._v("Aksi")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Detail Transaksi")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Tanggal transaksi")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "3%" } }, [_vm._v("Qty")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "12%" } }, [_vm._v("Total Qty")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Produk")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Harga")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Sub total")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("\n                Close\n              ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Save")]
+      )
     ])
   }
 ]
@@ -78262,7 +79095,9 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.sales, function(item, index) {
                   return _c("tr", { key: index }, [
-                    _c("td", [_vm._v(_vm._s(index + 1))]),
+                    _c("td", { staticClass: "text-center" }, [
+                      _vm._v(_vm._s(index + 1))
+                    ]),
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(
@@ -78313,12 +79148,13 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
+                    _c("td", [
                       item.status_bayar == 0
                         ? _c(
-                            "span",
+                            "div",
                             {
-                              staticClass: "badge bg-gradient-burning",
+                              staticClass:
+                                "d-flex align-items-center text-danger",
                               staticStyle: { cursor: "pointer" },
                               on: {
                                 click: function($event) {
@@ -78326,18 +79162,73 @@ var render = function() {
                                 }
                               }
                             },
-                            [_vm._v("Bayar Sekarang")]
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "\n                    bx bx-radio-circle-marked bx-burst bx-rotate-90\n                    align-middle\n                    font-18\n                    me-1\n                  "
+                              }),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Bayar Sekarang")])
+                            ]
                           )
-                        : item.status_bayar == 1
-                        ? _c(
-                            "span",
+                        : _c(
+                            "div",
                             {
-                              staticClass: "badge bg-gradient-burning",
-                              staticStyle: { cursor: "pointer" }
+                              staticClass:
+                                "d-flex align-items-center text-success"
                             },
-                            [_vm._v("Lunas")]
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "\n                    bx bx-radio-circle-marked bx-burst bx-rotate-90\n                    align-middle\n                    font-18\n                    me-1\n                  "
+                              }),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Lunas")])
+                            ]
                           )
-                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      item.status_pengiriman == 0
+                        ? _c(
+                            "div",
+                            {
+                              staticClass:
+                                "d-flex align-items-center text-warning"
+                            },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "\n                    bx bx-radio-circle-marked bx-burst bx-rotate-90\n                    align-middle\n                    font-18\n                    me-1\n                  ",
+                                staticStyle: { cursor: "pointer" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.updatekirim(
+                                      item.nomor_invoice,
+                                      1
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Pending")])
+                            ]
+                          )
+                        : _c(
+                            "div",
+                            {
+                              staticClass:
+                                "d-flex align-items-center text-success"
+                            },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "\n                    bx bx-radio-circle-marked bx-burst bx-rotate-90\n                    align-middle\n                    font-18\n                    me-1\n                  "
+                              }),
+                              _vm._v(" "),
+                              _c("span", [_vm._v("Terkirim")])
+                            ]
+                          )
                     ]),
                     _vm._v(" "),
                     _c("td", [
@@ -78356,7 +79247,18 @@ var render = function() {
                         [_c("i", { staticClass: "bx bx-detail" })]
                       ),
                       _vm._v(" "),
-                      _vm._m(2, true)
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-sm",
+                          on: {
+                            click: function($event) {
+                              return _vm.suratjalan(item.nomor_invoice)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "bx bx-printer" })]
+                      )
                     ])
                   ])
                 }),
@@ -78388,7 +79290,7 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(3),
+                _vm._m(2),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("div", { attrs: { id: "invoice" } }, [
@@ -78406,7 +79308,7 @@ var render = function() {
                                     [_vm._v("Dari")]
                                   ),
                                   _vm._v(" "),
-                                  _c("h2", { staticClass: "to" }, [
+                                  _c("h3", { staticClass: "to" }, [
                                     _vm._v("KurniaMakmur")
                                   ]),
                                   _vm._v(" "),
@@ -78462,7 +79364,7 @@ var render = function() {
                                       [_vm._v("Kepada")]
                                     ),
                                     _vm._v(" "),
-                                    _c("h2", { staticClass: "to" }, [
+                                    _c("h3", { staticClass: "to" }, [
                                       _vm._v(_vm._s(item.nama))
                                     ]),
                                     _vm._v(" "),
@@ -78478,7 +79380,7 @@ var render = function() {
                               ]),
                               _vm._v(" "),
                               _c("table", [
-                                _vm._m(4, true),
+                                _vm._m(3, true),
                                 _vm._v(" "),
                                 _c(
                                   "tbody",
@@ -78686,6 +79588,207 @@ var render = function() {
                     ]
                   )
                 ])
+              ])
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "openmodal",
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "modelTitleId",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-xl",
+              attrs: { role: "document" }
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(4),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { attrs: { id: "invoice" } }, [
+                    _c(
+                      "main",
+                      _vm._l(_vm.details, function(item, index) {
+                        return _c("div", { key: index }, [
+                          _c("div", { staticClass: "row contacts mb-2" }, [
+                            _c("div", { staticClass: "col invoice-to" }, [
+                              _c("div", { staticClass: "text-gray-light" }, [
+                                _vm._v("Dari")
+                              ]),
+                              _vm._v(" "),
+                              _c("h3", { staticClass: "to" }, [
+                                _vm._v("KurniaMakmur")
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "address" }, [
+                                _c("div", [
+                                  _vm._v("455 Foggy Heights, AZ 85004, US")
+                                ]),
+                                _vm._v(" "),
+                                _c("div", [_vm._v("(123) 456-789")]),
+                                _vm._v(" "),
+                                _c("div", [_vm._v("company@example.com")]),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _vm._v(
+                                    "No. Invoice : " +
+                                      _vm._s(item.nomor_invoice)
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _vm._v(
+                                    "No. Faktur Pajak : " +
+                                      _vm._s(item.faktur_pajak)
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _vm._v("No. PO : " + _vm._s(item.nomor_po))
+                                ]),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _vm._v(
+                                    "Jatuh Tempo: " + _vm._s(item.jatuh_tempo)
+                                  )
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col invoice-details" }, [
+                              _c(
+                                "div",
+                                { staticClass: "text-gray-light text-center" },
+                                [_vm._v("Kepada")]
+                              ),
+                              _vm._v(" "),
+                              _c("h3", { staticClass: "to" }, [
+                                _vm._v(_vm._s(item.nama))
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "address" }, [
+                                _vm._v(
+                                  "\n                      " +
+                                    _vm._s(item.alamat) +
+                                    "\n                    "
+                                )
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "table",
+                            {
+                              staticClass:
+                                "table table-bordered table-responsive"
+                            },
+                            [
+                              _vm._m(5, true),
+                              _vm._v(" "),
+                              _c(
+                                "tbody",
+                                _vm._l(_vm.gols, function(items, index) {
+                                  return _c("tr", { key: index }, [
+                                    _c("td", { staticClass: "text-center" }, [
+                                      _vm._v(
+                                        "\n                        " +
+                                          _vm._s(items.jumlah_satuan_isi) +
+                                          "\n                        " +
+                                          _vm._s(items.satuan_isi) +
+                                          "\n                      "
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", { staticClass: "text-center" }, [
+                                      _vm._v(
+                                        "\n                        " +
+                                          _vm._s(items.jumlah_satuan_dijual) +
+                                          "\n                        " +
+                                          _vm._s(items.satuan_isi) +
+                                          "\n                      "
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", { staticClass: "text-center" }, [
+                                      _vm._v(
+                                        "\n                        " +
+                                          _vm._s(items.total_satuan_jual) +
+                                          "\n                        " +
+                                          _vm._s(items.satuan_jual) +
+                                          "\n                      "
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", { staticClass: "text-center" }, [
+                                      _vm._v(_vm._s(items.produk))
+                                    ])
+                                  ])
+                                }),
+                                0
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row mt-3" }, [
+                            _c("div", { staticClass: "col invoice-to" }, [
+                              _c("div", { staticClass: "text-gray-light" }, [
+                                _vm._v("Tanda Terima")
+                              ]),
+                              _vm._v(" "),
+                              _c("br"),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "font-weight-bold" }, [
+                                _vm._v(
+                                  "\n                      " +
+                                    _vm._s(item.nama) +
+                                    "\n                    "
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col invoice-details" }, [
+                              _c(
+                                "div",
+                                { staticClass: "text-gray-light text-center" },
+                                [_vm._v("Hormat Kami")]
+                              ),
+                              _vm._v(" "),
+                              _c("br"),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "font-weight-bold text-center" },
+                                [
+                                  _vm._v(
+                                    "\n                      " +
+                                      _vm._s(item.driver) +
+                                      "\n                    "
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(6)
               ])
             ]
           )
@@ -79099,19 +80202,21 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("No")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Tanggal Pembuatan")]),
+        _c("th", [_vm._v("Tanggal pembuatan")]),
         _vm._v(" "),
-        _c("th", [_vm._v("No. Invoice")]),
+        _c("th", [_vm._v("No. invoice")]),
         _vm._v(" "),
         _c("th", [_vm._v("Pelanggan")]),
         _vm._v(" "),
         _c("th", [_vm._v("No. PO")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Jatuh Tempo")]),
+        _c("th", [_vm._v("Jatuh tempo")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Status Bayar")]),
+        _c("th", [_vm._v("Status bayar")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status kirim")]),
         _vm._v(" "),
         _c("th", [_vm._v("Aksi")])
       ])
@@ -79123,14 +80228,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("button", { staticClass: "btn btn-danger btn-sm" }, [
       _c("i", { staticClass: "bx bx-x" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn btn-primary btn-sm" }, [
-      _c("i", { staticClass: "bx bx-printer" })
     ])
   },
   function() {
@@ -79174,6 +80271,68 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "text-right" }, [_vm._v("TOTAL HARGA")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Modal title")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", { staticClass: "text-center", attrs: { width: "5%" } }, [
+        _vm._v("SATUAN")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-center", attrs: { width: "5%" } }, [
+        _vm._v("QTY")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-center", attrs: { width: "11%" } }, [
+        _vm._v("TOTAL QTY")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-center" }, [_vm._v("PRODUK")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("\n            Close\n          ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Save")]
+      )
     ])
   }
 ]
