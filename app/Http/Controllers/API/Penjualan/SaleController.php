@@ -15,7 +15,8 @@ class SaleController extends Controller
 {
     public function getAllDataSale()
     {
-        return Sale::select(
+        $x =  Sale::select(
+            'sale.*',
             'invoice_jual.*',
             'driver.*',
             'pelanggan.nama as namaPelanggan',
@@ -28,7 +29,15 @@ class SaleController extends Controller
             ->join('pelanggan', 'pelanggan.uuid', 'sale.pelanggan_id')
             ->join('barang', 'barang.uuid', 'invoice_jual.barang_id')
             ->join('gudang', 'gudang.uuid', 'invoice_jual.gudang_id')
+            ->where('sale.status_bayar', 1)
             ->get();
+
+        if ($x) {
+            $pesan = 'Oke';
+        } else {
+            $pesan = 'Data Error';
+        }
+        return response()->json(['data' => $x, 'pesan' => $pesan]);
     }
     public function index()
     {

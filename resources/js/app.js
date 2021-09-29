@@ -97,6 +97,10 @@ let routes = [
         path: "/my-notes",
         component: require("./components/notes/myNotes.vue").default,
     },
+    {
+        path: "/my-return",
+        component: require("./components/penjualan/dataReturn.vue").default,
+    },
 ]
 Vue.mixin({
     methods: {
