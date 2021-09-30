@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\API\Penjualan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Penjualan\DataReturn;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
-class returnController extends Controller
+class ReturnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +17,7 @@ class returnController extends Controller
      */
     public function index()
     {
-        //
+        return DataReturn::get();
     }
 
     /**

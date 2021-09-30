@@ -51,6 +51,10 @@ class DriverController extends Controller
             ]);
         }
     }
+    public function show($id)
+    {
+        return Driver::where('uuid', $id)->get();
+    }
     public function destroy($id)
     {
         Driver::where("uuid", $id)->delete();

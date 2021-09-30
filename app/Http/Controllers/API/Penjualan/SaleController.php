@@ -39,10 +39,36 @@ class SaleController extends Controller
         }
         return response()->json(['data' => $x, 'pesan' => $pesan]);
     }
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->uuid) {
+            return Sale::select(
+                'driver.*',
+                'gudang.*',
+                'barang.*',
+                'barang.nama as namaBarang',
+                'satuan.*',
+                'sale.uuid as uuidSale',
+                'sale.*',
+                'invoice_jual.*',
+                'invoice_jual.uuid as uuidInvJual',
+                'pelanggan.nama',
+            )
+                ->join('invoice_jual', 'invoice_jual.uuid', 'sale.invoicejual_id')
+                ->join('satuan', 'satuan.uuid', 'invoice_jual.satuan_id')
+                ->join('driver', 'driver.uuid', 'sale.driver_id')
+                ->join('gudang', 'gudang.uuid', 'invoice_jual.gudang_id')
+                ->join('barang', 'barang.uuid', 'invoice_jual.barang_id')
+                ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
+                ->where('sale.uuid', $request->uuid)
+                ->distinct()
+                ->first();
+        }
 
-        return Sale::select('sale.tgl_sale', 'sale.nomor_invoice', 'sale.nomor_po', 'sale.total', 'sale.jatuh_tempo', 'sale.status_bayar', 'sale.status_pengiriman', 'pelanggan.nama')
+        return Sale::select(
+            'sale.*',
+            'pelanggan.nama',
+        )
             ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
             ->distinct()
             ->get();

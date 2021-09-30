@@ -12,15 +12,17 @@ class InvoiceJual extends Model
     protected $table = 'invoice_jual';
     protected $fillable = [
         'uuid',
-        'barang_id',
-        'satuan_id',
-        'gudang_id',
-        'harga',
-        'harga_akhir',
-        'total_satuan_jual',
-        'jumlah_satuan_dijual',
-        'jumlah_satuan_isi',
-        'satuan_jual',
-        'status',
+        'biaya_kirim',
+        'diskon',
+        'driver_id',
+        'faktur_pajak',
+        'jatuh_tempo',
+        'nomor_invoice',
+        'nomor_po',
+        'nomor_surat_jalan',
+        'pelanggan_id',
+        'ppn',
+        'tgl_sale',
+        'total',
     ];
 }

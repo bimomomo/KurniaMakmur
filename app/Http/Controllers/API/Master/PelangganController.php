@@ -48,6 +48,10 @@ class PelangganController extends Controller
             ]);
         }
     }
+    public function show($id)
+    {
+        return Pelanggan::where('uuid', $id)->get();
+    }
     public function destroy($id)
     {
         Pelanggan::where("uuid", $id)->delete();
