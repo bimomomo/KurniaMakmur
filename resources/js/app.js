@@ -26,6 +26,7 @@ const Toast = Swal.mixin({
 });
 window.Toast = Toast;
 
+Vue.component('my-return', require('./components/penjualan/dataReturn.vue').default);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 let routes = [
     //DASHBOARD
@@ -77,6 +78,10 @@ let routes = [
         component: require("./components/mutasi/mutasistockmasuk.vue").default,
     },
     {
+        path: "/mutasi-stock-keluar",
+        component: require("./components/mutasi/mutasiStokKeluar.vue").default,
+    },
+    {
         path: "/tambah-invoice",
         component: require("./components/penjualan/invoicejual.vue").default,
     },
@@ -107,6 +112,14 @@ let routes = [
     {
         path: "/transaksi-pelanggan",
         component: require("./components/laporan/transaksipelanggan.vue").default,
+    },
+    {
+        path: "/my-notes",
+        component: require("./components/notes/myNotes.vue").default,
+    },
+    {
+        path: "/my-return",
+        component: require("./components/penjualan/dataReturn.vue").default,
     },
 ]
 

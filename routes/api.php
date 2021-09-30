@@ -13,6 +13,8 @@ use App\Http\Controllers\API\Master\KategoriController;
 use App\Http\Controllers\API\Master\PelangganController;
 use App\Http\Controllers\API\Mutasi\MutasiStockMasukController;
 use App\Http\Controllers\API\Master\SatuanController;
+use App\Http\Controllers\API\Mutasi\MutasiStockKeluarController;
+use App\Http\Controllers\API\Note\myNotesController;
 use App\Http\Controllers\API\Penjualan\InvoiceJualController;
 use App\Http\Controllers\API\Penjualan\SaleController;
 use Illuminate\Http\Request;
@@ -30,79 +32,62 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 // Route::middleware('auth:api')->group(function () {
 // });
+Route::apiResources(['kategori' => KategoriController::class,]);
+Route::post('/deletekategori/{id}', [KategoriController::class, 'deleteall']);
 
-Route::middleware('auth:api')->group(function () {
-	//User
-	Route::apiResources(['user' => UserController::class,]);
-	Route::apiResources(['pengumuman' => PengumumanController::class,]);
-	// Setting
-	Route::apiResources(['metodebayar' => MetodeBayarController::class,]);
-	Route::apiResources(['generalsetting' => GeneralSettingController::class,]);
-	Route::post('/generalsettingsetactive/{id}', [GeneralSettingController::class, 'activestatusset']);
+// Brand
+Route::apiResources(['brand' => BrandController::class,]);
+Route::post('/deletebrand/{id}', [BrandController::class, 'deleteall']);
 
-	Route::apiResources(['kategori' => KategoriController::class,]);
-	Route::post('/deletekategori/{id}', [KategoriController::class, 'deleteall']);
+// Gudang
+Route::apiResources(['gudang' => GudangController::class,]);
+Route::post('/deletegudang/{id}', [GudangController::class, 'deleteall']);
 
-	// Brand
-	Route::apiResources(['brand' => BrandController::class,]);
-	Route::post('/deletebrand/{id}', [BrandController::class, 'deleteall']);
+// Satuan
+Route::apiResources(['satuan' => SatuanController::class,]);
+Route::post('/deletesatuan/{id}', [SatuanController::class, 'deleteall']);
 
-	// Gudang
-	Route::apiResources(['gudang' => GudangController::class,]);
-	Route::post('/deletegudang/{id}', [GudangController::class, 'deleteall']);
+// Barang
+Route::apiResources(['barang' => BarangController::class,]);
+Route::post('/deletebarang/{id}', [BarangController::class, 'deleteall']);
+Route::put('/updatestock/{id}', [BarangController::class, 'updatestock']);
 
-	// Satuan
-	Route::apiResources(['satuan' => SatuanController::class,]);
-	Route::post('/deletesatuan/{id}', [SatuanController::class, 'deleteall']);
+// Mutasi stock masuk
+Route::apiResources(['mutasistockmasuk' => MutasiStockMasukController::class,]);
 
-	// Barang
-	Route::apiResources(['barang' => BarangController::class,]);
-	Route::post('/deletebarang/{id}', [BarangController::class, 'deleteall']);
-	Route::put('/updatestock/{id}', [BarangController::class, 'updatestock']);
+// Invoice Jual
+Route::apiResources(['invoicejual' => InvoiceJualController::class,]);
+Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
+Route::post('/deleteInvoice', [InvoiceJualController::class, 'deleteInvoice']);
 
-	// Mutasi stock masuk
-	Route::apiResources(['mutasistockmasuk' => MutasiStockMasukController::class,]);
-	// Sale Jual
-	Route::apiResources(['sale' => SaleController::class,]);
-	Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
-	Route::post('kirim/{id}', [SaleController::class, 'updatekirim']);
-	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
-	Route::get('test/{id}', [SaleController::class, 'test']);
+// Sale Jual
+Route::apiResources(['sale' => SaleController::class,]);
+Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
+Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
+Route::get('getAllDataSale', [SaleController::class, 'getAllDataSale']);
+Route::get('test/{id}', [SaleController::class, 'test']);
 
-	// Sale Jual
-	Route::apiResources(['sale' => SaleController::class,]);
-	Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
-	Route::post('kirim/{id}', [SaleController::class, 'updatekirim']);
-	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
-	Route::get('test/{id}', [SaleController::class, 'test']);
+// Pelanggan 
+Route::apiResources(['pelanggan' => PelangganController::class,]);
+Route::post('/deletepelanggan/{id}', [PelangganController::class, 'deleteall']);
 
-	// Invoice Jual
-	Route::apiResources(['invoicejual' => InvoiceJualController::class,]);
-	Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
-	Route::post('/deleteInvoice', [InvoiceJualController::class, 'deleteInvoice']);
+// Driver
+Route::apiResources(['driver' => DriverController::class,]);
+Route::post('/deletedriver/{id}', [DriverController::class, 'deleteall']);
 
-	// Sale Jual
-	Route::apiResources(['sale' => SaleController::class,]);
-	Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
-	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
-	Route::get('test/{id}', [SaleController::class, 'test']);
+// laporan
+Route::apiResources(['laporan' => laporanTransaksiController::class,]);
+Route::get('/GetlaporanInvoice', [laporanTransaksiController::class, 'GetlaporanInvoice']);
+Route::get('/GetLaporanPengiriman', [laporanTransaksiController::class, 'GetLaporanPengiriman']);
+Route::get('/GetTransaksiPelanggan', [laporanTransaksiController::class, 'GetTransaksiPelanggan']);
 
-	// Pelanggan 
-	Route::apiResources(['pelanggan' => PelangganController::class,]);
-	Route::post('/deletepelanggan/{id}', [PelangganController::class, 'deleteall']);
+// Note
+Route::apiResources(['notes' => myNotesController::class,]);
+Route::post('/multiDeleteNotes/{id}', [myNotesController::class, 'deletebanyak']);
 
-	// Driver
-	Route::apiResources(['driver' => DriverController::class,]);
-	Route::post('/deletedriver/{id}', [DriverController::class, 'deleteall']);
-
-	// laporan
-	Route::apiResources(['laporan' => laporanTransaksiController::class,]);
-	Route::get('/GetlaporanInvoice', [laporanTransaksiController::class, 'GetlaporanInvoice']);
-	Route::get('/GetLaporanPengiriman', [laporanTransaksiController::class, 'GetLaporanPengiriman']);
-	Route::get('/GetTransaksiPelanggan', [laporanTransaksiController::class, 'GetTransaksiPelanggan']);
-	Route::get('GetDetail/{id}', [laporanTransaksiController::class, 'GetDetail']);
-});
+// Mutasi
+Route::apiResources(['mutasi-keluar' => MutasiStockKeluarController::class,]);

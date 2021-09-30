@@ -13,6 +13,32 @@ use Illuminate\Support\Str;
 
 class SaleController extends Controller
 {
+    public function getAllDataSale()
+    {
+        $x =  Sale::select(
+            'sale.*',
+            'invoice_jual.*',
+            'driver.*',
+            'pelanggan.nama as namaPelanggan',
+            'pelanggan.*',
+            'barang.*',
+            'gudang.*',
+        )
+            ->join('invoice_jual', 'invoice_jual.uuid', 'sale.invoicejual_id')
+            ->join('driver', 'driver.uuid', 'sale.driver_id')
+            ->join('pelanggan', 'pelanggan.uuid', 'sale.pelanggan_id')
+            ->join('barang', 'barang.uuid', 'invoice_jual.barang_id')
+            ->join('gudang', 'gudang.uuid', 'invoice_jual.gudang_id')
+            ->where('sale.status_bayar', 1)
+            ->get();
+
+        if ($x) {
+            $pesan = 'Oke';
+        } else {
+            $pesan = 'Data Error';
+        }
+        return response()->json(['data' => $x, 'pesan' => $pesan]);
+    }
     public function index()
     {
 
