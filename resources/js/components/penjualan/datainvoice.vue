@@ -6,19 +6,20 @@
           <thead>
             <tr>
               <th>No</th>
-              <th>Tanggal Pembuatan</th>
-              <th>No. Invoice</th>
+              <th>Tanggal pembuatan</th>
+              <th>No. invoice</th>
               <th>Pelanggan</th>
               <th>No. PO</th>
-              <th>Jatuh Tempo</th>
+              <th>Jatuh tempo</th>
               <th>Total</th>
-              <th>Status Bayar</th>
+              <th>Status bayar</th>
+              <th>Status kirim</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in sales" :key="index">
-              <td>{{ index + 1 }}</td>
+              <td class="text-center">{{ index + 1 }}</td>
               <td>
                 {{
                   new Date(item.tgl_sale).toLocaleDateString("id-ID", {
@@ -44,20 +45,63 @@
                   }).format(item.total * 1000)
                 }}
               </td>
-              <td class="text-center">
-                <span
-                  class="badge bg-gradient-burning"
-                  style="cursor: pointer"
+              <td>
+                <div
+                  class="d-flex align-items-center text-danger"
                   v-if="item.status_bayar == 0"
                   @click="updatebayar(item.nomor_invoice, 1)"
-                  >Bayar Sekarang</span
-                >
-                <span
-                  class="badge bg-gradient-burning"
                   style="cursor: pointer"
-                  v-else-if="item.status_bayar == 1"
-                  >Lunas</span
                 >
+                  <i
+                    class="
+                      bx bx-radio-circle-marked bx-burst bx-rotate-90
+                      align-middle
+                      font-18
+                      me-1
+                    "
+                  ></i>
+                  <span>Bayar Sekarang</span>
+                </div>
+                <div class="d-flex align-items-center text-success" v-else>
+                  <i
+                    class="
+                      bx bx-radio-circle-marked bx-burst bx-rotate-90
+                      align-middle
+                      font-18
+                      me-1
+                    "
+                  ></i>
+                  <span>Lunas</span>
+                </div>
+              </td>
+              <td>
+                <div
+                  class="d-flex align-items-center text-warning"
+                  v-if="item.status_pengiriman == 0"
+                >
+                  <i
+                    class="
+                      bx bx-radio-circle-marked bx-burst bx-rotate-90
+                      align-middle
+                      font-18
+                      me-1
+                    "
+                    @click="updatekirim(item.nomor_invoice, 1)"
+                    style="cursor: pointer"
+                  ></i>
+                  <span>Pending</span>
+                </div>
+                <div class="d-flex align-items-center text-success" v-else>
+                  <i
+                    class="
+                      bx bx-radio-circle-marked bx-burst bx-rotate-90
+                      align-middle
+                      font-18
+                      me-1
+                    "
+                  ></i>
+                  <span>Terkirim</span>
+                </div>
               </td>
               <td>
                 <button class="btn btn-danger btn-sm">
@@ -69,7 +113,10 @@
                 >
                   <i class="bx bx-detail"></i>
                 </button>
-                <button class="btn btn-primary btn-sm">
+                <button
+                  class="btn btn-primary btn-sm"
+                  @click="suratjalan(item.nomor_invoice)"
+                >
                   <i class="bx bx-printer"></i>
                 </button>
               </td>
@@ -110,7 +157,7 @@
                       <div class="row contacts">
                         <div class="col invoice-to">
                           <div class="text-gray-light">Dari</div>
-                          <h2 class="to">KurniaMakmur</h2>
+                          <h3 class="to">KurniaMakmur</h3>
                           <div class="address">
                             <div>455 Foggy Heights, AZ 85004, US</div>
                             <div>(123) 456-789</div>
@@ -125,7 +172,7 @@
                         </div>
                         <div class="col invoice-details">
                           <div class="text-gray-light text-center">Kepada</div>
-                          <h2 class="to">{{ item.nama }}</h2>
+                          <h3 class="to">{{ item.nama }}</h3>
                           <div class="address">
                             {{ item.alamat }}
                           </div>
@@ -248,6 +295,115 @@
       </div>
     </div>
     <!-- end modal detail -->
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="openmodal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modelTitleId"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="invoice">
+              <main>
+                <div v-for="(item, index) in details" :key="index">
+                  <div class="row contacts mb-2">
+                    <div class="col invoice-to">
+                      <div class="text-gray-light">Dari</div>
+                      <h3 class="to">KurniaMakmur</h3>
+                      <div class="address">
+                        <div>455 Foggy Heights, AZ 85004, US</div>
+                        <div>(123) 456-789</div>
+                        <div>company@example.com</div>
+                        <div>No. Invoice : {{ item.nomor_invoice }}</div>
+                        <div>No. Faktur Pajak : {{ item.faktur_pajak }}</div>
+                        <div>No. PO : {{ item.nomor_po }}</div>
+                        <div>Jatuh Tempo: {{ item.jatuh_tempo }}</div>
+                      </div>
+                    </div>
+                    <div class="col invoice-details">
+                      <div class="text-gray-light text-center">Kepada</div>
+                      <h3 class="to">{{ item.nama }}</h3>
+                      <div class="address">
+                        {{ item.alamat }}
+                      </div>
+                    </div>
+                  </div>
+                  <table class="table table-bordered table-responsive">
+                    <tr>
+                      <th width="5%" class="text-center">SATUAN</th>
+                      <th width="5%" class="text-center">QTY</th>
+                      <th width="11%" class="text-center">TOTAL QTY</th>
+                      <th class="text-center">PRODUK</th>
+                    </tr>
+                    <tbody>
+                      <tr v-for="(items, index) in gols" :key="index">
+                        <td class="text-center">
+                          {{ items.jumlah_satuan_isi }}
+                          {{ items.satuan_isi }}
+                        </td>
+                        <td class="text-center">
+                          {{ items.jumlah_satuan_dijual }}
+                          {{ items.satuan_isi }}
+                        </td>
+                        <td class="text-center">
+                          {{ items.total_satuan_jual }}
+                          {{ items.satuan_jual }}
+                        </td>
+                        <td class="text-center">{{ items.produk }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="row mt-3">
+                    <div class="col invoice-to">
+                      <div class="text-gray-light">Tanda Terima</div>
+                      <br />
+                      <div class="font-weight-bold">
+                        {{ item.nama }}
+                      </div>
+                    </div>
+                    <div class="col invoice-details">
+                      <div class="text-gray-light text-center">Hormat Kami</div>
+                      <br />
+                      <div class="font-weight-bold text-center">
+                        {{ item.driver }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <template>
       <div>
         <vue-html2pdf
@@ -438,6 +594,9 @@ export default {
       sales: {},
       details: {},
       gols: {},
+      form: new Form({
+        driver: "",
+      }),
     };
   },
   methods: {
@@ -454,6 +613,7 @@ export default {
     showmodal() {
       $("#modelId").modal("show");
     },
+
     detail(nomor_invoice) {
       this.showmodal();
       axios.get("api/detail/" + nomor_invoice).then(({ data }) => {
@@ -465,9 +625,6 @@ export default {
         this.hitungppn();
         this.terbilangs = angka.toTerbilang("" + this.totaldefault + "");
       });
-      // setTimeout(() => {
-      //   this.printinvoice();
-      // }, 1000);
     },
     cetak: function (event) {
       this.printinvoice(event);
@@ -475,6 +632,20 @@ export default {
     },
     printinvoice() {
       this.$refs.html2Pdf.generatePdf();
+    },
+
+    suratjalan(nomor_invoice) {
+      $("#openmodal").modal("show");
+      axios.get("api/detail/" + nomor_invoice).then(({ data }) => {
+        this.gols = data;
+      });
+      axios.get("api/test/" + nomor_invoice).then(({ data }) => {
+        this.details = data;
+      });
+    },
+
+    edityuk(item) {
+      console.log((this.form.driver = item.driver));
     },
     hitungdiskon() {
       var a = this.details;
@@ -514,6 +685,24 @@ export default {
           Fire.$emit("reloadUsers");
           // $("#merchantssModal").modal("hide");
           Swal.fire({ icon: "success", title: "Pembayaran Berhasil" });
+          this.loading = false;
+          this.disabled = false;
+        })
+        .catch(() => {
+          Swal.fire({ icon: "error", title: "Data Gagal Tersimpan" });
+          this.loading = false;
+          this.disabled = false;
+        });
+    },
+    updatekirim(nomor_invoice, status_pengiriman) {
+      axios
+        .post("/api/kirim/" + nomor_invoice, {
+          status_pengiriman: status_pengiriman,
+        })
+        .then(() => {
+          Fire.$emit("reloadUsers");
+          // $("#merchantssModal").modal("hide");
+          Swal.fire({ icon: "success", title: "Barang Telah Dikirim" });
           this.loading = false;
           this.disabled = false;
         })
