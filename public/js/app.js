@@ -7202,6 +7202,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // Import boostrap and jquery
 //Bootstrap and jQuery libraries
 
@@ -7708,6 +7749,7 @@ var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default().mixin({
   timer: 3000
 });
 window.Toast = Toast;
+vue__WEBPACK_IMPORTED_MODULE_0__.default.component('my-return', __webpack_require__(/*! ./components/penjualan/dataReturn.vue */ "./resources/js/components/penjualan/dataReturn.vue").default);
 vue__WEBPACK_IMPORTED_MODULE_0__.default.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
 var routes = [//DASHBOARD
 {
@@ -80601,121 +80643,147 @@ var render = function() {
     { staticClass: "card" },
     [
       _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "table-responsive" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "tab-content py-3" }, [
           _c(
-            "table",
+            "div",
             {
-              staticClass: "table table-striped table-bordered",
-              attrs: { id: "example" }
+              staticClass: "tab-pane fade show active",
+              attrs: { id: "primaryhome", role: "tabpanel" }
             },
             [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.sales, function(item, index) {
-                  return _c("tr", { key: index }, [
-                    _c("td", [_vm._v(_vm._s(index + 1))]),
+              _c("div", { staticClass: "table-responsive" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass: "table table-striped table-bordered",
+                    attrs: { id: "example" }
+                  },
+                  [
+                    _vm._m(1),
                     _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        "\n              " +
-                          _vm._s(
-                            new Date(item.tgl_sale).toLocaleDateString(
-                              "id-ID",
-                              {
-                                dateStyle: "full"
-                              }
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.sales, function(item, index) {
+                        return _c("tr", { key: index }, [
+                          _c("td", [_vm._v(_vm._s(index + 1))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "\n                  " +
+                                _vm._s(
+                                  new Date(item.tgl_sale).toLocaleDateString(
+                                    "id-ID",
+                                    {
+                                      dateStyle: "full"
+                                    }
+                                  )
+                                ) +
+                                "\n                "
                             )
-                          ) +
-                          "\n            "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.nomor_invoice))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.nama))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(item.nomor_po))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        "\n              " +
-                          _vm._s(
-                            new Date(item.jatuh_tempo).toLocaleDateString(
-                              "id-ID",
-                              {
-                                dateStyle: "full"
-                              }
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.nomor_invoice))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.nama))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(item.nomor_po))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "\n                  " +
+                                _vm._s(
+                                  new Date(item.jatuh_tempo).toLocaleDateString(
+                                    "id-ID",
+                                    {
+                                      dateStyle: "full"
+                                    }
+                                  )
+                                ) +
+                                "\n                "
                             )
-                          ) +
-                          "\n            "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        "\n              " +
-                          _vm._s(
-                            new Intl.NumberFormat("id-ID", {
-                              style: "currency",
-                              currency: "IDR"
-                            }).format(item.total * 1000)
-                          ) +
-                          "\n            "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
-                      item.status_bayar == 0
-                        ? _c(
-                            "span",
-                            {
-                              staticClass: "badge bg-gradient-burning",
-                              staticStyle: { cursor: "pointer" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.updatebayar(item.nomor_invoice, 1)
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "\n                  " +
+                                _vm._s(
+                                  new Intl.NumberFormat("id-ID", {
+                                    style: "currency",
+                                    currency: "IDR"
+                                  }).format(item.total * 1000)
+                                ) +
+                                "\n                "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "text-center" }, [
+                            item.status_bayar == 0
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass: "badge bg-gradient-burning",
+                                    staticStyle: { cursor: "pointer" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.updatebayar(
+                                          item.nomor_invoice,
+                                          1
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Bayar Sekarang")]
+                                )
+                              : item.status_bayar == 1
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass: "badge bg-gradient-burning",
+                                    staticStyle: { cursor: "pointer" }
+                                  },
+                                  [_vm._v("Lunas")]
+                                )
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._m(2, true),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-info btn-sm",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.detail(item.nomor_invoice)
+                                  }
                                 }
-                              }
-                            },
-                            [_vm._v("Bayar Sekarang")]
-                          )
-                        : item.status_bayar == 1
-                        ? _c(
-                            "span",
-                            {
-                              staticClass: "badge bg-gradient-burning",
-                              staticStyle: { cursor: "pointer" }
-                            },
-                            [_vm._v("Lunas")]
-                          )
-                        : _vm._e()
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._m(1, true),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-info btn-sm",
-                          on: {
-                            click: function($event) {
-                              return _vm.detail(item.nomor_invoice)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "bx bx-detail" })]
-                      ),
-                      _vm._v(" "),
-                      _vm._m(2, true)
-                    ])
-                  ])
-                }),
-                0
-              )
+                              },
+                              [_c("i", { staticClass: "bx bx-detail" })]
+                            ),
+                            _vm._v(" "),
+                            _vm._m(3, true)
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              ])
             ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane fade",
+              attrs: { id: "primaryprofile", role: "tabpanel" }
+            },
+            [_c("my-return")],
+            1
           )
         ])
       ]),
@@ -80741,7 +80809,7 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(3),
+                _vm._m(4),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("div", { attrs: { id: "invoice" } }, [
@@ -80831,7 +80899,7 @@ var render = function() {
                               ]),
                               _vm._v(" "),
                               _c("table", [
-                                _vm._m(4, true),
+                                _vm._m(5, true),
                                 _vm._v(" "),
                                 _c(
                                   "tbody",
@@ -81444,6 +81512,64 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      { staticClass: "nav nav-tabs nav-primary", attrs: { role: "tablist" } },
+      [
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: {
+                "data-bs-toggle": "tab",
+                href: "#primaryhome",
+                role: "tab",
+                "aria-selected": "true"
+              }
+            },
+            [
+              _c("div", { staticClass: "d-flex align-items-center" }, [
+                _c("div", { staticClass: "tab-icon" }, [
+                  _c("i", { staticClass: "bx bx-home font-18 me-1" })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "tab-title" }, [_vm._v("Home")])
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item", attrs: { role: "presentation" } }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                "data-bs-toggle": "tab",
+                href: "#primaryprofile",
+                role: "tab",
+                "aria-selected": "false"
+              }
+            },
+            [
+              _c("div", { staticClass: "d-flex align-items-center" }, [
+                _c("div", { staticClass: "tab-icon" }, [
+                  _c("i", { staticClass: "bx bx-user-pin font-18 me-1" })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "tab-title" }, [_vm._v("Profile")])
+              ])
+            ]
+          )
+        ])
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
