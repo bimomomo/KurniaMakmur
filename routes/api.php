@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\API\User\PengumumanController;
+use App\Http\Controllers\API\Setting\MetodeBayarController;
+use App\Http\Controllers\API\Setting\GeneralSettingController;
 use App\Http\Controllers\API\Laporan\laporanTransaksiController;
 use App\Http\Controllers\API\Master\BarangController;
 use App\Http\Controllers\API\Master\BrandController;
@@ -28,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 // Route::middleware('auth:api')->group(function () {
 // });
