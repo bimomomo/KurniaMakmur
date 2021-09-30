@@ -9,7 +9,7 @@
       </button>
     </div>
     <div class="card-body">
-      <table id="example" class="table table-striped table-bordered">
+      <table id="tabelNotes" class="table table-striped table-bordered">
         <thead>
           <tr>
             <th width="1%">
@@ -19,15 +19,16 @@
                 v-model="all_select"
               />
             </th>
-            <th>Nama</th>
-            <th>No.Telp</th>
-            <th>Jabatan</th>
-            <th>Alamat</th>
-            <th>Aksi</th>
+            <th width="1%">No</th>
+            <th>Nama Barang</th>
+            <th>Judul</th>
+            <th>Tanggal</th>
+            <th>Keterangan</th>
+            <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in drivers" :key="index">
+          <tr v-for="(item, index) in data" :key="item.index">
             <td>
               <input
                 type="checkbox"
@@ -35,10 +36,11 @@
                 :value="`${item.uuid}`"
               />
             </td>
-            <td>{{ item.driver }}</td>
-            <td>{{ item.no_hp }}</td>
-            <td>{{ item.jabatan }}</td>
-            <td>{{ item.alamat_driver }}</td>
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.nama }}</td>
+            <td>{{ item.judul }}</td>
+            <td>{{ item.tanggal }}</td>
+            <td>{{ item.keterangan }}</td>
             <td>
               <button
                 class="btn btn-danger btn-sm"
@@ -51,10 +53,10 @@
                 @click="
                   edit(
                     item.uuid,
-                    item.driver,
-                    item.no_hp,
-                    item.jabatan,
-                    item.alamat_driver
+                    item.uuidBarang,
+                    item.judul,
+                    item.tanggal,
+                    item.keterangan
                   )
                 "
               >
@@ -75,10 +77,10 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Pegawai</h5>
+            <h5 class="modal-title" id="exampleModalLabel">My Notes</h5>
             <button
               type="button"
               class="close"
@@ -88,88 +90,68 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form
-            @submit.prevent="simpandata()"
-            @keydown="form.onKeydown($event)"
-          >
-            <div class="modal-body">
-              <div class="row" v-for="(kg, mn) in DataDriver" :key="mn">
-                <div class="col-lg-4">
-                  <label for="form-control">Nama Pegawai</label>
-                  <input
-                    class="form-control"
-                    v-model="kg.driver"
-                    type="text"
-                    placeholder="Nama Pegawai"
-                    :class="{ 'is-invalid': form.errors.has('driver') }"
-                    required
-                  />
-                </div>
-                <div class="col-lg-4">
-                  <label for="form-control">No. Hp Pegawai</label>
-                  <input
-                    class="form-control"
-                    v-model="kg.no_hp"
-                    type="text"
-                    placeholder="Nomor Handphone"
-                    :class="{ 'is-invalid': form.errors.has('no_hp') }"
-                    required
-                  />
-                </div>
-                <div class="col-lg-4">
-                  <label for="form-control">Jabatan Pegawai</label>
-                  <input
-                    class="form-control"
-                    v-model="kg.jabatan"
-                    type="text"
-                    placeholder="Jabatan"
-                    :class="{ 'is-invalid': form.errors.has('jabatan') }"
-                    required
-                  />
-                </div>
-                <div class="col-lg-12">
-                  <label for="form-control">Alamat Pegawai</label>
-                  <textarea
-                    v-model="kg.alamat_driver"
-                    class="form-control"
-                    id=""
-                    cols="30"
-                    rows="10"
-                    placeholder="Alamat Lengkap Pelanggan"
-                    required
-                  ></textarea>
-                </div>
-                <div class="row" id="plus">
-                  <div class="col-md-3">
-                    <span id="span">
-                      <i
-                        class="bx bx-plus"
-                        @click="addpelatihan(mn)"
-                        v-show="mn == DataDriver.length - 1"
-                      ></i>
-                      <i
-                        class="bx bx-trash"
-                        @click="removepelatihan(mn)"
-                        v-show="mn || (!mn && DataDriver.length > 1)"
-                      ></i>
-                    </span>
-                  </div>
-                </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="form-group">
+                <label for="form-control">Nama Barang</label>
+                <multiselect
+                  v-model="form.nama_barang"
+                  label="nama"
+                  track-by="nama"
+                  :options="dataBarang"
+                  :custom-label="labelBarang"
+                  :class="{ 'is-invalid': form.errors.has('nama_barang') }"
+                  required
+                >
+                </multiselect>
+              </div>
+              <div class="form-group">
+                <label for="form-control">Judul</label>
+                <input
+                  class="form-control"
+                  v-model="form.judul"
+                  type="text"
+                  placeholder="Judul"
+                  :class="{ 'is-invalid': form.errors.has('judul') }"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="form-control">Tanggal</label>
+                <input
+                  class="form-control"
+                  v-model="form.tanggal"
+                  type="date"
+                  placeholder="Tanggal"
+                  :class="{ 'is-invalid': form.errors.has('tanggal') }"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="form-control">Keterangan</label>
+                <input
+                  class="form-control"
+                  v-model="form.keterangan"
+                  type="text"
+                  placeholder="Keterangan"
+                  :class="{ 'is-invalid': form.errors.has('keterangan') }"
+                  required
+                />
               </div>
             </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" class="btn btn-primary">
-                Save changes
-              </button>
-            </div>
-          </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary" @click="simpandata">
+              Save changes
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -197,71 +179,64 @@ export default {
   data() {
     //  Save variabel object or array 'ex: users{}'
     return {
-      editmode: false,
-      drivers: {},
-      grades: {},
+      data: {},
+      dataBarang: [],
       all_select: false,
       deleteItems: [],
-      select: "",
-      DataDriver: [
-        {
-          driver: "",
-          no_hp: "",
-          jabatan: "",
-          alamat_driver: "",
-        },
-      ],
-      // tableShow: { showdata: true },
       // Save input for modal form
       form: new Form({
         uuid: "",
-        kt: [],
+        nama_barang: "",
+        judul: "",
+        tanggal: "",
+        keterangan: "",
       }),
     };
   },
   methods: {
+    noUrut(index) {
+      return index;
+    },
     // Load data pada tabel with axios
     loadUsers() {
-      axios.get("api/driver").then((res) => {
-        $("#example").DataTable().destroy();
-        this.drivers = res.data;
+      // axios.get("api/golongan").then(({ data }) => (this.golongans = data));
+      axios.get("api/notes").then((res) => {
+        $("#tabelNotes").DataTable().destroy();
+        this.data = res.data.data;
         setTimeout(function () {
-          $("#example").DataTable();
+          $("#tabelNotes").DataTable();
         }, 1000);
+      });
+    },
+
+    labelBarang({ nama, keterangan }) {
+      return `${nama} | ${keterangan}`;
+    },
+    getDataBarang() {
+      axios.get("api/barang").then((res) => {
+        this.dataBarang = res.data;
       });
     },
 
     // Trigger button modal
     showModal() {
-      this.resetVariable();
+      this.form.reset();
+      this.getDataBarang();
       $("#exampleModal").modal("show");
     },
     closeModal() {
-      this.resetVariable();
       $("#exampleModal").modal("hide");
-    },
-    resetVariable() {
-      this.form.reset();
-      this.DataDriver = [
-        {
-          driver: "",
-          no_hp: "",
-          jabatan: "",
-          alamat_driver: "",
-        },
-      ];
     },
     // CREATE
     simpandata() {
       this.loading = true;
       this.disabled = true;
-      this.form.kt = this.DataDriver;
       if (this.form.uuid == "") {
         this.form
-          .post("api/driver")
+          .post("api/notes")
           .then(() => {
             Fire.$emit("reloadUsers");
-            $("#exampleModal").modal("hide");
+            this.closeModal();
             Swal.fire({ icon: "success", title: "Data Berhasil Tersimpan" });
             this.loading = false;
             this.disabled = false;
@@ -272,10 +247,10 @@ export default {
           });
       } else {
         this.form
-          .put("api/driver/" + this.form.uuid)
+          .put("api/notes/" + this.form.uuid)
           .then(() => {
             Fire.$emit("reloadUsers");
-            $("#exampleModal").modal("hide");
+            this.closeModal();
             Swal.fire({ icon: "success", title: "Data Berhasil Di Update" });
             this.loading = false;
             this.disabled = false;
@@ -286,22 +261,17 @@ export default {
           });
       }
     },
-    hide() {
-      $("#plus").hide();
-    },
     // UPDATE
-    edit(uuid, driver, no_hp, jabatan, alamat_driver) {
+    edit(uuid, uuidBarang, judul, tanggal, keterangan) {
       this.showModal();
-      this.hide();
-      this.DataDriver = [
-        {
-          driver: driver,
-          no_hp: no_hp,
-          jabatan: jabatan,
-          alamat_driver: alamat_driver,
-        },
-      ];
+
       this.form.uuid = uuid;
+      axios.get("api/barang/" + uuidBarang).then((res) => {
+        this.form.nama_barang = res.data;
+      });
+      this.form.judul = judul;
+      this.form.tanggal = tanggal;
+      this.form.keterangan = keterangan;
     },
     // DELETE ONE ITEMS
     deleteUser(uuid) {
@@ -316,10 +286,10 @@ export default {
       }).then((result) => {
         if (result.value) {
           axios
-            .delete(`api/driver/` + uuid)
+            .delete(`api/notes/` + uuid)
             .then(() => {
               Fire.$emit("reloadUsers");
-              Swal.fire("Deleted!", "User deleted successfully", "success");
+              Swal.fire("Deleted!", "Data deleted successfully", "success");
             })
             .catch(() => {
               Swal.fire({
@@ -345,10 +315,10 @@ export default {
       }).then((result) => {
         if (result.value) {
           axios
-            .post(`api/deletedriver/` + this.deleteItems)
+            .post(`api/multiDeleteNotes/` + this.deleteItems)
             .then(() => {
               Fire.$emit("reloadUsers");
-              Swal.fire("Deleted!", "User deleted successfully", "success");
+              Swal.fire("Deleted!", "Data deleted successfully", "success");
               // this.getUser();
               this.deleteItems = [];
               this.all_select == true
@@ -370,24 +340,13 @@ export default {
     select_all_via_check_box() {
       if (this.all_select == false) {
         this.all_select = true;
-        this.drivers.forEach((item) => {
+        this.data.forEach((item) => {
           this.deleteItems.push(item.uuid);
         });
       } else {
         this.all_select = false;
         this.deleteItems = [];
       }
-    },
-    addpelatihan(index) {
-      this.DataDriver.push({
-        driver: "",
-        no_hp: "",
-        jabatan: "",
-        alamat_driver: "",
-      });
-    },
-    removepelatihan(index) {
-      this.DataDriver.splice(index, 1);
     },
   },
 };
