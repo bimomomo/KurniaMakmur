@@ -73,6 +73,13 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
 	Route::get('test/{id}', [SaleController::class, 'test']);
 
+	// Sale Jual
+	Route::apiResources(['sale' => SaleController::class,]);
+	Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
+	Route::post('kirim/{id}', [SaleController::class, 'updatekirim']);
+	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
+	Route::get('test/{id}', [SaleController::class, 'test']);
+
 	// Invoice Jual
 	Route::apiResources(['invoicejual' => InvoiceJualController::class,]);
 	Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
