@@ -67,6 +67,13 @@ Route::middleware('auth:api')->group(function () {
 	// Mutasi stock masuk
 	Route::apiResources(['mutasistockmasuk' => MutasiStockMasukController::class,]);
 
+	// Sale Jual
+	Route::apiResources(['sale' => SaleController::class,]);
+	Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
+	Route::post('kirim/{id}', [SaleController::class, 'updatekirim']);
+	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
+	Route::get('test/{id}', [SaleController::class, 'test']);
+
 	// Invoice Jual
 	Route::apiResources(['invoicejual' => InvoiceJualController::class,]);
 	Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
@@ -91,4 +98,5 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/GetlaporanInvoice', [laporanTransaksiController::class, 'GetlaporanInvoice']);
 	Route::get('/GetLaporanPengiriman', [laporanTransaksiController::class, 'GetLaporanPengiriman']);
 	Route::get('/GetTransaksiPelanggan', [laporanTransaksiController::class, 'GetTransaksiPelanggan']);
+	Route::get('GetDetail/{id}', [laporanTransaksiController::class, 'GetDetail']);
 });
