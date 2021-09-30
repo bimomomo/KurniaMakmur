@@ -14,6 +14,8 @@ use App\Http\Controllers\API\Master\KategoriController;
 use App\Http\Controllers\API\Master\PelangganController;
 use App\Http\Controllers\API\Mutasi\MutasiStockMasukController;
 use App\Http\Controllers\API\Master\SatuanController;
+use App\Http\Controllers\API\Mutasi\MutasiStockKeluarController;
+use App\Http\Controllers\API\Note\myNotesController;
 use App\Http\Controllers\API\Penjualan\InvoiceJualController;
 use App\Http\Controllers\API\Penjualan\SaleController;
 use Illuminate\Http\Request;
@@ -31,7 +33,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 // Route::middleware('auth:api')->group(function () {
 // });
@@ -68,30 +70,22 @@ Route::middleware('auth:api')->group(function () {
 
 	// Mutasi stock masuk
 	Route::apiResources(['mutasistockmasuk' => MutasiStockMasukController::class,]);
-	// Sale Jual
-	Route::apiResources(['sale' => SaleController::class,]);
-	Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
-	Route::post('kirim/{id}', [SaleController::class, 'updatekirim']);
-	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
-	Route::get('test/{id}', [SaleController::class, 'test']);
-
-	// Sale Jual
-	Route::apiResources(['sale' => SaleController::class,]);
-	Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
-	Route::post('kirim/{id}', [SaleController::class, 'updatekirim']);
-	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
-	Route::get('test/{id}', [SaleController::class, 'test']);
 
 	// Invoice Jual
 	Route::apiResources(['invoicejual' => InvoiceJualController::class,]);
 	Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
 	Route::post('/deleteInvoice', [InvoiceJualController::class, 'deleteInvoice']);
-
+	
 	// Sale Jual
 	Route::apiResources(['sale' => SaleController::class,]);
 	Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
 	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
+	Route::get('getAllDataSale', [SaleController::class, 'getAllDataSale']);
 	Route::get('test/{id}', [SaleController::class, 'test']);
+	Route::get('drivers', [SaleController::class, 'drivers']);
+
+	// updatehormatkami
+	Route::put('/updatehormatkami/{id}', [SaleController::class, 'updatehormatkami']);
 
 	// Pelanggan 
 	Route::apiResources(['pelanggan' => PelangganController::class,]);
@@ -107,4 +101,11 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/GetLaporanPengiriman', [laporanTransaksiController::class, 'GetLaporanPengiriman']);
 	Route::get('/GetTransaksiPelanggan', [laporanTransaksiController::class, 'GetTransaksiPelanggan']);
 	Route::get('GetDetail/{id}', [laporanTransaksiController::class, 'GetDetail']);
+
+	// Note
+	Route::apiResources(['notes' => myNotesController::class,]);
+	Route::post('/multiDeleteNotes/{id}', [myNotesController::class, 'deletebanyak']);
+	
+	// Mutasi
+	Route::apiResources(['mutasi-keluar' => MutasiStockKeluarController::class,]);
 });

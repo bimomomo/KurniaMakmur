@@ -34,6 +34,10 @@ class BarangController extends Controller
             "keterangan" => $request->keterangan,
         ]);
     }
+    public function show($id)
+    {
+        return Barang::where('uuid', $id)->first();
+    }
     public function update(Request $request, $id)
     {
         Barang::where("uuid", $id)->update([

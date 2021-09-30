@@ -106,6 +106,9 @@ export default {
           $("#example").DataTable();
         }, 1000);
       });
+      axios.get("api/getAllDataSale").then((res) => {
+        this.laporans = res.data;
+      });
     },
   },
 };
