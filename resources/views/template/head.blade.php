@@ -32,6 +32,7 @@
 
 	<script type='text/javascript'>
 		var CSRF_TOKEN = "{{ csrf_token() }}";
+		var API_TOKEN = "{{ $api_token }}";
 	</script>
 	<title>Kurnia Makmur</title>
 </head>
