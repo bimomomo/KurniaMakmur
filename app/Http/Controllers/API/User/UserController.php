@@ -38,6 +38,7 @@ class UserController extends Controller
 			"uuid" => Str::uuid(),
 			"name" => $request->name,
 			"email" => $request->email,
+			"hak_akses_id" => $request->hak_akses_id,
 			"password" => Hash::make($request->password),
 		]);
 
@@ -74,6 +75,7 @@ class UserController extends Controller
 		$tobeUpdated = [
 			"name" => $request->name,
 			"email" => $request->email,
+			"hak_akses_id" => $request->hak_akses_id,
 		];
 
 		if($request->password){

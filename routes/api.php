@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\User\PengumumanController;
+use App\Http\Controllers\API\User\HakAksesController;
 use App\Http\Controllers\API\Setting\MetodeBayarController;
 use App\Http\Controllers\API\Setting\GeneralSettingController;
 use App\Http\Controllers\API\Laporan\laporanTransaksiController;
@@ -39,6 +40,7 @@ Route::middleware('auth:api')->group(function () {
 	//User
 	Route::apiResources(['user' => UserController::class,]);
 	Route::apiResources(['pengumuman' => PengumumanController::class,]);
+	Route::apiResources(['hakakses' => HakAksesController::class,]);
 	// Setting
 	Route::apiResources(['metodebayar' => MetodeBayarController::class,]);
 	Route::apiResources(['generalsetting' => GeneralSettingController::class,]);

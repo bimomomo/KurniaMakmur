@@ -5,7 +5,7 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
-        <router-view></router-view>
+        <router-view :hak_akses='@json($hak_akses)' :api_token='@json($api_token)'></router-view>
     </div>
 </div>
 <!--end page wrapper -->

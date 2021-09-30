@@ -42,6 +42,10 @@ let routes = [
         path: "/pengumuman",
         component: require("./components/user/pengumuman.vue").default,
 	},
+	{
+        path: "/hakakses",
+        component: require("./components/user/hakakses.vue").default,
+	},
 	//SETTING
 	{
         path: "/metodebayar",
