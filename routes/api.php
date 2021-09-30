@@ -70,6 +70,10 @@ Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
 Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
 Route::get('getAllDataSale', [SaleController::class, 'getAllDataSale']);
 Route::get('test/{id}', [SaleController::class, 'test']);
+Route::get('drivers', [SaleController::class, 'drivers']);
+
+// updatehormatkami
+Route::put('/updatehormatkami/{id}', [SaleController::class, 'updatehormatkami']);
 
 // Pelanggan 
 Route::apiResources(['pelanggan' => PelangganController::class,]);
