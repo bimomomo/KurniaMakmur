@@ -179,6 +179,9 @@
                     </button>
                     <button
                       class="btn btn-warning btn-sm"
+                      v-if="
+                        item.status_bayar != 9 || item.status_pengiriman != 9
+                      "
                       @click="edit(item.nomor_invoice)"
                     >
                       <i class="bx bx-edit"></i>

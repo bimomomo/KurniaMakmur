@@ -61,10 +61,17 @@ class ReturnController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
-        // if (count($request->dataLama)>0) {
-        //     # code...
+        // $dataLama = [];
+        // if ($request->dataLama) {
+        //     foreach ($request->dataLama as $key => $value) {
+        //         // $x = $value->jumlah_satuan_dijual - $value->jumlah_satuan_dijual_lama;
+        //         // if ($x > 0) {
+        //         //     $value->jumlah_satuan_dijual_hasil = $x;
+        //         // }
+        //         $value->aaa = 'aaa';
+        //     }
         // }
+        // return $request->all();
         $validator = $this->validasi($request);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);

@@ -360,7 +360,7 @@ export default {
     cekDataReturn() {
       if (this.dataReturn) {
         this.form.dataLama = this.dataReturn;
-        this.uuidDriver = this.dataReturn[0].uuidDriver;
+        this.uuidDriver = this.dataReturn[0].driver_id;
         this.uuidPelanggan = this.dataReturn[0].pelanggan_id;
         this.form.uuidBarang = this.dataReturn[0].uuidBarang;
         this.form.uuidSale = this.dataReturn[0].uuidSale;
