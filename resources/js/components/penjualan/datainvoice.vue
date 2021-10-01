@@ -191,7 +191,13 @@
                     </button>
                     <button
                       class="btn btn-primary btn-sm"
-                      @click="suratjalan(item.nomor_invoice)"
+                      @click="
+                        suratjalan(
+                          item.nomor_invoice,
+                          item.driver_id,
+                          item.nama
+                        )
+                      "
                     >
                       <i class="bx bx-printer"></i>
                     </button>
