@@ -440,7 +440,7 @@ export default {
       this.disabled = true;
       if (this.return) {
         this.form
-          .post("api/salexxx")
+          .post("api/data-return")
           .then(() => {
             Fire.$emit("reloadUsers");
             // $("#exampleModal").modal("hide");
@@ -449,7 +449,7 @@ export default {
               title: "Data Berhasil Tersimpan",
             }).then(function () {
               // Redirect the user
-              window.location.href = "/data-invoice";
+              window.location.href = "/data-invoice#primaryprofile";
             });
           })
           .catch(() => {

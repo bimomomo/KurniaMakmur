@@ -6792,7 +6792,7 @@ Vue.component("multiselect", (vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defau
       this.disabled = true;
 
       if (this["return"]) {
-        this.form.post("api/salexxx").then(function () {
+        this.form.post("api/data-return").then(function () {
           Fire.$emit("reloadUsers"); // $("#exampleModal").modal("hide");
 
           Swal.fire({
@@ -6800,7 +6800,7 @@ Vue.component("multiselect", (vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defau
             title: "Data Berhasil Tersimpan"
           }).then(function () {
             // Redirect the user
-            window.location.href = "/data-invoice";
+            window.location.href = "/data-invoice#primaryprofile";
           });
         })["catch"](function () {
           _this4.loading = false;
@@ -6849,6 +6849,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var datatables_net_dt_css_jquery_dataTables_min_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! datatables.net-dt/css/jquery.dataTables.min.css */ "./node_modules/datatables.net-dt/css/jquery.dataTables.min.css");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_4__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7867,6 +7878,171 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // Import boostrap and jquery
 //Bootstrap and jQuery libraries
 
@@ -7897,6 +8073,24 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
 
     //  Save variabel object or array 'ex: users{}'
     return {
+      dataReturn: [],
+      all_select: false,
+      deleteItems: [],
+      // Save input for modal form
+      formDataReturn: new Form({
+        uuid: "",
+        tgl_sale: "",
+        nomor_invoice: "",
+        nomor_po: "",
+        nomor_surat_jalan: "",
+        faktur_pajak: "",
+        nama: "",
+        gudang: "",
+        total_satuan_jual: "",
+        harga_akhir: "",
+        namaBarang: "",
+        satuan_jual: ""
+      }),
       hasildiskon: "",
       nilaidiskon: "",
       hasilppn: "",
@@ -7924,6 +8118,64 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
     };
   },
   methods: {
+    cancelOrder: function cancelOrder(uuid) {
+      Swal.fire({
+        title: "Batal Pesanan?",
+        // text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oke!"
+      }).then(function (result) {
+        if (result.value) {
+          axios.post("api/cancel-order/" + uuid).then(function () {
+            Fire.$emit("reloadUsers");
+            Swal.fire("Batal!", "Batal Pesanan Berhasil", "success");
+          })["catch"](function () {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Ada Yang Salah!" // footer: "<a href>Why do I have this issue?</a>",
+
+            });
+          });
+        }
+      });
+    },
+    noUrut: function noUrut(index) {
+      return index;
+    },
+    nameWithLang: function nameWithLang(_ref) {
+      var namaPelanggan = _ref.namaPelanggan,
+          nama = _ref.nama;
+      return "".concat(namaPelanggan, " | [").concat(nama, "]");
+    },
+    getDataReturn: function getDataReturn() {// axios.get("api/getAllDataSale").then((res) => {
+      //   this.dataReturn = res.data.data;
+      // });
+    },
+    showModalDataReturn: function showModalDataReturn() {
+      this.getDataReturn();
+      jquery__WEBPACK_IMPORTED_MODULE_4___default()("#modalDataReturn").modal("show");
+    },
+    closeModalDataReturn: function closeModalDataReturn() {
+      jquery__WEBPACK_IMPORTED_MODULE_4___default()("#modalDataReturn").modal("show");
+    },
+    detailDataReturn: function detailDataReturn(tgl_sale, nomor_invoice, nomor_po, nomor_surat_jalan, faktur_pajak, nama, gudang, total_satuan_jual, harga_akhir, namaBarang, satuan_jual) {
+      this.showModal();
+      this.form.tgl_sale = tgl_sale;
+      this.form.nomor_invoice = nomor_invoice;
+      this.form.nomor_po = nomor_po;
+      this.form.nomor_surat_jalan = nomor_surat_jalan;
+      this.form.faktur_pajak = faktur_pajak;
+      this.form.nama = nama;
+      this.form.gudang = gudang;
+      this.form.total_satuan_jual = total_satuan_jual;
+      this.form.harga_akhir = harga_akhir;
+      this.form.namaBarang = namaBarang;
+      this.form.satuan_jual = satuan_jual;
+    },
     // Load data pada tabel with axios
     loadUsers: function loadUsers() {
       var _this2 = this;
@@ -7933,6 +8185,13 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
         _this2.sales = res.data;
         setTimeout(function () {
           jquery__WEBPACK_IMPORTED_MODULE_4___default()("#example").DataTable();
+        }, 1000);
+      });
+      axios.get("api/data-return").then(function (res) {
+        jquery__WEBPACK_IMPORTED_MODULE_4___default()("#tabelReturn").DataTable().destroy();
+        _this2.dataReturn = res.data;
+        setTimeout(function () {
+          jquery__WEBPACK_IMPORTED_MODULE_4___default()("#tabelReturn").DataTable();
         }, 1000);
       });
     },
@@ -8022,12 +8281,12 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
       var _this4 = this;
 
       this.showmodal();
-      axios.get("api/detail/" + nomor_invoice).then(function (_ref) {
-        var data = _ref.data;
+      axios.get("api/detail/" + nomor_invoice).then(function (_ref2) {
+        var data = _ref2.data;
         _this4.gols = data;
       });
-      axios.get("api/test/" + nomor_invoice).then(function (_ref2) {
-        var data = _ref2.data;
+      axios.get("api/test/" + nomor_invoice).then(function (_ref3) {
+        var data = _ref3.data;
         _this4.details = data;
 
         _this4.hitungdiskon();
@@ -8048,12 +8307,12 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
       var _this5 = this;
 
       jquery__WEBPACK_IMPORTED_MODULE_4___default()("#openmodal").modal("show");
-      axios.get("api/detail/" + nomor_invoice).then(function (_ref3) {
-        var data = _ref3.data;
+      axios.get("api/detail/" + nomor_invoice).then(function (_ref4) {
+        var data = _ref4.data;
         _this5.gols = data;
       });
-      axios.get("api/test/" + nomor_invoice).then(function (_ref4) {
-        var data = _ref4.data;
+      axios.get("api/test/" + nomor_invoice).then(function (_ref5) {
+        var data = _ref5.data;
         _this5.details = data;
       });
     },
@@ -82703,7 +82962,66 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
-      _vm._m(0),
+      _c(
+        "table",
+        {
+          staticClass: "table table-striped table-bordered",
+          attrs: { id: "tabelReturn" }
+        },
+        [
+          _c(
+            "thead",
+            _vm._l(_vm.dataReturn, function(datas) {
+              return _c("tr", { key: datas.index }, [
+                _c("th", { attrs: { width: "1%" } }, [_vm._v("No")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Tanggal Stok Keluar")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Nomor Invoice")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Nomor PO")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Nomor Surat Jalan")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Nama Barang dan Gudang")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Total Satuan Jual")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Opsi")])
+              ])
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c("tbody", [
+            _c("tr", [
+              _c("td", [_vm._v(_vm._s(_vm.index + 1))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(_vm.datas.tgl_sale))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(_vm.datas.nomor_invoice))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(_vm.datas.nomor_po))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(_vm.datas.nomor_surat_jalan))]),
+              _vm._v(" "),
+              _c("td", [
+                _vm._v(_vm._s(_vm.datas.nama + " - " + _vm.datas.gudang))
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _vm._v(
+                  _vm._s(
+                    _vm.datas.total_satuan_jual + " - " + _vm.datas.satuan_jual
+                  )
+                )
+              ]),
+              _vm._v(" "),
+              _c("td", [_vm._v("ini Aksi")])
+            ])
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -82721,7 +83039,7 @@ var render = function() {
         [
           _c("div", { staticClass: "modal-dialog modal-xl" }, [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
                 _c("div", { staticClass: "row" }, [
@@ -83005,7 +83323,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(2)
+              _vm._m(1)
             ])
           ])
         ]
@@ -83014,41 +83332,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "table",
-      {
-        staticClass: "table table-striped table-bordered",
-        attrs: { id: "tabelReturn" }
-      },
-      [
-        _c("thead", [
-          _c("tr", [
-            _c("th", { attrs: { width: "1%" } }, [_vm._v("No")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Tanggal Stok Keluar")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Nomor Invoice")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Nomor PO")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Nomor Surat Jalan")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Nama Barang dan Gudang")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Total Satuan Jual")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Opsi")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("tbody")
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -83287,7 +83570,20 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._m(2, true),
+                            _c(
+                              "button",
+                              { staticClass: "btn btn-danger btn-sm" },
+                              [
+                                _c("i", {
+                                  staticClass: "bx bx-x",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.cancelOrder(item.uuid)
+                                    }
+                                  }
+                                })
+                              ]
+                            ),
                             _vm._v(" "),
                             item.status_bayar == 0 ||
                             item.status_pengiriman == 0
@@ -83347,8 +83643,395 @@ var render = function() {
               staticClass: "tab-pane fade",
               attrs: { id: "primaryprofile", role: "tabpanel" }
             },
-            [_c("my-return")],
-            1
+            [
+              _c(
+                "table",
+                {
+                  staticClass: "table table-striped table-bordered",
+                  attrs: { id: "tabelReturn" }
+                },
+                [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.dataReturn, function(datas) {
+                      return _c("tr", { key: datas.index }, [
+                        _c("td", [_vm._v(_vm._s(_vm.noUrut(_vm.index)))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(datas.tgl_sale))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(datas.nomor_invoice))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(datas.nomor_po))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(datas.nomor_surat_jalan))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(datas.nama + " - " + datas.gudang))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            "\n                " +
+                              _vm._s(
+                                datas.total_satuan_jual +
+                                  " - " +
+                                  datas.satuan_jual
+                              ) +
+                              "\n              "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info btn-sm",
+                              on: {
+                                click: function($event) {
+                                  return _vm.detail(datas.nomor_invoice)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "bx bx-detail" })]
+                          )
+                        ])
+                      ])
+                    }),
+                    0
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "modal fade",
+                  attrs: {
+                    id: "modalDataReturn",
+                    "data-backdrop": "static",
+                    "data-keyboard": "false",
+                    tabindex: "-1",
+                    "aria-labelledby": "staticBackdropLabel",
+                    "aria-hidden": "true"
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-dialog modal-xl" }, [
+                    _c("div", { staticClass: "modal-content" }, [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-body" }, [
+                        _c("div", { staticClass: "row" }, [
+                          _c(
+                            "div",
+                            { staticClass: "form-group col-md-6" },
+                            [
+                              _c("label", [_vm._v("Data Invoice")]),
+                              _vm._v(" "),
+                              _c("multiselect", {
+                                class: {
+                                  "is-invalid": _vm.form.errors.has("return")
+                                },
+                                attrs: {
+                                  label: "namaPelanggan",
+                                  "track-by": "namaPelanggan",
+                                  "custom-label": _vm.nameWithLang,
+                                  options: _vm.dataReturn
+                                },
+                                model: {
+                                  value: _vm.form.idsale,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "idsale", $$v)
+                                  },
+                                  expression: "form.idsale"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group col-md-3" }, [
+                            _c("label", [_vm._v("Jumlah Satuan Jual")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.jumlah_satuan_jual,
+                                  expression: "form.jumlah_satuan_jual"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              domProps: { value: _vm.form.jumlah_satuan_jual },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "jumlah_satuan_jual",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group col-md-3" }, [
+                            _c("label", [_vm._v("Jumlah Satuan Isi")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.jumlah_satuan_isi,
+                                  expression: "form.jumlah_satuan_isi"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              domProps: { value: _vm.form.jumlah_satuan_isi },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "jumlah_satuan_isi",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "form-group col-md-3" }, [
+                            _c("label", [_vm._v("No Invoice")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.no_invoice,
+                                  expression: "form.no_invoice"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { readonly: "" },
+                              domProps: { value: _vm.form.no_invoice },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "no_invoice",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group col-md-3" }, [
+                            _c("label", [_vm._v("No Surat Jalan")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.no_surat_jalan,
+                                  expression: "form.no_surat_jalan"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { readonly: "" },
+                              domProps: { value: _vm.form.no_surat_jalan },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "no_surat_jalan",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group col-md-3" }, [
+                            _c("label", [_vm._v("Nama Driver")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.nama_driver,
+                                  expression: "form.nama_driver"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { readonly: "" },
+                              domProps: { value: _vm.form.nama_driver },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "nama_driver",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group col-md-3" }, [
+                            _c("label", [_vm._v("Nomer HP Driver no_hp")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.no_hp_driver,
+                                  expression: "form.no_hp_driver"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { readonly: "" },
+                              domProps: { value: _vm.form.no_hp_driver },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "no_hp_driver",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "form-group col-md-3" }, [
+                            _c("label", [_vm._v("Nama Barang nama")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.nama_barang,
+                                  expression: "form.nama_barang"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { readonly: "" },
+                              domProps: { value: _vm.form.nama_barang },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "nama_barang",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group col-md-3" }, [
+                            _c("label", [_vm._v("Gudang")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.gudang,
+                                  expression: "form.gudang"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { readonly: "" },
+                              domProps: { value: _vm.form.gudang },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "gudang",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group col-md-3" }, [
+                            _c("label", [_vm._v("Total")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.total,
+                                  expression: "form.total"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { readonly: "" },
+                              domProps: { value: _vm.form.total },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "total",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(4)
+                    ])
+                  ])
+                ]
+              )
+            ]
           )
         ])
       ]),
@@ -83374,7 +84057,7 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(3),
+                _vm._m(5),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("div", { staticClass: "row mb-2" }, [
@@ -83770,7 +84453,7 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(4),
+                _vm._m(6),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("div", { attrs: { id: "invoice" } }, [
@@ -83860,7 +84543,7 @@ var render = function() {
                               ]),
                               _vm._v(" "),
                               _c("table", [
-                                _vm._m(5, true),
+                                _vm._m(7, true),
                                 _vm._v(" "),
                                 _c(
                                   "tbody",
@@ -84095,7 +84778,7 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "modal-content" }, [
-                _vm._m(6),
+                _vm._m(8),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-body" }, [
                   _c("div", { attrs: { id: "invoice" } }, [
@@ -84176,7 +84859,7 @@ var render = function() {
                                 "table table-bordered table-responsive"
                             },
                             [
-                              _vm._m(7, true),
+                              _vm._m(9, true),
                               _vm._v(" "),
                               _c(
                                 "tbody",
@@ -84268,7 +84951,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(8)
+                _vm._m(10)
               ])
             ]
           )
@@ -84766,8 +85449,70 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn btn-danger btn-sm" }, [
-      _c("i", { staticClass: "bx bx-x" })
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { width: "1%" } }, [_vm._v("No")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tanggal Stok Keluar")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nomor Invoice")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nomor PO")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nomor Surat Jalan")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nama Barang dan Gudang")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total Satuan Jual")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Opsi")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "staticBackdropLabel" } },
+        [_vm._v("\n                  Data Return\n                ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("\n                  Close\n                ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("\n                  Understood\n                ")]
+      )
     ])
   },
   function() {

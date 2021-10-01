@@ -50,7 +50,7 @@ class PelangganController extends Controller
     }
     public function show($id)
     {
-        return Pelanggan::where('uuid', $id)->get();
+        return Pelanggan::where('uuid', $id)->first();
     }
     public function destroy($id)
     {

@@ -8,7 +8,7 @@
     <div class="card-body">
       <table id="tabelReturn" class="table table-striped table-bordered">
         <thead>
-          <tr>
+          <tr v-for="datas in dataReturn" :key="datas.index">
             <th width="1%">No</th>
             <th>Tanggal Stok Keluar</th>
             <th>Nomor Invoice</th>
@@ -19,7 +19,18 @@
             <th>Opsi</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <tr>
+            <td>{{ index + 1 }}</td>
+            <td>{{ datas.tgl_sale }}</td>
+            <td>{{ datas.nomor_invoice }}</td>
+            <td>{{ datas.nomor_po }}</td>
+            <td>{{ datas.nomor_surat_jalan }}</td>
+            <td>{{ datas.nama + " - " + datas.gudang }}</td>
+            <td>{{ datas.total_satuan_jual + " - " + datas.satuan_jual }}</td>
+            <td>ini Aksi</td>
+          </tr>
+        </tbody>
       </table>
 
       <!-- Modal -->

@@ -53,7 +53,7 @@ class DriverController extends Controller
     }
     public function show($id)
     {
-        return Driver::where('uuid', $id)->get();
+        return Driver::where('uuid', $id)->first();
     }
     public function destroy($id)
     {

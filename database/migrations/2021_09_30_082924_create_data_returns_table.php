@@ -28,6 +28,7 @@ class CreateDataReturnsTable extends Migration
             $table->double('ppn');
             $table->date('tgl_sale');
             $table->double('total');
+            $table->uuid('uuidSale');
             $table->softDeletes();
             $table->timestamps();
         });
