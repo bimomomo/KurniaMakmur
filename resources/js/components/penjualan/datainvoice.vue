@@ -548,7 +548,7 @@
                 <div>
                   <main>
                     <div v-for="(item, index) in details" :key="index">
-                      <div class="row contacts">
+                      <!-- <div class="row contacts">
                         <div class="col invoice-to">
                           <div class="text-gray-light">Dari</div>
                           <h3 class="to">KurniaMakmur</h3>
@@ -571,36 +571,58 @@
                             {{ item.alamat }}
                           </div>
                         </div>
+                      </div> -->
+                      <div class="row contacts mb-4">
+                        <div class="col-lg-8">
+                          <div class="text-gray-light">Dari</div>
+                          <h2 class="font-weight-bold">KurniaMakmur</h2>
+                          <div class="address">
+                            <div>455 Foggy Heights, AZ 85004, US</div>
+                            <div>(123) 456-789</div>
+                            <div>company@example.com</div>
+                            <div>No. Invoice : {{ item.nomor_invoice }}</div>
+                            <div>
+                              No. Faktur Pajak : {{ item.faktur_pajak }}
+                            </div>
+                            <div>No. PO : {{ item.nomor_po }}</div>
+                            <div>Jatuh Tempo: {{ item.jatuh_tempo }}</div>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="text-gray-light">Kepada</div>
+                          <h2 class="font-weight-bold">{{ item.nama }}</h2>
+                          <div class="address">
+                            {{ item.alamat }}
+                          </div>
+                        </div>
                       </div>
                       <table>
                         <thead>
                           <tr>
-                            <th>#</th>
-                            <th class="text-left">SATUAN</th>
-                            <th class="text-right">QTY</th>
-                            <th class="text-right">TOTAL QTY</th>
-                            <th class="text-right">PRODUK</th>
-                            <th class="text-right">HARGA/ITEM</th>
-                            <th class="text-right">TOTAL HARGA</th>
+                            <th>SATUAN</th>
+                            <th>QTY</th>
+                            <th>TOTAL QTY</th>
+                            <th>PRODUK</th>
+                            <th>HARGA/ITEM</th>
+                            <th>TOTAL HARGA</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr v-for="(items, index) in gols" :key="index">
-                            <td class="no">{{ index + 1 }}</td>
-                            <td class="text-left">
+                            <td>
                               {{ items.jumlah_satuan_isi }}
                               {{ items.satuan_isi }}
                             </td>
-                            <td class="unit">
+                            <td>
                               {{ items.jumlah_satuan_dijual }}
                               {{ items.satuan_isi }}
                             </td>
-                            <td class="qty">
+                            <td>
                               {{ items.total_satuan_jual }}
                               {{ items.satuan_jual }}
                             </td>
-                            <td class="total">{{ items.produk }}</td>
-                            <td class="total">
+                            <td>{{ items.produk }}</td>
+                            <td>
                               {{
                                 new Intl.NumberFormat("id-ID", {
                                   style: "currency",
@@ -608,7 +630,7 @@
                                 }).format(items.harga * 1000)
                               }}
                             </td>
-                            <td class="total">
+                            <td>
                               {{
                                 new Intl.NumberFormat("id-ID", {
                                   style: "currency",
@@ -621,7 +643,7 @@
                         <tfoot>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4">SUBTOTAL</td>
+                            <td colspan="3">SUBTOTAL</td>
                             <td>
                               {{
                                 new Intl.NumberFormat("id-ID", {
@@ -633,19 +655,19 @@
                           </tr>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4">DISKON ({{ item.diskon }})%</td>
+                            <td colspan="3">DISKON ({{ item.diskon }})%</td>
                             <td>
                               {{ hasildiskon }}
                             </td>
                           </tr>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4">PPN ({{ item.ppn }})%</td>
+                            <td colspan="3">PPN ({{ item.ppn }})%</td>
                             <td>{{ hasilppn }}</td>
                           </tr>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4">BIAYA KIRIM</td>
+                            <td colspan="3">BIAYA KIRIM</td>
                             <td>
                               {{
                                 new Intl.NumberFormat("id-ID", {
@@ -657,7 +679,7 @@
                           </tr>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4" class="text-dark">TOTAL</td>
+                            <td colspan="3" class="text-dark">TOTAL</td>
                             <td class="text-dark">{{ total }}</td>
                           </tr>
                         </tfoot>
@@ -702,7 +724,7 @@
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
+            <h5 class="modal-title">{{ this.text }}</h5>
             <button
               type="button"
               class="close"
@@ -731,7 +753,7 @@
                       </div>
                     </div>
                     <div class="col invoice-details">
-                      <div class="text-gray-light text-center">Kepada</div>
+                      <div class="text-gray-light">Kepada</div>
                       <h3 class="to">{{ item.nama }}</h3>
                       <div class="address">
                         {{ item.alamat }}
@@ -765,19 +787,42 @@
                   </table>
 
                   <div class="row mt-3">
-                    <div class="col invoice-to">
+                    <div class="col-lg-6">
                       <div class="text-gray-light">Tanda Terima</div>
                       <br />
                       <div class="font-weight-bold">
                         {{ item.nama }}
                       </div>
                     </div>
-                    <div class="col invoice-details">
+                    <div class="col-lg-4">
                       <div class="text-gray-light text-center">Hormat Kami</div>
                       <br />
-                      <div class="font-weight-bold text-center">
-                        {{ item.driver }}
-                      </div>
+                      <multiselect
+                        v-model="form.driver"
+                        label="driver"
+                        track-by="driver"
+                        :options="drivers"
+                        :searchable="true"
+                        :close-on-select="false"
+                        :show-labels="true"
+                        :preselect-first="true"
+                        :preserve-search="true"
+                        :class="{ 'is-invalid': form.errors.has('driver') }"
+                      >
+                      </multiselect>
+                    </div>
+                    <div class="col-lg-2">
+                      <label for="form-control"></label>
+                      <br />
+                      <br />
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-sm"
+                        @click="updatehormatkami"
+                      >
+                        <i class="bx bx-save"></i>
+                        Save
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -788,11 +833,11 @@
             <button
               type="button"
               class="btn btn-secondary"
-              data-dismiss="modal"
+              v-on:click="cetaksuratjalan"
             >
-              Close
+              <i class="bx bx-printer"></i>
+              Print
             </button>
-            <button type="button" class="btn btn-primary">Save</button>
           </div>
         </div>
       </div>
@@ -815,7 +860,7 @@
           pdf-content-width="1100px"
           @hasStartedGeneration="hasStartedGeneration()"
           @hasGenerated="hasGenerated($event)"
-          ref="html2Pdf"
+          ref="html2Pdfi"
         >
           <section slot="pdf-content">
             <div id="invoice">
@@ -823,10 +868,10 @@
                 <div>
                   <main>
                     <div v-for="(item, index) in details" :key="index">
-                      <div class="row contacts" style="font-size: small">
-                        <div class="col invoice-to">
+                      <div class="row mb-4" style="font-size: small">
+                        <div class="col-lg-8">
                           <div class="text-gray-light">Dari</div>
-                          <h2 class="to">KurniaMakmur</h2>
+                          <h2 class="font-weight-bold">KurniaMakmur</h2>
                           <div class="address">
                             <div>455 Foggy Heights, AZ 85004, US</div>
                             <div>(123) 456-789</div>
@@ -839,9 +884,9 @@
                             <div>Jatuh Tempo: {{ item.jatuh_tempo }}</div>
                           </div>
                         </div>
-                        <div class="col invoice-details">
-                          <div class="text-gray-light text-center">Kepada</div>
-                          <h2 class="to">{{ item.nama }}</h2>
+                        <div class="col-lg-4">
+                          <div class="text-gray-light">Kepada</div>
+                          <h2 class="font-weight-bold">{{ item.nama }}</h2>
                           <div class="address">
                             {{ item.alamat }}
                           </div>
@@ -850,32 +895,30 @@
                       <table style="font-size: x-small">
                         <thead>
                           <tr>
-                            <th>#</th>
-                            <th class="text-left">SATUAN</th>
-                            <th class="text-right">QTY</th>
-                            <th class="text-right">TOTAL QTY</th>
-                            <th class="text-right">PRODUK</th>
-                            <th class="text-right">HARGA/ITEM</th>
-                            <th class="text-right">TOTAL HARGA</th>
+                            <th>SATUAN</th>
+                            <th>QTY</th>
+                            <th>TOTAL QTY</th>
+                            <th>PRODUK</th>
+                            <th>HARGA/ITEM</th>
+                            <th>TOTAL HARGA</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr v-for="(items, index) in gols" :key="index">
-                            <td class="no">{{ index + 1 }}</td>
-                            <td class="text-left">
+                            <td>
                               {{ items.jumlah_satuan_isi }}
                               {{ items.satuan_isi }}
                             </td>
-                            <td class="unit">
+                            <td>
                               {{ items.jumlah_satuan_dijual }}
                               {{ items.satuan_isi }}
                             </td>
-                            <td class="qty">
+                            <td>
                               {{ items.total_satuan_jual }}
                               {{ items.satuan_jual }}
                             </td>
-                            <td class="total">{{ items.produk }}</td>
-                            <td class="total">
+                            <td>{{ items.produk }}</td>
+                            <td>
                               {{
                                 new Intl.NumberFormat("id-ID", {
                                   style: "currency",
@@ -883,7 +926,7 @@
                                 }).format(items.harga * 1000)
                               }}
                             </td>
-                            <td class="total">
+                            <td>
                               {{
                                 new Intl.NumberFormat("id-ID", {
                                   style: "currency",
@@ -896,7 +939,7 @@
                         <tfoot>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4">SUBTOTAL</td>
+                            <td colspan="3">SUBTOTAL</td>
                             <td>
                               {{
                                 new Intl.NumberFormat("id-ID", {
@@ -908,19 +951,19 @@
                           </tr>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4">DISKON ({{ item.diskon }})%</td>
+                            <td colspan="3">DISKON ({{ item.diskon }})%</td>
                             <td>
                               {{ hasildiskon }}
                             </td>
                           </tr>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4">PPN ({{ item.ppn }})%</td>
+                            <td colspan="3">PPN ({{ item.ppn }})%</td>
                             <td>{{ hasilppn }}</td>
                           </tr>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4">BIAYA KIRIM</td>
+                            <td colspan="3">BIAYA KIRIM</td>
                             <td>
                               {{
                                 new Intl.NumberFormat("id-ID", {
@@ -932,7 +975,7 @@
                           </tr>
                           <tr>
                             <td colspan="2"></td>
-                            <td colspan="4" class="text-dark">TOTAL</td>
+                            <td colspan="3" class="text-dark">TOTAL</td>
                             <td class="text-dark">{{ total }}</td>
                           </tr>
                         </tfoot>
@@ -946,6 +989,103 @@
                   </main>
                 </div>
               </div>
+            </div>
+          </section>
+        </vue-html2pdf>
+      </div>
+    </template>
+
+    <!-- print surat jalan -->
+    <template>
+      <div>
+        <vue-html2pdf
+          :show-layout="false"
+          :enable-download="true"
+          :float-layout="true"
+          :preview-modal="true"
+          :paginate-elements-by-height="1100"
+          filename="Surat Jalan"
+          :pdf-quality="2"
+          :manual-pagination="false"
+          pdf-format="a4"
+          pdf-orientation="landscape"
+          pdf-content-width="1100px"
+          @hasStartedGeneration="hasStartedGeneration()"
+          @hasGenerated="hasGenerated($event)"
+          ref="html2Pdf"
+        >
+          <section slot="pdf-content">
+            <div class="invoice overflow-auto">
+              <main>
+                <div v-for="(item, index) in details" :key="index">
+                  <div class="row mb-4">
+                    <div class="col-lg-8">
+                      <div class="text-gray-light">Dari</div>
+                      <h2 class="font-weight-bold">KurniaMakmur</h2>
+                      <div class="address">
+                        <div>455 Foggy Heights, AZ 85004, US</div>
+                        <div>(123) 456-789</div>
+                        <div>company@example.com</div>
+                        <div>No. Invoice : {{ item.nomor_invoice }}</div>
+                        <div>No. Faktur Pajak : {{ item.faktur_pajak }}</div>
+                        <div>No. PO : {{ item.nomor_po }}</div>
+                        <div>Jatuh Tempo: {{ item.jatuh_tempo }}</div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="text-gray-light">Kepada</div>
+                      <h2 class="font-weight-bold">{{ item.nama }}</h2>
+                      <div class="address">
+                        {{ item.alamat }}
+                      </div>
+                    </div>
+                  </div>
+                  <table class="table table-bordered">
+                    <tr>
+                      <th width="5%" class="text-center">SATUAN</th>
+                      <th width="10%" class="text-center">QTY</th>
+                      <th width="11%" class="text-center">TOTAL QTY</th>
+                      <th class="text-center">PRODUK</th>
+                    </tr>
+                    <tbody>
+                      <tr v-for="(items, index) in gols" :key="index">
+                        <td class="text-center">
+                          {{ items.jumlah_satuan_isi }}
+                          {{ items.satuan_isi }}
+                        </td>
+                        <td class="text-center">
+                          {{ items.jumlah_satuan_dijual }}
+                          {{ items.satuan_isi }}
+                        </td>
+                        <td class="text-center">
+                          {{ items.total_satuan_jual }}
+                          {{ items.satuan_jual }}
+                        </td>
+                        <td class="text-center">{{ items.produk }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="row mt-3">
+                    <div class="col-lg-6 text-left">
+                      <div class="text-gray-light">Tanda Terima</div>
+                      <br />
+                      <br />
+                      <div class="font-weight-bold">
+                        {{ item.nama }}
+                      </div>
+                    </div>
+                    <div class="col-lg-6 text-right">
+                      <div class="text-gray-light">Hormat Kami</div>
+                      <br />
+                      <br />
+                      <div class="font-weight-bold">
+                        {{ item.driver }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </main>
             </div>
           </section>
         </vue-html2pdf>
@@ -1008,8 +1148,13 @@ export default {
       details: {},
       gols: {},
       dataDetail: [],
+      drivers: [],
+      driver_id: "",
+      text: "Print Surat Jalan",
+      PT: "",
       form: new Form({
         driver: "",
+        nomor_invoice: "",
         uuidInvJual: "",
         uuidSale: "",
         uuidBarang: "",
@@ -1257,21 +1402,41 @@ export default {
       $("#modelId").modal("hide");
     },
     printinvoice() {
+      this.$refs.html2Pdfi.generatePdf();
+    },
+    cetaksuratjalan: function (event) {
+      this.printsuratjalan(event);
+      $("#openmodal").modal("hide");
+    },
+    printsuratjalan() {
       this.$refs.html2Pdf.generatePdf();
     },
 
-    suratjalan(nomor_invoice) {
+    suratjalan(nomor_invoice, driver_id, nama) {
       $("#openmodal").modal("show");
+      this.text;
+      this.PT = nama;
+      this.form.nomor_invoice = nomor_invoice;
+      this.driver_id = driver_id;
       axios.get("api/detail/" + nomor_invoice).then(({ data }) => {
         this.gols = data;
       });
       axios.get("api/test/" + nomor_invoice).then(({ data }) => {
         this.details = data;
       });
-    },
 
-    edityuk(item) {
-      console.log((this.form.driver = item.driver));
+      axios
+        .get("api/drivers", {
+          params: { driver_id: this.driver_id },
+        })
+        .then((res) => {
+          this.drivers = res.data;
+          this.form.driver = res.data;
+        });
+      axios.get("api/driver").then((res) => {
+        this.drivers = res.data;
+        // this.form.driver = res.data;
+      });
     },
     hitungdiskon() {
       var a = this.details;
@@ -1334,6 +1499,22 @@ export default {
         })
         .catch(() => {
           Swal.fire({ icon: "error", title: "Data Gagal Tersimpan" });
+          this.loading = false;
+          this.disabled = false;
+        });
+    },
+
+    updatehormatkami() {
+      this.form
+        .put("api/updatehormatkami/" + this.form.nomor_invoice)
+        .then(() => {
+          Fire.$emit("reloadUsers");
+          // $("#exampleModal").modal("hide");
+          Swal.fire({ icon: "success", title: "Data Berhasil Di Update" });
+          this.loading = false;
+          this.disabled = false;
+        })
+        .catch(() => {
           this.loading = false;
           this.disabled = false;
         });

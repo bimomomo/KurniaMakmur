@@ -44,22 +44,29 @@
 						</div>
 						<div class="modal-body">
 							<div class="row">
-								<div class="col-lg-3">
+								<div class="col-lg-6">
 									<label for="txtIName">Name</label>
 									<input class="form-control" autocomplete="off" type="text" v-model="form.name" id="txtIName">
 								</div>
-								<div class="col-lg-3">
+								<div class="col-lg-6">
 									<label for="txtIEmail">Email</label>
 									<input class="form-control" autocomplete="off" type="email" v-model="form.email" id="txtIEmail">
+								</div>
+								<div class="col-lg-6">
+									<label for="txtIPassword">Password</label>
+									<input class="form-control" autocomplete="off" type="password" v-model="form.password" id="txtIPassword">
+								</div>
+								<div class="col-lg-6">
+									<label for="txtIHakAkses">Hak Akses</label>
+									<select class="form-control" v-model="form.hak_akses_id" id="txtIHakAkses" required>
+										<option value="" selected disabled>Hak Akses</option>
+										<option v-for="h in hakakses" :key="h.uuid" :value="h.uuid">{{h.nama}}</option>
+									</select>
 								</div>
 								<div class="col-lg-3">
 									<label for="txtIAvatar">Avatar</label>
 									<input accept="image/*" class="form-control" autocomplete="off" type="file" @change="avatarChanged" id="txtIAvatar">
 									<span class="text-warning">Kosongi apabila tidak mengganti avatar</span>
-								</div>
-								<div class="col-lg-3">
-									<label for="txtIPassword">Password</label>
-									<input class="form-control" autocomplete="off" type="password" v-model="form.password" id="txtIPassword">
 								</div>
 							</div>
 							<div>
@@ -88,23 +95,30 @@
 						</div>
 						<div class="modal-body">
 							<div class="row">
-								<div class="col-lg-3">
+								<div class="col-lg-6">
 									<label for="txtIName">Name</label>
 									<input class="form-control" autocomplete="off" type="text" v-model="form.name" id="txtIName">
 								</div>
-								<div class="col-lg-3">
+								<div class="col-lg-6">
 									<label for="txtIEmail">Email</label>
 									<input class="form-control" autocomplete="off" type="email" v-model="form.email" id="txtIEmail">
+								</div>
+								<div class="col-lg-6">
+									<label for="txtIPassword">Password</label>
+									<input class="form-control" autocomplete="off" type="password" v-model="form.password" id="txtIPassword">
+									<span class="text-warning">Kosongi apabila tidak mengganti password</span>
+								</div>
+								<div class="col-lg-6">
+									<label for="txtIHakAkses">Hak Akses</label>
+									<select class="form-control" v-model="form.hak_akses_id" id="txtIHakAkses" required>
+										<option value="" selected disabled>Hak Akses</option>
+										<option v-for="h in hakakses" :key="h.uuid" :value="h.uuid">{{h.nama}}</option>
+									</select>
 								</div>
 								<div class="col-lg-3">
 									<label for="txtIAvatar">Avatar</label>
 									<input accept="image/*" class="form-control" autocomplete="off" type="file" @change="avatarChanged" id="txtIAvatar">
 									<span class="text-warning">Kosongi apabila tidak mengganti avatar</span>
-								</div>
-								<div class="col-lg-3">
-									<label for="txtIPassword">Password</label>
-									<input class="form-control" autocomplete="off" type="password" v-model="form.password" id="txtIPassword">
-									<span class="text-warning">Kosongi apabila tidak mengganti password</span>
 								</div>
 							</div>
 							<div>
@@ -135,12 +149,14 @@ export default {
 	},
 	data(){return{
 		user:[],
+		hakakses:[],
 		form: new Form({
 			uuid:null,
 			name:null,
 			email:null,
 			avatar:null,
 			password:null,
+			hak_akses_id:null,
 		}),
 		avatarPreview: null,
 	}},
@@ -156,12 +172,16 @@ export default {
 				$("#tableUserDataAll").DataTable();
 				}, 1000);
 			});
+			axios.get('/api/hakakses').then(({data})=>{
+				this.hakakses = data;
+			});
 		},
 		seteditvalue(d){
 			this.form.reset();
 			this.form.uuid = d.uuid;
 			this.form.name = d.name;
 			this.form.email = d.email;
+			this.form.hak_akses_id = d.hak_akses_id;
 			this.avatarPreview = d.avatar;
 		},
 		simpandata(){

@@ -19,8 +19,8 @@
 							<tr v-for="(u,i) in generalsetting" :key="u.uuid">
 								<td style="vertical-align:middle;">
 									<i v-if="u.active==1" class="bx bx-sm bx-check-circle text-success"></i>
-									<i v-else class="bx bx-sm bx-x-circle text-warning" style="cursor:pointer;" @click="activateGenset(u.uuid)"></i>
-									{{i+1}}
+									<i v-else title="Gunakan Setting Ini" class="bx bx-sm bx-x-circle text-warning" style="cursor:pointer;" @click="activateGenset(u.uuid)"></i>
+									&nbsp;{{i+1}}
 								</td>
 								<td>{{u.nama}} - ({{u.nama_pendek}})</td>
 								<td>{{u.alamat}}</td>

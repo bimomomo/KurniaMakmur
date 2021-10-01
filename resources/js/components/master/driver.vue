@@ -222,7 +222,6 @@ export default {
   methods: {
     // Load data pada tabel with axios
     loadUsers() {
-      // axios.get("api/golongan").then(({ data }) => (this.golongans = data));
       axios.get("api/driver").then((res) => {
         $("#example").DataTable().destroy();
         this.drivers = res.data;

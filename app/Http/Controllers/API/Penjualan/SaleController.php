@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Penjualan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Master\Barang;
+use App\Models\Master\Driver;
 use App\Models\Master\Pelanggan;
 use App\Models\Penjualan\InvoiceJual;
 use App\Models\Penjualan\Sale;
@@ -94,11 +95,7 @@ class SaleController extends Controller
                 ->distinct()
                 ->get();
         }
-
-        return Sale::select(
-            'sale.*',
-            'pelanggan.nama',
-        )
+        return Sale::select('sale.tgl_sale', 'sale.nomor_invoice', 'sale.driver_id', 'sale.nomor_po', 'sale.total', 'sale.jatuh_tempo', 'sale.status_bayar', 'sale.status_pengiriman', 'pelanggan.nama')
             ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
             ->groupBy('sale.nomor_invoice')
             ->distinct()
@@ -107,16 +104,6 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
-        // return dd($request->all());
-        // $validator = Validator::make($request->all(), [
-
-        // ]);
-
-        // //response error validation
-        // if ($validator->fails()) {
-        //     return response()->json($validator->errors(), 400);
-        // }
-
         foreach ($request->invoivejual_id as $key => $value) {
             $data[$key] = $value;
         }
@@ -162,6 +149,14 @@ class SaleController extends Controller
             'status_pengiriman' => $request->status_pengiriman,
         ]);
     }
+
+    public function updatehormatkami(Request $request, $id)
+    {
+        // return $request->all();
+        Sale::where('nomor_invoice', $id)->update([
+            'driver_id' => $request->driver['uuid'],
+        ]);
+    }
     public function detailinvoice($id)
     {
         return Sale::select('sale.nomor_invoice', 'invoice_jual.uuid', 'invoice_jual.barang_id', 'invoice_jual.satuan_id', 'invoice_jual.harga', 'invoice_jual.harga_akhir', 'invoice_jual.total_satuan_jual', 'invoice_jual.jumlah_satuan_dijual', 'invoice_jual.jumlah_satuan_isi', 'invoice_jual.satuan_jual', 'satuan.satuan_isi', 'barang.nama as produk')
@@ -170,10 +165,6 @@ class SaleController extends Controller
             ->join('barang', 'barang.uuid', '=', 'invoice_jual.barang_id')
             ->where('sale.nomor_invoice', $id)
             ->get();
-        // return Sale::select('sale.*', 'pelanggan.nama', 'pelanggan.alamat', 'pelanggan.nohp')
-        //     ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
-        //     ->where('sale.nomor_invoice', $id)
-        //     ->get();
     }
     public function test($id)
     {
@@ -183,5 +174,10 @@ class SaleController extends Controller
             ->where('nomor_invoice', $id)
             ->distinct()
             ->get();
+    }
+
+    public function drivers(Request $request)
+    {
+        return Driver::where('uuid', $request->driver_id)->get();
     }
 }

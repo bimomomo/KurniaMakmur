@@ -11,7 +11,11 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}" />
 
 	<!--favicon-->
-	<link rel="icon" href="{{ URL::asset( 'admin/assets/images/favicon-32x32.png')}}" type="image/png" />
+			<!-- @if($gen_sttng) -->
+				<!-- <link rel="icon" href="{{ URL::asset($gen_sttng->logo)}}" type="image/*" /> -->
+			<!-- @else -->
+				<link rel="icon" href="{{ URL::asset('favicon.png')}}" type="image/png" />
+			<!-- @endif -->
 	<!--plugins-->
 	<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
 	{{-- <link href="{{ URL:: asset( 'admin/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet')}}" /> --}}

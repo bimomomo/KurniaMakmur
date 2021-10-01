@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\User\HakAkses;
+use App\Models\Setting\GeneralSetting;
 
 class HomeController extends Controller
 {
@@ -43,7 +45,9 @@ class HomeController extends Controller
                 return ('tokenexpired');
             }
         }
+		$data['gen_sttng'] = GeneralSetting::where('active', 1)->first();
 		$data['api_token'] = $request->session()->get('nonhashtoken');
+		$data['hak_akses'] = json_decode((Auth::user()->hak_akses));
         return view('home',$data);
     }
 }

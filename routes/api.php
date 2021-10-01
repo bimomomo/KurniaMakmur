@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\User\PengumumanController;
+use App\Http\Controllers\API\User\HakAksesController;
 use App\Http\Controllers\API\Setting\MetodeBayarController;
 use App\Http\Controllers\API\Setting\GeneralSettingController;
 use App\Http\Controllers\API\Laporan\laporanTransaksiController;
@@ -37,62 +38,78 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 // Route::middleware('auth:api')->group(function () {
 // });
-Route::apiResources(['kategori' => KategoriController::class,]);
-Route::post('/deletekategori/{id}', [KategoriController::class, 'deleteall']);
 
-// Brand
-Route::apiResources(['brand' => BrandController::class,]);
-Route::post('/deletebrand/{id}', [BrandController::class, 'deleteall']);
+Route::middleware('auth:api')->group(function () {
+	//User
+	Route::apiResources(['user' => UserController::class,]);
+	Route::apiResources(['pengumuman' => PengumumanController::class,]);
+	Route::apiResources(['hakakses' => HakAksesController::class,]);
+	// Setting
+	Route::apiResources(['metodebayar' => MetodeBayarController::class,]);
+	Route::apiResources(['generalsetting' => GeneralSettingController::class,]);
+	Route::post('/generalsettingsetactive/{id}', [GeneralSettingController::class, 'activestatusset']);
 
-// Gudang
-Route::apiResources(['gudang' => GudangController::class,]);
-Route::post('/deletegudang/{id}', [GudangController::class, 'deleteall']);
+	Route::apiResources(['kategori' => KategoriController::class,]);
+	Route::post('/deletekategori/{id}', [KategoriController::class, 'deleteall']);
 
-// Satuan
-Route::apiResources(['satuan' => SatuanController::class,]);
-Route::post('/deletesatuan/{id}', [SatuanController::class, 'deleteall']);
+	// Brand
+	Route::apiResources(['brand' => BrandController::class,]);
+	Route::post('/deletebrand/{id}', [BrandController::class, 'deleteall']);
 
-// Barang
-Route::apiResources(['barang' => BarangController::class,]);
-Route::post('/deletebarang/{id}', [BarangController::class, 'deleteall']);
-Route::put('/updatestock/{id}', [BarangController::class, 'updatestock']);
+	// Gudang
+	Route::apiResources(['gudang' => GudangController::class,]);
+	Route::post('/deletegudang/{id}', [GudangController::class, 'deleteall']);
 
-// Mutasi stock masuk
-Route::apiResources(['mutasistockmasuk' => MutasiStockMasukController::class,]);
+	// Satuan
+	Route::apiResources(['satuan' => SatuanController::class,]);
+	Route::post('/deletesatuan/{id}', [SatuanController::class, 'deleteall']);
 
-// Invoice Jual
-Route::apiResources(['invoicejual' => InvoiceJualController::class,]);
-Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
-Route::post('/deleteInvoice', [InvoiceJualController::class, 'deleteInvoice']);
+	// Barang
+	Route::apiResources(['barang' => BarangController::class,]);
+	Route::post('/deletebarang/{id}', [BarangController::class, 'deleteall']);
+	Route::put('/updatestock/{id}', [BarangController::class, 'updatestock']);
 
-// Sale Jual
-Route::apiResources(['sale' => SaleController::class,]);
-Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
-Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
-Route::get('getAllDataSale', [SaleController::class, 'getAllDataSale']);
-Route::post('cancel-order/{id}', [SaleController::class, 'cancelOrder']);
-Route::get('test/{id}', [SaleController::class, 'test']);
+	// Mutasi stock masuk
+	Route::apiResources(['mutasistockmasuk' => MutasiStockMasukController::class,]);
 
-// Pelanggan 
-Route::apiResources(['pelanggan' => PelangganController::class,]);
-Route::post('/deletepelanggan/{id}', [PelangganController::class, 'deleteall']);
+	// Invoice Jual
+	Route::apiResources(['invoicejual' => InvoiceJualController::class,]);
+	Route::get('/subtotal', [InvoiceJualController::class, 'subtotal']);
+	Route::post('/deleteInvoice', [InvoiceJualController::class, 'deleteInvoice']);
 
-// Driver
-Route::apiResources(['driver' => DriverController::class,]);
-Route::post('/deletedriver/{id}', [DriverController::class, 'deleteall']);
+	// Sale Jual
+	Route::apiResources(['sale' => SaleController::class,]);
+	Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
+	Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
+	Route::get('getAllDataSale', [SaleController::class, 'getAllDataSale']);
+	Route::post('cancel-order/{id}', [SaleController::class, 'cancelOrder']);
+	Route::get('test/{id}', [SaleController::class, 'test']);
+	Route::get('drivers', [SaleController::class, 'drivers']);
 
-// laporan
-Route::apiResources(['laporan' => laporanTransaksiController::class,]);
-Route::get('/GetlaporanInvoice', [laporanTransaksiController::class, 'GetlaporanInvoice']);
-Route::get('/GetLaporanPengiriman', [laporanTransaksiController::class, 'GetLaporanPengiriman']);
-Route::get('/GetTransaksiPelanggan', [laporanTransaksiController::class, 'GetTransaksiPelanggan']);
+	// updatehormatkami
+	Route::put('/updatehormatkami/{id}', [SaleController::class, 'updatehormatkami']);
 
-// Note
-Route::apiResources(['notes' => myNotesController::class,]);
-Route::post('/multiDeleteNotes/{id}', [myNotesController::class, 'deletebanyak']);
+	// Pelanggan 
+	Route::apiResources(['pelanggan' => PelangganController::class,]);
+	Route::post('/deletepelanggan/{id}', [PelangganController::class, 'deleteall']);
 
-// Mutasi
-Route::apiResources(['mutasi-keluar' => MutasiStockKeluarController::class,]);
+	// Driver
+	Route::apiResources(['driver' => DriverController::class,]);
+	Route::post('/deletedriver/{id}', [DriverController::class, 'deleteall']);
 
-// Return
-Route::apiResources(['data-return' => ReturnController::class,]);
+	// laporan
+	Route::apiResources(['laporan' => laporanTransaksiController::class,]);
+	Route::get('/GetlaporanInvoice', [laporanTransaksiController::class, 'GetlaporanInvoice']);
+	Route::get('/GetLaporanPengiriman', [laporanTransaksiController::class, 'GetLaporanPengiriman']);
+	Route::get('/GetTransaksiPelanggan', [laporanTransaksiController::class, 'GetTransaksiPelanggan']);
+	Route::get('GetDetail/{id}', [laporanTransaksiController::class, 'GetDetail']);
+
+	// Note
+	Route::apiResources(['notes' => myNotesController::class,]);
+	Route::post('/multiDeleteNotes/{id}', [myNotesController::class, 'deletebanyak']);
+
+	// Mutasi
+	Route::apiResources(['mutasi-keluar' => MutasiStockKeluarController::class,]);
+	// Return
+	Route::apiResources(['data-return' => ReturnController::class,]);
+});
