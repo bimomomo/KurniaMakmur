@@ -2,7 +2,11 @@
 <div class="sidebar-wrapper" data-simplebar="true">
 	<div class="sidebar-header">
 		<div>
-			<img src="{{asset('admin/assets/images/logo-icon.png')}}" class="logo-icon" alt="logo icon">
+			@if($gen_sttng)
+			<img src="{{asset($gen_sttng->logo)}}" class="logo-icon" alt="logo icon">
+			@else
+			<img src="{{asset('logo.png')}}" class="logo-icon" alt="logo icon">
+			@endif
 		</div>
 		<div>
 			<h4 class="logo-text">KurniaMakmur</h4>
@@ -19,6 +23,7 @@
 				<div class="menu-title">Dashboard</div>
 			</router-link>
 		</li>
+		@if((property_exists($hak_akses,'PENJUALAN')))
 		<li>
 			<a href="javascript:;" class="has-arrow">
 				<div class="parent-icon"><i class='bx bx-store'></i>
@@ -35,9 +40,11 @@
 
 			</ul>
 		</li>
+		@endif
+		@if((property_exists($hak_akses,'MASTER')))
 		<li>
 			<a href="javascript:;" class="has-arrow">
-				<div class="parent-icon"><i class='bx bx-cog'></i>
+				<div class="parent-icon"><i class='bx bx-sitemap'></i>
 				</div>
 				<div class="menu-title">Master</div>
 			</a>
@@ -65,6 +72,8 @@
 				</li>
 			</ul>
 		</li>
+		@endif
+		@if((property_exists($hak_akses,'MUTASI')))
 		<li>
 			<a href="javascript:;" class="has-arrow">
 				<div class="parent-icon"><i class='bx bx-archive'></i>
@@ -79,6 +88,8 @@
 
 			</ul>
 		</li>
+		@endif
+		@if((property_exists($hak_akses,'LAPORAN')))
 		<li>
 			<a href="javascript:;" class="has-arrow">
 				<div class="parent-icon"><i class='bx bx-file'></i>
@@ -100,6 +111,8 @@
 				</li>
 			</ul>
 		</li>
+		@endif
+		@if((property_exists($hak_akses,'NOTE')))
 		<li>
 			<a href="javascript:;" class="has-arrow">
 				<div class="parent-icon"><i class='bx bx-note'></i>
@@ -112,6 +125,44 @@
 				</li>
 			</ul>
 		</li>
+		@endif
+		@if((property_exists($hak_akses,'USER')))
+		<li>
+			<a href="javascript:;" class="has-arrow">
+				<div class="parent-icon"><i class='bx bx-user'></i>
+				</div>
+				<div class="menu-title">User</div>
+			</a>
+			<ul>
+				<li>
+					<router-link to="user"><i class="bx bx-right-arrow-alt"></i>User</router-link>
+				</li>
+				<li>
+					<router-link to="pengumuman"><i class="bx bx-right-arrow-alt"></i>Pengumuman</router-link>
+				</li>
+				<li>
+					<router-link to="hakakses"><i class="bx bx-right-arrow-alt"></i>Hak Akses</router-link>
+				</li>
+			</ul>
+		</li>
+		@endif
+		@if((property_exists($hak_akses,'SETTING')))
+		<li>
+			<a href="javascript:;" class="has-arrow">
+				<div class="parent-icon"><i class='bx bx-cog'></i>
+				</div>
+				<div class="menu-title">Setting</div>
+			</a>
+			<ul>
+				<li>
+					<router-link to="metodebayar"><i class="bx bx-right-arrow-alt"></i>Metode Bayar</router-link>
+				</li>
+				<li>
+					<router-link to="generalsetting"><i class="bx bx-right-arrow-alt"></i>General Setting</router-link>
+				</li>
+			</ul>
+		</li>
+		@endif
 	</ul>
 	<!--end navigation-->
 </div>
