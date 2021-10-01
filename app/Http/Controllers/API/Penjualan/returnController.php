@@ -61,6 +61,10 @@ class ReturnController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request->all();
+        // if (count($request->dataLama)>0) {
+        //     # code...
+        // }
         $validator = $this->validasi($request);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);

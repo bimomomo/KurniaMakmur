@@ -327,6 +327,7 @@ export default {
       subtotals: "",
       subtotalfunc: "",
       form: new Form({
+        dataLama: [],
         dataBarang: [],
         invoivejual_id: [],
         pelanggan_id: "",
@@ -358,19 +359,23 @@ export default {
   methods: {
     cekDataReturn() {
       if (this.dataReturn) {
-        this.uuidDriver = this.dataReturn.uuidDriver;
-        this.uuidPelanggan = this.dataReturn.uuidPelanggan;
-        this.form.uuidBarang = this.dataReturn.uuidBarang;
-        this.form.uuidSale = this.dataReturn.uuidSale;
-        this.form.tgl_sale = this.dataReturn.tgl_sale;
-        this.form.jatuh_tempo = this.dataReturn.jatuh_tempo;
-        this.form.nomor_invoice = this.dataReturn.nomor_invoice;
-        this.form.faktur_pajak = this.dataReturn.faktur_pajak;
-        this.form.nomor_po = this.dataReturn.nomor_po;
-        this.form.nomor_surat_jalan = this.dataReturn.nomor_surat_jalan;
-        this.form.diskon = this.dataReturn.diskon;
-        this.form.ppn = this.dataReturn.ppn;
-        this.form.biaya_kirims = this.dataReturn.biaya_kirim;
+        this.form.dataLama = this.dataReturn;
+        this.uuidDriver = this.dataReturn[0].uuidDriver;
+        this.uuidPelanggan = this.dataReturn[0].pelanggan_id;
+        this.form.uuidBarang = this.dataReturn[0].uuidBarang;
+        this.form.uuidSale = this.dataReturn[0].uuidSale;
+        this.form.tgl_sale = this.dataReturn[0].tgl_sale;
+        this.form.jatuh_tempo = this.dataReturn[0].jatuh_tempo;
+        this.form.nomor_invoice = this.dataReturn[0].nomor_invoice;
+        this.form.faktur_pajak = this.dataReturn[0].faktur_pajak;
+        this.form.nomor_po = this.dataReturn[0].nomor_po;
+        this.form.nomor_surat_jalan = this.dataReturn[0].nomor_surat_jalan;
+        this.form.diskon = this.dataReturn[0].diskon;
+        this.form.ppn = this.dataReturn[0].ppn;
+        this.form.biaya_kirims = this.dataReturn[0].biaya_kirim * 1000;
+        this.form.biaya_kirim = this.formatRupiah(
+          this.dataReturn[0].biaya_kirim * 1000
+        );
       }
 
       if (this.uuidPelanggan) {
@@ -385,13 +390,21 @@ export default {
       }
     },
     loadUsers() {
+      var iniSubTotal = 0;
+      var iniSubTotalFunc = 0;
       this.cekDataReturn();
       if (this.dataInvoiceJual) {
         this.return = true;
         this.form.dataBarang = this.dataInvoiceJual;
         this.checkouts = this.dataInvoiceJual;
-        this.subtotals = this.dataInvoiceJual[0]["harga_akhir"] * 1000;
-        this.subtotalfunc = this.dataInvoiceJual[0]["harga_akhir"];
+        for (let index = 0; index < this.dataInvoiceJual.length; index++) {
+          // const element = array[index];
+
+          iniSubTotal += this.dataInvoiceJual[index]["harga_akhir"] * 1000;
+          iniSubTotalFunc += this.dataInvoiceJual[index]["harga_akhir"];
+        }
+        this.subtotals = this.formatRupiah(iniSubTotal);
+        this.subtotalfunc = iniSubTotalFunc;
       } else {
         axios
           .get("api/invoicejual")

@@ -90,10 +90,9 @@ class SaleController extends Controller
                 ->join('gudang', 'gudang.uuid', 'invoice_jual.gudang_id')
                 ->join('barang', 'barang.uuid', 'invoice_jual.barang_id')
                 ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
-                ->groupBy('sale.nomor_invoice')
-                ->where('sale.uuid', $request->uuid)
+                ->where('sale.nomor_invoice', $request->uuid)
                 ->distinct()
-                ->first();
+                ->get();
         }
 
         return Sale::select(

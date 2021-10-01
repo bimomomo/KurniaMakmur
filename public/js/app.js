@@ -6666,6 +6666,7 @@ Vue.component("multiselect", (vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defau
       subtotals: "",
       subtotalfunc: "",
       form: new Form({
+        dataLama: [],
         dataBarang: [],
         invoivejual_id: [],
         pelanggan_id: "",
@@ -6697,19 +6698,21 @@ Vue.component("multiselect", (vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defau
       var _this2 = this;
 
       if (this.dataReturn) {
-        this.uuidDriver = this.dataReturn.uuidDriver;
-        this.uuidPelanggan = this.dataReturn.uuidPelanggan;
-        this.form.uuidBarang = this.dataReturn.uuidBarang;
-        this.form.uuidSale = this.dataReturn.uuidSale;
-        this.form.tgl_sale = this.dataReturn.tgl_sale;
-        this.form.jatuh_tempo = this.dataReturn.jatuh_tempo;
-        this.form.nomor_invoice = this.dataReturn.nomor_invoice;
-        this.form.faktur_pajak = this.dataReturn.faktur_pajak;
-        this.form.nomor_po = this.dataReturn.nomor_po;
-        this.form.nomor_surat_jalan = this.dataReturn.nomor_surat_jalan;
-        this.form.diskon = this.dataReturn.diskon;
-        this.form.ppn = this.dataReturn.ppn;
-        this.form.biaya_kirims = this.dataReturn.biaya_kirim;
+        this.form.dataLama = this.dataReturn;
+        this.uuidDriver = this.dataReturn[0].uuidDriver;
+        this.uuidPelanggan = this.dataReturn[0].pelanggan_id;
+        this.form.uuidBarang = this.dataReturn[0].uuidBarang;
+        this.form.uuidSale = this.dataReturn[0].uuidSale;
+        this.form.tgl_sale = this.dataReturn[0].tgl_sale;
+        this.form.jatuh_tempo = this.dataReturn[0].jatuh_tempo;
+        this.form.nomor_invoice = this.dataReturn[0].nomor_invoice;
+        this.form.faktur_pajak = this.dataReturn[0].faktur_pajak;
+        this.form.nomor_po = this.dataReturn[0].nomor_po;
+        this.form.nomor_surat_jalan = this.dataReturn[0].nomor_surat_jalan;
+        this.form.diskon = this.dataReturn[0].diskon;
+        this.form.ppn = this.dataReturn[0].ppn;
+        this.form.biaya_kirims = this.dataReturn[0].biaya_kirim * 1000;
+        this.form.biaya_kirim = this.formatRupiah(this.dataReturn[0].biaya_kirim * 1000);
       }
 
       if (this.uuidPelanggan) {
@@ -6729,14 +6732,23 @@ Vue.component("multiselect", (vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defau
     loadUsers: function loadUsers() {
       var _this3 = this;
 
+      var iniSubTotal = 0;
+      var iniSubTotalFunc = 0;
       this.cekDataReturn();
 
       if (this.dataInvoiceJual) {
         this["return"] = true;
         this.form.dataBarang = this.dataInvoiceJual;
         this.checkouts = this.dataInvoiceJual;
-        this.subtotals = this.dataInvoiceJual[0]["harga_akhir"] * 1000;
-        this.subtotalfunc = this.dataInvoiceJual[0]["harga_akhir"];
+
+        for (var index = 0; index < this.dataInvoiceJual.length; index++) {
+          // const element = array[index];
+          iniSubTotal += this.dataInvoiceJual[index]["harga_akhir"] * 1000;
+          iniSubTotalFunc += this.dataInvoiceJual[index]["harga_akhir"];
+        }
+
+        this.subtotals = this.formatRupiah(iniSubTotal);
+        this.subtotalfunc = iniSubTotalFunc;
       } else {
         axios.get("api/invoicejual").then(function (_ref3) {
           var data = _ref3.data;
@@ -8077,6 +8089,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 // Import boostrap and jquery
 //Bootstrap and jQuery libraries
 
@@ -8134,6 +8148,7 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
       sales: {},
       details: {},
       gols: {},
+      dataDetail: [],
       form: new Form((_Form = {
         driver: "",
         uuidInvJual: "",
@@ -8229,30 +8244,55 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
         }, 1000);
       });
     },
-    // Hitung total bayar
-    totalbayar: function totalbayar() {
-      var harga = this.form.harga;
+    totalbayars: function totalbayars() {
+      var harga = this.form.hargas;
+      var jumlahsatuan = this.form.jumlah_satuan_dijual;
+      var totalbayar = harga * jumlahsatuan;
       var jumlahjual = this.form.jumlah_satuan_dijual;
       var satuan_jual = this.form.jumlah_satuan_isi;
-      this.form.total_satuan_jual = jumlahjual * satuan_jual;
-      this.form.harga_akhir = harga * jumlahjual;
+      var totalstockterjual = satuan_jual * jumlahjual;
+      this.form.total_satuan_jual = totalstockterjual;
+      this.form.harga_akhir = this.formatRupiah(totalbayar);
+    },
+    // Hitung total bayar
+    totalbayar: function totalbayar() {
+      if (this.dataDetail.length > 0) {
+        this.dataDetail.forEach(function (element) {
+          element.total_satuan_jual = element.jumlah_satuan_dijual * element.jumlah_satuan_isi;
+          element.harga_akhir = element.harga * element.jumlah_satuan_dijual;
+        });
+      }
+    },
+    clickharga: function clickharga() {
+      this.form.harga = this.form.hargas;
+    },
+    blurharga: function blurharga() {
+      this.totalbayar();
     },
     simpanReturn: function simpanReturn() {
-      var namaBarang = this.form.namaBarang;
-      var hargaBarang = this.form.harga / 1000;
-      var totalSatuanJualS = this.form.total_satuan_juals;
-      var totalSatuanJual = this.form.total_satuan_jual;
-      var satuanJual = this.form.satuan_jual;
-      var hargaAkhir = this.form.harga_akhir / 1000;
-      var dataArray = [{
-        nama: namaBarang,
-        harga: hargaBarang,
-        total_satuan_jual: totalSatuanJual,
-        total_satuan_juals: totalSatuanJualS,
-        satuan_jual: satuanJual,
-        harga_akhir: hargaAkhir
-      }];
-      var dataForm = this.form;
+      var dataArray = [];
+
+      if (this.dataDetail.length) {
+        this.dataDetail.forEach(function (element) {
+          var namaBarang = element.namaBarang;
+          var hargaBarang = element.harga / 1000;
+          var totalSatuanJualS = element.total_satuan_juals;
+          var totalSatuanJual = element.jumlah_satuan_dijual;
+          var satuanJual = element.satuan_jual;
+          var hargaAkhir = element.harga_akhir / 1000;
+          var x = {
+            nama: namaBarang,
+            harga: hargaBarang,
+            total_satuan_jual: totalSatuanJual,
+            total_satuan_juals: totalSatuanJualS,
+            satuan_jual: satuanJual,
+            harga_akhir: hargaAkhir
+          };
+          dataArray.push(x);
+        });
+      }
+
+      var dataForm = this.dataDetail;
       this.closeEditModal();
       this.$router.push({
         name: "checkout-invoice",
@@ -8272,40 +8312,51 @@ var angka = __webpack_require__(/*! @dimaskiddo/angka-terbilang-nodejs */ "./nod
       var _this3 = this;
 
       this.showEditModal();
+      this.dataDetail = null;
       axios.get("api/sale", {
         params: {
           uuid: uuid
         }
       }).then(function (res) {
-        _this3.form.uuidInvJual = res.data.uuidInvJual;
-        _this3.form.uuidSale = res.data.uuidSale;
-        _this3.form.uuidBarang = res.data.barang_id;
-        _this3.form.namaBarang = res.data.namaBarang;
-        _this3.form.sisa = res.data.sisa;
-        _this3.form.satuan_isi = res.data.satuan_isi;
-        _this3.form.jumlah_satuan_isi = res.data.jumlah_satuan_isi;
-        _this3.form.harga = res.data.harga * 1000;
-        _this3.form.jumlah_satuan_dijual = res.data.jumlah_satuan_dijual;
-        _this3.form.satuan_jual = res.data.satuan_jual;
-        _this3.form.jumlah_satuan_isi = res.data.jumlah_satuan_isi;
-        _this3.form.satuan_isi = res.data.satuan_isi;
-        _this3.form.harga_akhir = res.data.harga_akhir * 1000;
-        _this3.form.total_satuan_jual = res.data.total_satuan_jual;
-        _this3.form.total_satuan_juals = res.data.total_satuan_jual;
-        _this3.form.uuidDriver = res.data.driver_id;
-        _this3.form.uuidPelanggan = res.data.pelanggan_id;
-        _this3.form.tgl_sale = res.data.tgl_sale;
-        _this3.form.jatuh_tempo = res.data.jatuh_tempo;
-        _this3.form.nomor_invoice = res.data.nomor_invoice;
-        _this3.form.nomor_po = res.data.nomor_po;
-        _this3.form.nomor_surat_jalan = res.data.nomor_surat_jalan;
-        _this3.form.biaya_kirim = res.data.biaya_kirim * 1000;
-        _this3.form.diskon = res.data.diskon;
-        _this3.form.ppn = res.data.ppn;
-        _this3.form.faktur_pajak = res.data.faktur_pajak; // this.form.total = res.data.total * 1000;
+        _this3.dataDetail = res.data;
+
+        _this3.dataDetail.forEach(function (element) {
+          element.harga = element.harga * 1000;
+          element.harga_akhir = element.harga_akhir * 1000;
+          element.qty_lama = element.total_satuan_jual;
+          element.jumlah_satuan_dijual_lama = element.jumlah_satuan_dijual;
+          element.jumlah_satuan_isi_lama = element.jumlah_satuan_isi;
+        }); // this.form.uuidInvJual = res.data.uuidInvJual;
+        // this.form.uuidSale = res.data.uuidSale;
+        // this.form.uuidBarang = res.data.barang_id;
+        // this.form.namaBarang = res.data.namaBarang;
+        // this.form.sisa = res.data.sisa;
+        // this.form.satuan_isi = res.data.satuan_isi;
+        // this.form.jumlah_satuan_isi = res.data.jumlah_satuan_isi;
+        // this.form.harga = res.data.harga * 1000;
+        // this.form.jumlah_satuan_dijual = res.data.jumlah_satuan_dijual;
+        // this.form.satuan_jual = res.data.satuan_jual;
+        // this.form.jumlah_satuan_isi = res.data.jumlah_satuan_isi;
+        // this.form.satuan_isi = res.data.satuan_isi;
+        // this.form.harga_akhir = res.data.harga_akhir * 1000;
+        // this.form.total_satuan_jual = res.data.total_satuan_jual;
+        // this.form.total_satuan_juals = res.data.total_satuan_jual;
+        // this.form.uuidDriver = res.data.driver_id;
+        // this.form.uuidPelanggan = res.data.pelanggan_id;
+        // this.form.tgl_sale = res.data.tgl_sale;
+        // this.form.jatuh_tempo = res.data.jatuh_tempo;
+        // this.form.nomor_invoice = res.data.nomor_invoice;
+        // this.form.nomor_po = res.data.nomor_po;
+        // this.form.nomor_surat_jalan = res.data.nomor_surat_jalan;
+        // this.form.biaya_kirim = res.data.biaya_kirim * 1000;
+        // this.form.diskon = res.data.diskon;
+        // this.form.ppn = res.data.ppn;
+        // this.form.faktur_pajak = res.data.faktur_pajak;
+        // this.form.total = res.data.total * 1000;
         // this.form.biaya_kirim = res.data.biaya_kirim * 1000;
         // this.form.diskon = res.data.diskon;
         // this.form.pph = res.data.pph;
+
       });
     },
     showmodal: function showmodal() {
@@ -83463,7 +83514,7 @@ var render = function() {
                     _c(
                       "tbody",
                       _vm._l(_vm.sales, function(item, index) {
-                        return _c("tr", { key: index }, [
+                        return _c("tr", { key: item.index }, [
                           _c("td", { staticClass: "text-center" }, [
                             _vm._v(_vm._s(index + 1))
                           ]),
@@ -83548,7 +83599,7 @@ var render = function() {
                                   "div",
                                   {
                                     staticClass:
-                                      "d-flex align-items-center text-danger"
+                                      "d-flex align-items-center text-warning"
                                   },
                                   [
                                     _c("i", {
@@ -83556,7 +83607,7 @@ var render = function() {
                                         "\n                        bx bx-radio-circle-marked bx-burst bx-rotate-90\n                        align-middle\n                        font-18\n                        me-1\n                      "
                                     }),
                                     _vm._v(" "),
-                                    _c("span", [_vm._v("Batal")])
+                                    _c("span", [_vm._v("Barang Di Retur")])
                                   ]
                                 )
                               : _c(
@@ -83652,21 +83703,18 @@ var render = function() {
                                 )
                               : _vm._e(),
                             _vm._v(" "),
-                            item.status_bayar == 0 ||
-                            item.status_pengiriman == 0
-                              ? _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn btn-warning btn-sm",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.edit(item.uuid)
-                                      }
-                                    }
-                                  },
-                                  [_c("i", { staticClass: "bx bx-edit" })]
-                                )
-                              : _vm._e(),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-warning btn-sm",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.edit(item.nomor_invoice)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "bx bx-edit" })]
+                            ),
                             _vm._v(" "),
                             _c(
                               "button",
@@ -83724,7 +83772,7 @@ var render = function() {
                     "tbody",
                     _vm._l(_vm.dataReturn, function(datas) {
                       return _c("tr", { key: datas.index }, [
-                        _c("td", [_vm._v(_vm._s(_vm.noUrut(_vm.index)))]),
+                        _c("td", [_vm._v(_vm._s(_vm.index))]),
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(datas.tgl_sale))]),
                         _vm._v(" "),
@@ -83757,7 +83805,9 @@ var render = function() {
                               staticClass: "btn btn-info btn-sm",
                               on: {
                                 click: function($event) {
-                                  return _vm.detail(datas.nomor_invoice)
+                                  return _vm.detailDataReturn(
+                                    datas.nomor_invoice
+                                  )
                                 }
                               }
                             },
@@ -84126,350 +84176,368 @@ var render = function() {
               _c("div", { staticClass: "modal-content" }, [
                 _vm._m(5),
                 _vm._v(" "),
-                _c("div", { staticClass: "modal-body" }, [
-                  _c("div", { staticClass: "row mb-2" }, [
-                    _c("div", { staticClass: "col-lg-6" }, [
-                      _c("label", { attrs: { for: "form-control" } }, [
-                        _vm._v("Pilih Barang")
+                _c(
+                  "div",
+                  { staticClass: "modal-body" },
+                  _vm._l(_vm.dataDetail, function(forms, index) {
+                    return _c("div", { key: index }, [
+                      _c("div", { staticClass: "row mb-2" }, [
+                        _c("div", { staticClass: "col-lg-6" }, [
+                          _c("label", { attrs: { for: "form-control" } }, [
+                            _vm._v("Pilih Barang")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: forms.namaBarang,
+                                expression: "forms.namaBarang"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.form.errors.has("harga")
+                            },
+                            attrs: { type: "text", readonly: "" },
+                            domProps: { value: forms.namaBarang },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  forms,
+                                  "namaBarang",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
                       ]),
                       _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.namaBarang,
-                            expression: "form.namaBarang"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        class: { "is-invalid": _vm.form.errors.has("harga") },
-                        attrs: { type: "text", readonly: "" },
-                        domProps: { value: _vm.form.namaBarang },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                      _c("div", { staticClass: "row mb-2" }, [
+                        _c("div", { staticClass: "col-lg-2" }, [
+                          _c("label", { attrs: { for: "form-control" } }, [
+                            _vm._v("Sisa Stock")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "input-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: forms.sisa,
+                                  expression: "forms.sisa"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", readonly: "" },
+                              domProps: { value: forms.sisa },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(forms, "sisa", $event.target.value)
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: forms.satuan_isi,
+                                  expression: "forms.satuan_isi"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", readonly: "" },
+                              domProps: { value: forms.satuan_isi },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    forms,
+                                    "satuan_isi",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-2" }, [
+                          _c("label", { attrs: { for: "form-control" } }, [
+                            _vm._v("Harga")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: forms.harga,
+                                expression: "forms.harga"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.form.errors.has("harga")
+                            },
+                            attrs: {
+                              type: "text",
+                              placeholder: "Harga Barang"
+                            },
+                            domProps: { value: forms.harga },
+                            on: {
+                              input: [
+                                function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(forms, "harga", $event.target.value)
+                                },
+                                _vm.blurharga
+                              ]
                             }
-                            _vm.$set(
-                              _vm.form,
-                              "namaBarang",
-                              $event.target.value
+                          }),
+                          _vm._v(" "),
+                          _c("small", [
+                            _vm._v(
+                              " " + _vm._s(_vm.formatRupiah(forms.harga)) + " "
                             )
-                          }
-                        }
-                      })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-2" }, [
+                          _c("label", { attrs: { for: "form-control" } }, [
+                            _vm._v("Jumlah Jual")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "input-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: forms.jumlah_satuan_dijual,
+                                  expression: "forms.jumlah_satuan_dijual"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.form.errors.has(
+                                  "jumlah_satuan_dijual"
+                                )
+                              },
+                              attrs: { type: "text" },
+                              domProps: { value: forms.jumlah_satuan_dijual },
+                              on: {
+                                input: [
+                                  function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      forms,
+                                      "jumlah_satuan_dijual",
+                                      $event.target.value
+                                    )
+                                  },
+                                  _vm.blurharga
+                                ]
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: forms.satuan_jual,
+                                  expression: "forms.satuan_jual"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", readonly: "" },
+                              domProps: { value: forms.satuan_jual },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    forms,
+                                    "satuan_jual",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-2" }, [
+                          _c("label", { attrs: { for: "form-control" } }, [
+                            _vm._v("Jumlah Satuan")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "input-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: forms.jumlah_satuan_isi,
+                                  expression: "forms.jumlah_satuan_isi"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.form.errors.has(
+                                  "jumlah_satuan_isi"
+                                )
+                              },
+                              attrs: { type: "text" },
+                              domProps: { value: forms.jumlah_satuan_isi },
+                              on: {
+                                input: [
+                                  function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      forms,
+                                      "jumlah_satuan_isi",
+                                      $event.target.value
+                                    )
+                                  },
+                                  _vm.blurharga
+                                ]
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: forms.satuan_isi,
+                                  expression: "forms.satuan_isi"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", readonly: "" },
+                              domProps: { value: forms.satuan_isi },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    forms,
+                                    "satuan_isi",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-2" }, [
+                          _c("label", { attrs: { for: "form-control" } }, [
+                            _vm._v("Total Stock Dijual")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: forms.total_satuan_jual,
+                                expression: "forms.total_satuan_jual"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              readonly: "",
+                              placeholder: "Total Stock Dijual"
+                            },
+                            domProps: { value: forms.total_satuan_jual },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  forms,
+                                  "total_satuan_jual",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-lg-2" }, [
+                          _c("label", { attrs: { for: "form-control" } }, [
+                            _vm._v("Total Bayar")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: forms.harga_akhir,
+                                expression: "forms.harga_akhir"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              readonly: "",
+                              placeholder: "Total Bayar"
+                            },
+                            domProps: { value: forms.harga_akhir },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  forms,
+                                  "harga_akhir",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("small", [
+                            _vm._v(
+                              " " +
+                                _vm._s(_vm.formatRupiah(forms.harga_akhir)) +
+                                " "
+                            )
+                          ])
+                        ])
+                      ])
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row mb-2" }, [
-                    _c("div", { staticClass: "col-lg-2" }, [
-                      _c("label", { attrs: { for: "form-control" } }, [
-                        _vm._v("Sisa Stock")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "input-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.sisa,
-                              expression: "form.sisa"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "text", readonly: "" },
-                          domProps: { value: _vm.form.sisa },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(_vm.form, "sisa", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.satuan_isi,
-                              expression: "form.satuan_isi"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "text", readonly: "" },
-                          domProps: { value: _vm.form.satuan_isi },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "satuan_isi",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-2" }, [
-                      _c("label", { attrs: { for: "form-control" } }, [
-                        _vm._v("Harga")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.harga,
-                            expression: "form.harga"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        class: { "is-invalid": _vm.form.errors.has("harga") },
-                        attrs: { type: "text", placeholder: "Harga Barang" },
-                        domProps: { value: _vm.form.harga },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.form, "harga", $event.target.value)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("small", [
-                        _vm._v(
-                          " " + _vm._s(_vm.formatRupiah(_vm.form.harga)) + " "
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-2" }, [
-                      _c("label", { attrs: { for: "form-control" } }, [
-                        _vm._v("Jumlah Jual")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "input-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.jumlah_satuan_dijual,
-                              expression: "form.jumlah_satuan_dijual"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": _vm.form.errors.has(
-                              "jumlah_satuan_dijual"
-                            )
-                          },
-                          attrs: { type: "text" },
-                          domProps: { value: _vm.form.jumlah_satuan_dijual },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "jumlah_satuan_dijual",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.satuan_jual,
-                              expression: "form.satuan_jual"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "text", readonly: "" },
-                          domProps: { value: _vm.form.satuan_jual },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "satuan_jual",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-2" }, [
-                      _c("label", { attrs: { for: "form-control" } }, [
-                        _vm._v("Jumlah Satuan")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "input-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.jumlah_satuan_isi,
-                              expression: "form.jumlah_satuan_isi"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": _vm.form.errors.has(
-                              "jumlah_satuan_isi"
-                            )
-                          },
-                          attrs: { type: "text" },
-                          domProps: { value: _vm.form.jumlah_satuan_isi },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "jumlah_satuan_isi",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.satuan_isi,
-                              expression: "form.satuan_isi"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "text", readonly: "" },
-                          domProps: { value: _vm.form.satuan_isi },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "satuan_isi",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-2" }, [
-                      _c("label", { attrs: { for: "form-control" } }, [
-                        _vm._v("Total Stock Dijual")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.total_satuan_jual,
-                            expression: "form.total_satuan_jual"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          readonly: "",
-                          placeholder: "Total Stock Dijual"
-                        },
-                        domProps: { value: _vm.form.total_satuan_jual },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.form,
-                              "total_satuan_jual",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-2" }, [
-                      _c("label", { attrs: { for: "form-control" } }, [
-                        _vm._v("Total Bayar")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.harga_akhir,
-                            expression: "form.harga_akhir"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          readonly: "",
-                          placeholder: "Total Bayar"
-                        },
-                        domProps: { value: _vm.form.harga_akhir },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.form,
-                              "harga_akhir",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("small", [
-                        _vm._v(
-                          " " +
-                            _vm._s(_vm.formatRupiah(_vm.form.harga_akhir)) +
-                            " "
-                        )
-                      ])
-                    ]),
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(this.totalbayar()) +
-                        "\n          "
-                    )
-                  ])
-                ]),
+                  }),
+                  0
+                ),
                 _vm._v(" "),
                 _c("div", { staticClass: "modal-footer" }, [
                   _c(

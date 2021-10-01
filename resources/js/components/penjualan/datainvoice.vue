@@ -54,7 +54,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, index) in sales" :key="index">
+                <tr v-for="(item, index) in sales" :key="item.index">
                   <td class="text-center">{{ index + 1 }}</td>
                   <td>
                     {{
@@ -99,7 +99,7 @@
                       <span>Bayar Sekarang</span>
                     </div>
                     <div
-                      class="d-flex align-items-center text-danger"
+                      class="d-flex align-items-center text-warning"
                       v-else-if="item.status_bayar == 9"
                     >
                       <i
@@ -110,7 +110,7 @@
                           me-1
                         "
                       ></i>
-                      <span>Batal</span>
+                      <span>Barang Di Retur</span>
                     </div>
                     <div class="d-flex align-items-center text-success" v-else>
                       <i
@@ -179,10 +179,7 @@
                     </button>
                     <button
                       class="btn btn-warning btn-sm"
-                      v-if="
-                        item.status_bayar == 0 || item.status_pengiriman == 0
-                      "
-                      @click="edit(item.uuid)"
+                      @click="edit(item.nomor_invoice)"
                     >
                       <i class="bx bx-edit"></i>
                     </button>
@@ -220,7 +217,7 @@
             </thead>
             <tbody>
               <tr v-for="datas in dataReturn" :key="datas.index">
-                <td>{{ noUrut(index) }}</td>
+                <td>{{ index }}</td>
                 <td>{{ datas.tgl_sale }}</td>
                 <td>{{ datas.nomor_invoice }}</td>
                 <td>{{ datas.nomor_po }}</td>
@@ -232,7 +229,7 @@
                 <td>
                   <button
                     class="btn btn-info btn-sm"
-                    @click="detail(datas.nomor_invoice)"
+                    @click="detailDataReturn(datas.nomor_invoice)"
                   >
                     <i class="bx bx-detail"></i>
                   </button>
@@ -398,107 +395,112 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="row mb-2">
-              <div class="col-lg-6">
-                <label for="form-control">Pilih Barang</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.namaBarang"
-                  :class="{ 'is-invalid': form.errors.has('harga') }"
-                  readonly
-                />
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-lg-2">
-                <label for="form-control">Sisa Stock</label>
-                <div class="input-group">
+            <div v-for="(forms, index) in dataDetail" :key="index">
+              <div class="row mb-2">
+                <div class="col-lg-6">
+                  <label for="form-control">Pilih Barang</label>
                   <input
                     type="text"
                     class="form-control"
-                    v-model="form.sisa"
-                    readonly
-                  />
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="form.satuan_isi"
+                    v-model="forms.namaBarang"
+                    :class="{ 'is-invalid': form.errors.has('harga') }"
                     readonly
                   />
                 </div>
               </div>
-              <div class="col-lg-2">
-                <label for="form-control">Harga</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.harga"
-                  placeholder="Harga Barang"
-                  :class="{ 'is-invalid': form.errors.has('harga') }"
-                />
-                <small> {{ formatRupiah(form.harga) }} </small>
-              </div>
-              <div class="col-lg-2">
-                <label for="form-control">Jumlah Jual</label>
-                <div class="input-group">
+              <div class="row mb-2">
+                <div class="col-lg-2">
+                  <label for="form-control">Sisa Stock</label>
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="forms.sisa"
+                      readonly
+                    />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="forms.satuan_isi"
+                      readonly
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <label for="form-control">Harga</label>
                   <input
                     type="text"
                     class="form-control"
-                    v-model="form.jumlah_satuan_dijual"
-                    :class="{
-                      'is-invalid': form.errors.has('jumlah_satuan_dijual'),
-                    }"
+                    v-model="forms.harga"
+                    placeholder="Harga Barang"
+                    :class="{ 'is-invalid': form.errors.has('harga') }"
+                    @input="blurharga"
                   />
+                  <small> {{ formatRupiah(forms.harga) }} </small>
+                </div>
+                <div class="col-lg-2">
+                  <label for="form-control">Jumlah Jual</label>
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="forms.jumlah_satuan_dijual"
+                      :class="{
+                        'is-invalid': form.errors.has('jumlah_satuan_dijual'),
+                      }"
+                      @input="blurharga"
+                    />
+                    <input
+                      type="text"
+                      v-model="forms.satuan_jual"
+                      class="form-control"
+                      readonly
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <label for="form-control">Jumlah Satuan</label>
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="forms.jumlah_satuan_isi"
+                      :class="{
+                        'is-invalid': form.errors.has('jumlah_satuan_isi'),
+                      }"
+                      @input="blurharga"
+                    />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="forms.satuan_isi"
+                      readonly
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <label for="form-control">Total Stock Dijual</label>
                   <input
                     type="text"
-                    v-model="form.satuan_jual"
                     class="form-control"
+                    v-model="forms.total_satuan_jual"
                     readonly
+                    placeholder="Total Stock Dijual"
                   />
                 </div>
-              </div>
-              <div class="col-lg-2">
-                <label for="form-control">Jumlah Satuan</label>
-                <div class="input-group">
+                <div class="col-lg-2">
+                  <label for="form-control">Total Bayar</label>
                   <input
                     type="text"
                     class="form-control"
-                    v-model="form.jumlah_satuan_isi"
-                    :class="{
-                      'is-invalid': form.errors.has('jumlah_satuan_isi'),
-                    }"
-                  />
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="form.satuan_isi"
+                    v-model="forms.harga_akhir"
                     readonly
+                    placeholder="Total Bayar"
                   />
+                  <small> {{ formatRupiah(forms.harga_akhir) }} </small>
                 </div>
+                <!-- {{ totalbayars() }} -->
               </div>
-              <div class="col-lg-2">
-                <label for="form-control">Total Stock Dijual</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.total_satuan_jual"
-                  readonly
-                  placeholder="Total Stock Dijual"
-                />
-              </div>
-              <div class="col-lg-2">
-                <label for="form-control">Total Bayar</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="form.harga_akhir"
-                  readonly
-                  placeholder="Total Bayar"
-                />
-                <small> {{ formatRupiah(form.harga_akhir) }} </small>
-              </div>
-              {{ this.totalbayar() }}
             </div>
           </div>
           <div class="modal-footer">
@@ -1005,6 +1007,7 @@ export default {
       sales: {},
       details: {},
       gols: {},
+      dataDetail: [],
       form: new Form({
         driver: "",
         uuidInvJual: "",
@@ -1126,32 +1129,54 @@ export default {
         }, 1000);
       });
     },
-    // Hitung total bayar
-    totalbayar() {
-      var harga = this.form.harga;
+    totalbayars() {
+      var harga = this.form.hargas;
+      var jumlahsatuan = this.form.jumlah_satuan_dijual;
+      var totalbayar = harga * jumlahsatuan;
       var jumlahjual = this.form.jumlah_satuan_dijual;
       var satuan_jual = this.form.jumlah_satuan_isi;
-      this.form.total_satuan_jual = jumlahjual * satuan_jual;
-      this.form.harga_akhir = harga * jumlahjual;
+      var totalstockterjual = satuan_jual * jumlahjual;
+      this.form.total_satuan_jual = totalstockterjual;
+      this.form.harga_akhir = this.formatRupiah(totalbayar);
+    },
+    // Hitung total bayar
+    totalbayar() {
+      if (this.dataDetail.length > 0) {
+        this.dataDetail.forEach((element) => {
+          element.total_satuan_jual =
+            element.jumlah_satuan_dijual * element.jumlah_satuan_isi;
+          element.harga_akhir = element.harga * element.jumlah_satuan_dijual;
+        });
+      }
+    },
+    clickharga() {
+      this.form.harga = this.form.hargas;
+    },
+    blurharga() {
+      this.totalbayar();
     },
     simpanReturn() {
-      var namaBarang = this.form.namaBarang;
-      var hargaBarang = this.form.harga / 1000;
-      var totalSatuanJualS = this.form.total_satuan_juals;
-      var totalSatuanJual = this.form.total_satuan_jual;
-      var satuanJual = this.form.satuan_jual;
-      var hargaAkhir = this.form.harga_akhir / 1000;
-      var dataArray = [
-        {
-          nama: namaBarang,
-          harga: hargaBarang,
-          total_satuan_jual: totalSatuanJual,
-          total_satuan_juals: totalSatuanJualS,
-          satuan_jual: satuanJual,
-          harga_akhir: hargaAkhir,
-        },
-      ];
-      var dataForm = this.form;
+      var dataArray = [];
+      if (this.dataDetail.length) {
+        this.dataDetail.forEach((element) => {
+          var namaBarang = element.namaBarang;
+          var hargaBarang = element.harga / 1000;
+          var totalSatuanJualS = element.total_satuan_juals;
+          var totalSatuanJual = element.jumlah_satuan_dijual;
+          var satuanJual = element.satuan_jual;
+          var hargaAkhir = element.harga_akhir / 1000;
+          var x = {
+            nama: namaBarang,
+            harga: hargaBarang,
+            total_satuan_jual: totalSatuanJual,
+            total_satuan_juals: totalSatuanJualS,
+            satuan_jual: satuanJual,
+            harga_akhir: hargaAkhir,
+          };
+          dataArray.push(x);
+        });
+      }
+      var dataForm = this.dataDetail;
       this.closeEditModal();
       this.$router.push({
         name: "checkout-invoice",
@@ -1169,33 +1194,42 @@ export default {
     },
     edit(uuid) {
       this.showEditModal();
+      this.dataDetail = null;
       axios.get("api/sale", { params: { uuid: uuid } }).then((res) => {
-        this.form.uuidInvJual = res.data.uuidInvJual;
-        this.form.uuidSale = res.data.uuidSale;
-        this.form.uuidBarang = res.data.barang_id;
-        this.form.namaBarang = res.data.namaBarang;
-        this.form.sisa = res.data.sisa;
-        this.form.satuan_isi = res.data.satuan_isi;
-        this.form.jumlah_satuan_isi = res.data.jumlah_satuan_isi;
-        this.form.harga = res.data.harga * 1000;
-        this.form.jumlah_satuan_dijual = res.data.jumlah_satuan_dijual;
-        this.form.satuan_jual = res.data.satuan_jual;
-        this.form.jumlah_satuan_isi = res.data.jumlah_satuan_isi;
-        this.form.satuan_isi = res.data.satuan_isi;
-        this.form.harga_akhir = res.data.harga_akhir * 1000;
-        this.form.total_satuan_jual = res.data.total_satuan_jual;
-        this.form.total_satuan_juals = res.data.total_satuan_jual;
-        this.form.uuidDriver = res.data.driver_id;
-        this.form.uuidPelanggan = res.data.pelanggan_id;
-        this.form.tgl_sale = res.data.tgl_sale;
-        this.form.jatuh_tempo = res.data.jatuh_tempo;
-        this.form.nomor_invoice = res.data.nomor_invoice;
-        this.form.nomor_po = res.data.nomor_po;
-        this.form.nomor_surat_jalan = res.data.nomor_surat_jalan;
-        this.form.biaya_kirim = res.data.biaya_kirim * 1000;
-        this.form.diskon = res.data.diskon;
-        this.form.ppn = res.data.ppn;
-        this.form.faktur_pajak = res.data.faktur_pajak;
+        this.dataDetail = res.data;
+        this.dataDetail.forEach((element) => {
+          element.harga = element.harga * 1000;
+          element.harga_akhir = element.harga_akhir * 1000;
+          element.qty_lama = element.total_satuan_jual;
+          element.jumlah_satuan_dijual_lama = element.jumlah_satuan_dijual;
+          element.jumlah_satuan_isi_lama = element.jumlah_satuan_isi;
+        });
+        // this.form.uuidInvJual = res.data.uuidInvJual;
+        // this.form.uuidSale = res.data.uuidSale;
+        // this.form.uuidBarang = res.data.barang_id;
+        // this.form.namaBarang = res.data.namaBarang;
+        // this.form.sisa = res.data.sisa;
+        // this.form.satuan_isi = res.data.satuan_isi;
+        // this.form.jumlah_satuan_isi = res.data.jumlah_satuan_isi;
+        // this.form.harga = res.data.harga * 1000;
+        // this.form.jumlah_satuan_dijual = res.data.jumlah_satuan_dijual;
+        // this.form.satuan_jual = res.data.satuan_jual;
+        // this.form.jumlah_satuan_isi = res.data.jumlah_satuan_isi;
+        // this.form.satuan_isi = res.data.satuan_isi;
+        // this.form.harga_akhir = res.data.harga_akhir * 1000;
+        // this.form.total_satuan_jual = res.data.total_satuan_jual;
+        // this.form.total_satuan_juals = res.data.total_satuan_jual;
+        // this.form.uuidDriver = res.data.driver_id;
+        // this.form.uuidPelanggan = res.data.pelanggan_id;
+        // this.form.tgl_sale = res.data.tgl_sale;
+        // this.form.jatuh_tempo = res.data.jatuh_tempo;
+        // this.form.nomor_invoice = res.data.nomor_invoice;
+        // this.form.nomor_po = res.data.nomor_po;
+        // this.form.nomor_surat_jalan = res.data.nomor_surat_jalan;
+        // this.form.biaya_kirim = res.data.biaya_kirim * 1000;
+        // this.form.diskon = res.data.diskon;
+        // this.form.ppn = res.data.ppn;
+        // this.form.faktur_pajak = res.data.faktur_pajak;
         // this.form.total = res.data.total * 1000;
         // this.form.biaya_kirim = res.data.biaya_kirim * 1000;
         // this.form.diskon = res.data.diskon;
