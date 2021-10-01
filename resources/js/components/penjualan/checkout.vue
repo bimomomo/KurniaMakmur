@@ -462,7 +462,7 @@ export default {
               title: "Data Berhasil Tersimpan",
             }).then(function () {
               // Redirect the user
-              window.location.href = "/data-invoice#primaryprofile";
+              // window.location.href = "/data-invoice#primaryprofile";
             });
           })
           .catch(() => {
