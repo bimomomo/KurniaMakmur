@@ -98,6 +98,20 @@
                       ></i>
                       <span>Bayar Sekarang</span>
                     </div>
+                    <div
+                      class="d-flex align-items-center text-danger"
+                      v-else-if="item.status_bayar == 9"
+                    >
+                      <i
+                        class="
+                          bx bx-radio-circle-marked bx-burst bx-rotate-90
+                          align-middle
+                          font-18
+                          me-1
+                        "
+                      ></i>
+                      <span>Batal</span>
+                    </div>
                     <div class="d-flex align-items-center text-success" v-else>
                       <i
                         class="
@@ -127,6 +141,20 @@
                       ></i>
                       <span>Pending</span>
                     </div>
+                    <div
+                      class="d-flex align-items-center text-danger"
+                      v-else-if="item.status_pengiriman == 9"
+                    >
+                      <i
+                        class="
+                          bx bx-radio-circle-marked bx-burst bx-rotate-90
+                          align-middle
+                          font-18
+                          me-1
+                        "
+                      ></i>
+                      <span>Batal</span>
+                    </div>
                     <div class="d-flex align-items-center text-success" v-else>
                       <i
                         class="
@@ -140,8 +168,14 @@
                     </div>
                   </td>
                   <td>
-                    <button class="btn btn-danger btn-sm">
-                      <i class="bx bx-x" @click="cancelOrder(item.uuid)"></i>
+                    <button
+                      class="btn btn-danger btn-sm"
+                      v-if="
+                        item.status_bayar == 0 || item.status_pengiriman == 0
+                      "
+                      @click="cancelOrder(item.uuid)"
+                    >
+                      <i class="bx bx-x"></i>
                     </button>
                     <button
                       class="btn btn-warning btn-sm"

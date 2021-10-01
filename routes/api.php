@@ -16,6 +16,7 @@ use App\Http\Controllers\API\Master\SatuanController;
 use App\Http\Controllers\API\Mutasi\MutasiStockKeluarController;
 use App\Http\Controllers\API\Note\myNotesController;
 use App\Http\Controllers\API\Penjualan\InvoiceJualController;
+use App\Http\Controllers\API\Penjualan\ReturnController;
 use App\Http\Controllers\API\Penjualan\SaleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +70,7 @@ Route::apiResources(['sale' => SaleController::class,]);
 Route::post('bayar/{id}', [SaleController::class, 'updatebayar']);
 Route::get('detail/{id}', [SaleController::class, 'detailinvoice']);
 Route::get('getAllDataSale', [SaleController::class, 'getAllDataSale']);
+Route::post('cancel-order/{id}', [SaleController::class, 'cancelOrder']);
 Route::get('test/{id}', [SaleController::class, 'test']);
 
 // Pelanggan 
@@ -91,3 +93,6 @@ Route::post('/multiDeleteNotes/{id}', [myNotesController::class, 'deletebanyak']
 
 // Mutasi
 Route::apiResources(['mutasi-keluar' => MutasiStockKeluarController::class,]);
+
+// Return
+Route::apiResources(['data-return' => ReturnController::class,]);

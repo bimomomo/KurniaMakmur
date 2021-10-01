@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Penjualan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Barang;
 use App\Models\Master\Pelanggan;
 use App\Models\Penjualan\InvoiceJual;
 use App\Models\Penjualan\Sale;
@@ -13,6 +14,35 @@ use Illuminate\Support\Str;
 
 class SaleController extends Controller
 {
+    public function cancelOrder($id)
+    {
+        $x =  Sale::select(
+            'sale.*',
+            'sale.uuid as uuidSale',
+            'invoice_jual.*',
+            'barang.uuid as uuidBarang',
+            'barang.*',
+        )
+            ->join('invoice_jual', 'invoice_jual.uuid', 'sale.invoicejual_id')
+            ->join('barang', 'barang.uuid', 'invoice_jual.barang_id')
+            ->where('sale.uuid', $id)
+            ->first();
+        if (!$x) {
+            return response()->json(['data' => $x, 'pesan' => 'Load data Server Error : Sale']);
+        } else {
+            $iniSisa = $x->sisa + $x->total_satuan_jual;
+            $iniTerjual = $x->terjual - $x->total_satuan_jual;
+            Barang::where('uuid', $x->barang_id)->update([
+                'sisa' => $iniSisa,
+                'terjual' => $iniTerjual,
+            ]);
+            Sale::where('uuid', $x->uuidSale)->update([
+                'status_bayar' => 9,
+                'status_pengiriman' => 9,
+            ]);
+        }
+        return response()->json(['data' => $x, 'pesan' => 'Load data Server Error : Sale']);
+    }
     public function getAllDataSale()
     {
         $x =  Sale::select(
@@ -60,6 +90,7 @@ class SaleController extends Controller
                 ->join('gudang', 'gudang.uuid', 'invoice_jual.gudang_id')
                 ->join('barang', 'barang.uuid', 'invoice_jual.barang_id')
                 ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
+                ->groupBy('sale.nomor_invoice')
                 ->where('sale.uuid', $request->uuid)
                 ->distinct()
                 ->first();
@@ -70,6 +101,7 @@ class SaleController extends Controller
             'pelanggan.nama',
         )
             ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
+            ->groupBy('sale.nomor_invoice')
             ->distinct()
             ->get();
     }

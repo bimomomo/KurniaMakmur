@@ -8043,6 +8043,40 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // Import boostrap and jquery
 //Bootstrap and jQuery libraries
 
@@ -83509,6 +83543,22 @@ var render = function() {
                                     _c("span", [_vm._v("Bayar Sekarang")])
                                   ]
                                 )
+                              : item.status_bayar == 9
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "d-flex align-items-center text-danger"
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass:
+                                        "\n                        bx bx-radio-circle-marked bx-burst bx-rotate-90\n                        align-middle\n                        font-18\n                        me-1\n                      "
+                                    }),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("Batal")])
+                                  ]
+                                )
                               : _c(
                                   "div",
                                   {
@@ -83552,6 +83602,22 @@ var render = function() {
                                     _c("span", [_vm._v("Pending")])
                                   ]
                                 )
+                              : item.status_pengiriman == 9
+                              ? _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "d-flex align-items-center text-danger"
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass:
+                                        "\n                        bx bx-radio-circle-marked bx-burst bx-rotate-90\n                        align-middle\n                        font-18\n                        me-1\n                      "
+                                    }),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("Batal")])
+                                  ]
+                                )
                               : _c(
                                   "div",
                                   {
@@ -83570,20 +83636,21 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _c(
-                              "button",
-                              { staticClass: "btn btn-danger btn-sm" },
-                              [
-                                _c("i", {
-                                  staticClass: "bx bx-x",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.cancelOrder(item.uuid)
+                            item.status_bayar == 0 ||
+                            item.status_pengiriman == 0
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-danger btn-sm",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.cancelOrder(item.uuid)
+                                      }
                                     }
-                                  }
-                                })
-                              ]
-                            ),
+                                  },
+                                  [_c("i", { staticClass: "bx bx-x" })]
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
                             item.status_bayar == 0 ||
                             item.status_pengiriman == 0
