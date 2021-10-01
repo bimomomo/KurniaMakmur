@@ -68,6 +68,8 @@ Route::middleware('auth:api')->group(function () {
 	Route::apiResources(['barang' => BarangController::class,]);
 	Route::post('/deletebarang/{id}', [BarangController::class, 'deleteall']);
 	Route::put('/updatestock/{id}', [BarangController::class, 'updatestock']);
+	Route::get('stockpalingbanyak', [BarangController::class, 'stockpalingbanyak']);
+	Route::get('barangterjualbanyak', [BarangController::class, 'barangterjualbanyak']);
 
 	// Mutasi stock masuk
 	Route::apiResources(['mutasistockmasuk' => MutasiStockMasukController::class,]);
@@ -85,6 +87,10 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('cancel-order/{id}', [SaleController::class, 'cancelOrder']);
 	Route::get('test/{id}', [SaleController::class, 'test']);
 	Route::get('drivers', [SaleController::class, 'drivers']);
+	Route::get('YAD', [SaleController::class, 'YAD']);
+	Route::get('totallunas', [SaleController::class, 'totallunas']);
+	Route::get('totalbelumlunas', [SaleController::class, 'totalbelumlunas']);
+	Route::get('statuslunas', [SaleController::class, 'jumlahstatusbayarlunas']);
 
 	// updatehormatkami
 	Route::put('/updatehormatkami/{id}', [SaleController::class, 'updatehormatkami']);

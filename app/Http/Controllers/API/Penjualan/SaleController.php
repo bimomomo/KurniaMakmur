@@ -180,4 +180,37 @@ class SaleController extends Controller
     {
         return Driver::where('uuid', $request->driver_id)->get();
     }
+
+    public function YAD()
+    {
+        $data = Sale::select('total')->get();
+        $var = 0;
+        foreach ($data as $key => $value) {
+            $var += $value->total;
+        }
+        return $var;
+    }
+    public function totallunas()
+    {
+        $data = Sale::select('total')->where('status_bayar', 1)->get();
+        $var = 0;
+        foreach ($data as $key => $value) {
+            $var += $value->total;
+        }
+        return $var;
+    }
+    public function totalbelumlunas()
+    {
+        $data = Sale::select('total')->where('status_bayar', 0)->get();
+        $var = 0;
+        foreach ($data as $key => $value) {
+            $var += $value->total;
+        }
+        return $var;
+    }
+
+    public function jumlahstatusbayarlunas()
+    {
+        return Sale::select('status_bayar')->where('status_bayar', 1)->count();
+    }
 }

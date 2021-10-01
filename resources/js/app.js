@@ -31,7 +31,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 let routes = [
     //DASHBOARD
     {
-        path: "/home",
+        path: "/",
         component: require("./components/DashboardMain.vue").default,
     },
 	//USER

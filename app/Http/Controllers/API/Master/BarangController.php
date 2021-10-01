@@ -82,4 +82,26 @@ class BarangController extends Controller
             "keterangan" => $keterangan,
         ]);
     }
+
+    public function stockpalingbanyak()
+    {
+        $datas['sisaAll'] = Barang::select('sisa')->get();
+        $data['barang'] = Barang::select('sisa', 'nama')->get();
+        $data['hasil'] = 0;
+        foreach ($datas['sisaAll'] as $key => $value) {
+            $data['hasil'] += $value->sisa;
+        }
+        return $data;
+    }
+
+    public function barangterjualbanyak()
+    {
+        $datas['terjual'] = Barang::select('terjual')->get();
+        $data['barangnya'] = Barang::select('terjual', 'nama')->get();
+        $data['hasilnya'] = 0;
+        foreach ($datas['terjual'] as $key => $value) {
+            $data['hasilnya'] += $value->terjual;
+        }
+        return $data;
+    }
 }
