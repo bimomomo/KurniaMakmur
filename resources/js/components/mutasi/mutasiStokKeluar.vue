@@ -17,59 +17,64 @@
       </div>
     </div>
     <div class="card-body">
-      <table id="tabelMutasiKeluar" class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th width="1%">No</th>
-            <th>Tanggal Stok Keluar</th>
-            <th>Nomor Invoice</th>
-            <th>Nomor PO</th>
-            <th>Nomor Surat Jalan</th>
-            <th>Nama Barang dan Gudang</th>
-            <th>Total Satuan Jual</th>
-            <th>Opsi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in data" :key="item.index">
-            <td>{{ index + 1 }}</td>
-            <td>
-              {{
-                new Date(item.tgl_sale).toLocaleDateString("id-ID", {
-                  dateStyle: "full",
-                })
-              }}
-            </td>
-            <td>{{ item.nomor_invoice }}</td>
-            <td>{{ item.nomor_po }}</td>
-            <td>{{ item.nomor_surat_jalan }}</td>
-            <td>{{ item.namaBarang + " | " + item.gudang }}</td>
-            <td>{{ item.total_satuan_jual + " " + item.satuan_jual }}</td>
-            <td>
-              <button
-                class="btn btn-warning btn-sm"
-                @click="
-                  detail(
-                    item.tgl_sale,
-                    item.nomor_invoice,
-                    item.nomor_po,
-                    item.nomor_surat_jalan,
-                    item.faktur_pajak,
-                    item.nama,
-                    item.gudang,
-                    item.total_satuan_jual,
-                    item.harga_akhir,
-                    item.namaBarang,
-                    item.satuan_jual
-                  )
-                "
-              >
-                <i class="bx bx-detail"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table
+          id="tabelMutasiKeluar"
+          class="table table-striped table-bordered"
+        >
+          <thead>
+            <tr>
+              <th width="1%">No</th>
+              <th>Tanggal Stok Keluar</th>
+              <th>Nomor Invoice</th>
+              <th>Nomor PO</th>
+              <th>Nomor Surat Jalan</th>
+              <th>Nama Barang dan Gudang</th>
+              <th>Total Satuan Jual</th>
+              <th>Opsi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in data" :key="item.index">
+              <td>{{ index + 1 }}</td>
+              <td>
+                {{
+                  new Date(item.tgl_sale).toLocaleDateString("id-ID", {
+                    dateStyle: "full",
+                  })
+                }}
+              </td>
+              <td>{{ item.nomor_invoice }}</td>
+              <td>{{ item.nomor_po }}</td>
+              <td>{{ item.nomor_surat_jalan }}</td>
+              <td>{{ item.namaBarang + " | " + item.gudang }}</td>
+              <td>{{ item.total_satuan_jual + " " + item.satuan_jual }}</td>
+              <td>
+                <button
+                  class="btn btn-warning btn-sm"
+                  @click="
+                    detail(
+                      item.tgl_sale,
+                      item.nomor_invoice,
+                      item.nomor_po,
+                      item.nomor_surat_jalan,
+                      item.faktur_pajak,
+                      item.nama,
+                      item.gudang,
+                      item.total_satuan_jual,
+                      item.harga_akhir,
+                      item.namaBarang,
+                      item.satuan_jual
+                    )
+                  "
+                >
+                  <i class="bx bx-detail"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <!-- Modal -->
       <div
@@ -166,7 +171,7 @@
               >
                 Close
               </button>
-              <button type="button" class="btn btn-primary">Understood</button>
+              <!-- <button type="button" class="btn btn-primary">Understood</button> -->
             </div>
           </div>
         </div>

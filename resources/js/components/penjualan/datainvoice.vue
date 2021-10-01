@@ -211,41 +211,49 @@
           </div>
         </div>
         <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
-          <table id="tabelReturn" class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th width="1%">No</th>
-                <th>Tanggal Stok Keluar</th>
-                <th>Nomor Invoice</th>
-                <th>Nomor PO</th>
-                <th>Nomor Surat Jalan</th>
-                <th>Nama Barang dan Gudang</th>
-                <th>Total Satuan Jual</th>
-                <th>Opsi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="datas in dataReturn" :key="datas.index">
-                <td>{{ index }}</td>
-                <td>{{ datas.tgl_sale }}</td>
-                <td>{{ datas.nomor_invoice }}</td>
-                <td>{{ datas.nomor_po }}</td>
-                <td>{{ datas.nomor_surat_jalan }}</td>
-                <td>{{ datas.nama + " - " + datas.gudang }}</td>
-                <td>
-                  {{ datas.total_satuan_jual + " - " + datas.satuan_jual }}
-                </td>
-                <td>
-                  <button
-                    class="btn btn-info btn-sm"
-                    @click="detailDataReturn(datas.nomor_invoice)"
-                  >
-                    <i class="bx bx-detail"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table id="tabelReturn" class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="1%">No</th>
+                  <th>Tanggal</th>
+                  <th>No. Invoice</th>
+                  <th>No. PO</th>
+                  <th>No. Surat jalan</th>
+                  <th>Barang dan gudang</th>
+                  <th>Satuan jual</th>
+                  <!-- <th>Opsi</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(datas, index) in dataReturn" :key="index">
+                  <td>{{ index + 1 }}</td>
+                  <td>
+                    {{
+                      new Date(datas.tgl_sale).toLocaleDateString("id-ID", {
+                        dateStyle: "full",
+                      })
+                    }}
+                  </td>
+                  <td>{{ datas.nomor_invoice }}</td>
+                  <td>{{ datas.nomor_po }}</td>
+                  <td>{{ datas.nomor_surat_jalan }}</td>
+                  <td>{{ datas.nama + " - " + datas.gudang }}</td>
+                  <td>
+                    {{ datas.total_satuan_jual + "  " + datas.satuan_jual }}
+                  </td>
+                  <!-- <td>
+                    <button
+                      class="btn btn-info btn-sm"
+                      @click="detailDataReturn(datas.nomor_invoice)"
+                    >
+                      <i class="bx bx-detail"></i>
+                    </button>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <!-- Modal -->
           <div
@@ -865,8 +873,8 @@
           :pdf-quality="2"
           :manual-pagination="false"
           pdf-format="a4"
-          pdf-orientation="landscape"
-          pdf-content-width="1100px"
+          pdf-orientation="portrait"
+          pdf-content-width="800px"
           @hasStartedGeneration="hasStartedGeneration()"
           @hasGenerated="hasGenerated($event)"
           ref="html2Pdfi"
@@ -1017,8 +1025,8 @@
           :pdf-quality="2"
           :manual-pagination="false"
           pdf-format="a4"
-          pdf-orientation="landscape"
-          pdf-content-width="1100px"
+          pdf-orientation="portrait"
+          pdf-content-width="800px"
           @hasStartedGeneration="hasStartedGeneration()"
           @hasGenerated="hasGenerated($event)"
           ref="html2Pdf"
@@ -1052,7 +1060,7 @@
                   <table class="table table-bordered">
                     <tr>
                       <th width="5%" class="text-center">SATUAN</th>
-                      <th width="10%" class="text-center">QTY</th>
+                      <th width="11%" class="text-center">QTY</th>
                       <th width="11%" class="text-center">TOTAL QTY</th>
                       <th class="text-center">PRODUK</th>
                     </tr>
@@ -1076,7 +1084,7 @@
                   </table>
 
                   <div class="row mt-3">
-                    <div class="col-lg-6 text-left">
+                    <div class="col-lg-6">
                       <div class="text-gray-light">Tanda Terima</div>
                       <br />
                       <br />
@@ -1084,7 +1092,7 @@
                         {{ item.nama }}
                       </div>
                     </div>
-                    <div class="col-lg-6 text-right">
+                    <div class="col-lg-6 text-center">
                       <div class="text-gray-light">Hormat Kami</div>
                       <br />
                       <br />
@@ -1253,7 +1261,7 @@ export default {
       namaBarang,
       satuan_jual
     ) {
-      this.showModal();
+      this.showModalDataReturn();
       this.form.tgl_sale = tgl_sale;
       this.form.nomor_invoice = nomor_invoice;
       this.form.nomor_po = nomor_po;

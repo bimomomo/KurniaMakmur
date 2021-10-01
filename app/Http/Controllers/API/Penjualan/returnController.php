@@ -36,7 +36,7 @@ class ReturnController extends Controller
     public function index()
     {
         return DataReturn::select()
-            ->join('sale', 'sale.uuid', 'data_returns.sale_id')
+            ->join('sale', 'sale.uuid', 'data_returns.uuidSale')
             ->join('invoice_jual', 'invoice_jual.uuid', 'sale.invoicejual_id')
             ->join('barang', 'barang.uuid', 'invoice_jual.barang_id')
             ->join('gudang', 'gudang.uuid', 'invoice_jual.gudang_id')
@@ -88,7 +88,7 @@ class ReturnController extends Controller
             'pelanggan_id' => $request->pelanggan_id['uuid'],
             'ppn' => $request->ppn,
             'tgl_sale' => $request->tgl_sale,
-            'sale_id' => $request->uuidSale,
+            'uuidSale' => $request->uuidSale,
             'total' => (preg_replace('/\D/', '', $total[0]) / 1000),
         ]);
     }

@@ -26,7 +26,7 @@
                         </span>
                         @enderror
                     </div>
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
@@ -34,24 +34,24 @@
                                 {{ __('Remember Me') }}
                             </label>
                         </div>
-                    </div>
-                    <div class="col-md-6 text-end">
+                    </div> -->
+                    <!-- <div class="col-md-6 text-end">
                         @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}">
                             {{ __('Forgot Your Password?') }}
                         </a>
                         @endif
-                    </div>
+                    </div> -->
 
                     <div class="col-12">
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary"><i class="bx bxs-lock-open"></i>{{ __('Login') }}</button>
                         </div>
                     </div>
-                    <div class="text-center">
+                    <!-- <div class="text-center">
                         <p>Don't have an account yet? <a href="{{ route('register') }}">{{ __('Register') }}</a>
                         </p>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>

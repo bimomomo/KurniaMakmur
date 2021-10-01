@@ -81,9 +81,17 @@
                     <td>{{ item.kategori }}</td>
                     <td>{{ item.gudang }}</td>
                     <td v-if="item.keterangan == null">
-                      <span class="badge bg-gradient-burning">
-                        Tidak ada keterangan</span
-                      >
+                      <div class="d-flex align-items-center text-danger">
+                        <i
+                          class="
+                            bx bx-radio-circle-marked bx-burst bx-rotate-90
+                            align-middle
+                            font-18
+                            me-1
+                          "
+                        ></i>
+                        <span>Tidak ada keterangan</span>
+                      </div>
                     </td>
                     <td v-else>{{ item.keterangan }}</td>
                     <td>
@@ -155,23 +163,47 @@
                     <td>{{ item.gudang }}</td>
 
                     <td v-if="item.terjual == null">
-                      <span class="badge bg-gradient-burning text-center"
-                        >Barang Belum Terjual</span
-                      >
+                      <div class="d-flex align-items-center text-danger">
+                        <i
+                          class="
+                            bx bx-radio-circle-marked bx-burst bx-rotate-90
+                            align-middle
+                            font-18
+                            me-1
+                          "
+                        ></i>
+                        <span>Barang Belum Terjual</span>
+                      </div>
                     </td>
                     <td v-else>{{ item.terjual }} {{ item.satuan_jual }}</td>
 
                     <td v-if="item.terbeli == null">
-                      <span class="badge bg-gradient-burning text-center"
-                        >Barang Baru</span
-                      >
+                      <div class="d-flex align-items-center text-danger">
+                        <i
+                          class="
+                            bx bx-radio-circle-marked bx-burst bx-rotate-90
+                            align-middle
+                            font-18
+                            me-1
+                          "
+                        ></i>
+                        <span>Barang Baru</span>
+                      </div>
                     </td>
                     <td v-else>{{ item.terbeli }} {{ item.satuan_isi }}</td>
 
                     <td v-if="item.sisa == null">
-                      <span class="badge bg-gradient-burning text-center"
-                        >Barang Baru</span
-                      >
+                      <div class="d-flex align-items-center text-danger">
+                        <i
+                          class="
+                            bx bx-radio-circle-marked bx-burst bx-rotate-90
+                            align-middle
+                            font-18
+                            me-1
+                          "
+                        ></i>
+                        <span>Barang Baru</span>
+                      </div>
                     </td>
                     <td v-else>{{ item.sisa }} {{ item.satuan_isi }}</td>
                   </tr>
