@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Penjualan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Barang;
 use App\Models\Master\Driver;
 use App\Models\Master\Pelanggan;
 use App\Models\Penjualan\InvoiceJual;
@@ -14,6 +15,35 @@ use Illuminate\Support\Str;
 
 class SaleController extends Controller
 {
+    public function cancelOrder($id)
+    {
+        $x =  Sale::select(
+            'sale.*',
+            'sale.uuid as uuidSale',
+            'invoice_jual.*',
+            'barang.uuid as uuidBarang',
+            'barang.*',
+        )
+            ->join('invoice_jual', 'invoice_jual.uuid', 'sale.invoicejual_id')
+            ->join('barang', 'barang.uuid', 'invoice_jual.barang_id')
+            ->where('sale.uuid', $id)
+            ->first();
+        if (!$x) {
+            return response()->json(['data' => $x, 'pesan' => 'Load data Server Error : Sale']);
+        } else {
+            $iniSisa = $x->sisa + $x->total_satuan_jual;
+            $iniTerjual = $x->terjual - $x->total_satuan_jual;
+            Barang::where('uuid', $x->barang_id)->update([
+                'sisa' => $iniSisa,
+                'terjual' => $iniTerjual,
+            ]);
+            Sale::where('uuid', $x->uuidSale)->update([
+                'status_bayar' => 9,
+                'status_pengiriman' => 9,
+            ]);
+        }
+        return response()->json(['data' => $x, 'pesan' => 'Load data Server Error : Sale']);
+    }
     public function getAllDataSale()
     {
         $x =  Sale::select(
@@ -40,11 +70,34 @@ class SaleController extends Controller
         }
         return response()->json(['data' => $x, 'pesan' => $pesan]);
     }
-    public function index()
+    public function index(Request $request)
     {
-
+        if ($request->uuid) {
+            return Sale::select(
+                'driver.*',
+                'gudang.*',
+                'barang.*',
+                'barang.nama as namaBarang',
+                'satuan.*',
+                'sale.uuid as uuidSale',
+                'sale.*',
+                'invoice_jual.*',
+                'invoice_jual.uuid as uuidInvJual',
+                'pelanggan.nama',
+            )
+                ->join('invoice_jual', 'invoice_jual.uuid', 'sale.invoicejual_id')
+                ->join('satuan', 'satuan.uuid', 'invoice_jual.satuan_id')
+                ->join('driver', 'driver.uuid', 'sale.driver_id')
+                ->join('gudang', 'gudang.uuid', 'invoice_jual.gudang_id')
+                ->join('barang', 'barang.uuid', 'invoice_jual.barang_id')
+                ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
+                ->where('sale.nomor_invoice', $request->uuid)
+                ->distinct()
+                ->get();
+        }
         return Sale::select('sale.tgl_sale', 'sale.nomor_invoice', 'sale.driver_id', 'sale.nomor_po', 'sale.total', 'sale.jatuh_tempo', 'sale.status_bayar', 'sale.status_pengiriman', 'pelanggan.nama')
             ->join('pelanggan', 'pelanggan.uuid', '=', 'sale.pelanggan_id')
+            ->groupBy('sale.nomor_invoice')
             ->distinct()
             ->get();
     }

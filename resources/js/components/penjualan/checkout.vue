@@ -311,6 +311,7 @@ import Multiselect from "vue-multiselect";
 // register globally
 Vue.component("multiselect", Multiselect);
 export default {
+  props: ["dataInvoiceJual", "dataReturn"],
   created() {
     this.loadUsers();
     Fire.$on("reloadUsers", () => {
@@ -319,12 +320,15 @@ export default {
   },
   data() {
     return {
+      return: false,
       checkouts: {},
       drivers: [],
       pelanggans: [],
       subtotals: "",
       subtotalfunc: "",
       form: new Form({
+        dataLama: [],
+        dataBarang: [],
         invoivejual_id: [],
         pelanggan_id: "",
         driver_id: "",
@@ -342,19 +346,80 @@ export default {
         hargastlhppn: "",
         biaya_kirim: "",
         total: "",
+        uuidSale: "",
+        uuidBarang: "",
       }),
+
+      uuidInvoiceJual: "",
+      uuidDriver: "",
+      uuidPelanggan: "",
     };
   },
 
   methods: {
+    cekDataReturn() {
+      if (this.dataReturn) {
+        this.form.dataLama = this.dataReturn;
+        this.uuidDriver = this.dataReturn[0].driver_id;
+        this.uuidPelanggan = this.dataReturn[0].pelanggan_id;
+        this.form.uuidBarang = this.dataReturn[0].uuidBarang;
+        this.form.uuidSale = this.dataReturn[0].uuidSale;
+        this.form.tgl_sale = this.dataReturn[0].tgl_sale;
+        this.form.jatuh_tempo = this.dataReturn[0].jatuh_tempo;
+        this.form.nomor_invoice = this.dataReturn[0].nomor_invoice;
+        this.form.faktur_pajak = this.dataReturn[0].faktur_pajak;
+        this.form.nomor_po = this.dataReturn[0].nomor_po;
+        this.form.nomor_surat_jalan = this.dataReturn[0].nomor_surat_jalan;
+        this.form.diskon = this.dataReturn[0].diskon;
+        this.form.ppn = this.dataReturn[0].ppn;
+        this.form.biaya_kirims = this.dataReturn[0].biaya_kirim * 1000;
+        this.form.biaya_kirim = this.formatRupiah(
+          this.dataReturn[0].biaya_kirim * 1000
+        );
+      }
+
+      if (this.uuidPelanggan) {
+        axios
+          .get("api/pelanggan/" + this.uuidPelanggan)
+          .then(({ data }) => (this.form.pelanggan_id = data));
+      }
+      if (this.uuidDriver) {
+        axios
+          .get("api/driver/" + this.uuidDriver)
+          .then(({ data }) => (this.form.driver_id = data));
+      }
+    },
     loadUsers() {
-      axios.get("api/invoicejual").then(({ data }) => (this.checkouts = data));
+      var iniSubTotal = 0;
+      var iniSubTotalFunc = 0;
+      this.cekDataReturn();
+      if (this.dataInvoiceJual) {
+        this.return = true;
+        this.form.dataBarang = this.dataInvoiceJual;
+        this.checkouts = this.dataInvoiceJual;
+        for (let index = 0; index < this.dataInvoiceJual.length; index++) {
+          // const element = array[index];
+
+          iniSubTotal += this.dataInvoiceJual[index]["harga_akhir"] * 1000;
+          iniSubTotalFunc += this.dataInvoiceJual[index]["harga_akhir"];
+        }
+        this.subtotals = this.formatRupiah(iniSubTotal);
+        this.subtotalfunc = iniSubTotalFunc;
+      } else {
+        axios
+          .get("api/invoicejual")
+          .then(({ data }) => (this.checkouts = data));
+        axios
+          .get("api/subtotal")
+          .then(
+            ({ data }) => (this.subtotals = this.formatRupiah(data * 1000))
+          );
+        axios
+          .get("api/subtotal")
+          .then(({ data }) => (this.subtotalfunc = data));
+      }
       axios.get("api/driver").then(({ data }) => (this.drivers = data));
       axios.get("api/pelanggan").then(({ data }) => (this.pelanggans = data));
-      axios
-        .get("api/subtotal")
-        .then(({ data }) => (this.subtotals = this.formatRupiah(data * 1000)));
-      axios.get("api/subtotal").then(({ data }) => (this.subtotalfunc = data));
     },
 
     clickbiayakirim() {
@@ -386,24 +451,45 @@ export default {
     simpandata() {
       this.loading = true;
       this.disabled = true;
-      this.form.invoivejual_id = this.checkouts;
-      this.form.subttl = this.subtotals;
-      this.form
-        .post("api/sale")
-        .then(() => {
-          Fire.$emit("reloadUsers");
-          // $("#exampleModal").modal("hide");
-          Swal.fire({ icon: "success", title: "Data Berhasil Tersimpan" }).then(
-            function () {
+      if (this.return) {
+        this.form
+          .post("api/data-return")
+          .then(() => {
+            Fire.$emit("reloadUsers");
+            // $("#exampleModal").modal("hide");
+            Swal.fire({
+              icon: "success",
+              title: "Data Berhasil Tersimpan",
+            }).then(function () {
+              // Redirect the user
+              // window.location.href = "/data-invoice#primaryprofile";
+            });
+          })
+          .catch(() => {
+            this.loading = false;
+            this.disabled = false;
+          });
+      } else {
+        this.form.invoivejual_id = this.checkouts;
+        this.form.subttl = this.subtotals;
+        this.form
+          .post("api/sale")
+          .then(() => {
+            Fire.$emit("reloadUsers");
+            // $("#exampleModal").modal("hide");
+            Swal.fire({
+              icon: "success",
+              title: "Data Berhasil Tersimpan",
+            }).then(function () {
               // Redirect the user
               window.location.href = "/data-invoice";
-            }
-          );
-        })
-        .catch(() => {
-          this.loading = false;
-          this.disabled = false;
-        });
+            });
+          })
+          .catch(() => {
+            this.loading = false;
+            this.disabled = false;
+          });
+      }
     },
   },
 };

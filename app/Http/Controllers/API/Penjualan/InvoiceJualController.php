@@ -14,9 +14,15 @@ use Illuminate\Support\Str;
 
 class InvoiceJualController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // return InvoiceJual::get();
+        if ($request->uuid) {
+            return InvoiceJual::select('invoice_jual.*', 'barang.nama')
+                ->join('barang', 'barang.uuid', '=', 'invoice_jual.barang_id')
+                ->where('invoice_jual.uuid', $request->uuid)
+                ->get();
+        }
         return InvoiceJual::select('invoice_jual.*', 'barang.nama')
             ->join('barang', 'barang.uuid', '=', 'invoice_jual.barang_id')
             ->where('invoice_jual.status', 0)

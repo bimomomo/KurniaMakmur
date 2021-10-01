@@ -91,6 +91,8 @@ let routes = [
     },
     {
         path: "/checkout-invoice",
+        name: "checkout-invoice",
+        props:true,
         component: require("./components/penjualan/checkout.vue").default,
     },
     {
