@@ -19,7 +19,7 @@ class CheckAccessPermission
 		$controlArray = explode("\\",$request->route()->action['controller']);
 		$module = strtoupper($controlArray[4]);
 		$hakses = json_decode(auth('api')->user()->hak_akses, true);
-		if (!$hakses) {
+		if (!$hakses || !str_contains('API',$request->route()->action['controller'])) {
 			return $next($request);
 		}
 		$method = $request->method();
