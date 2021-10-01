@@ -76,7 +76,19 @@
             <div class="col-lg-3">
               <label for="form-control">Nomor Invoice</label>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9" v-if="this.return">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Nomor invoice"
+                v-model="form.nomor_invoice"
+                :class="{
+                  'is-invalid': form.errors.has('nomor_invoice'),
+                }"
+                readonly
+              />
+            </div>
+            <div class="col-lg-9" v-else>
               <input
                 class="form-control"
                 type="text"
@@ -462,7 +474,7 @@ export default {
               title: "Data Berhasil Tersimpan",
             }).then(function () {
               // Redirect the user
-              // window.location.href = "/data-invoice#primaryprofile";
+              window.location.href = "/data-invoice";
             });
           })
           .catch(() => {

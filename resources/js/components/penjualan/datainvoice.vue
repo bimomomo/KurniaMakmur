@@ -110,7 +110,21 @@
                           me-1
                         "
                       ></i>
-                      <span>Barang Di Retur</span>
+                      <span>Barang Di Cancel</span>
+                    </div>
+                    <div
+                      class="d-flex align-items-center text-warning"
+                      v-else-if="item.status_bayar == 2"
+                    >
+                      <i
+                        class="
+                          bx bx-radio-circle-marked bx-burst bx-rotate-90
+                          align-middle
+                          font-18
+                          me-1
+                        "
+                      ></i>
+                      <span>Barang Di Return</span>
                     </div>
                     <div class="d-flex align-items-center text-success" v-else>
                       <i
@@ -180,7 +194,7 @@
                     <button
                       class="btn btn-warning btn-sm"
                       v-if="
-                        item.status_bayar != 9 || item.status_pengiriman != 9
+                        item.status_bayar != 2 || item.status_pengiriman != 2
                       "
                       @click="edit(item.nomor_invoice)"
                     >
@@ -1357,6 +1371,7 @@ export default {
           element.qty_lama = element.total_satuan_jual;
           element.jumlah_satuan_dijual_lama = element.jumlah_satuan_dijual;
           element.jumlah_satuan_isi_lama = element.jumlah_satuan_isi;
+          element.total_satuan_jual_lama = element.total_satuan_jual;
         });
         // this.form.uuidInvJual = res.data.uuidInvJual;
         // this.form.uuidSale = res.data.uuidSale;

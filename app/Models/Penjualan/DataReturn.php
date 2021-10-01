@@ -23,6 +23,6 @@ class DataReturn extends Model
         'ppn',
         'tgl_sale',
         'total',
-        'sale_id',
+        'uuidSale',
     ];
 }
