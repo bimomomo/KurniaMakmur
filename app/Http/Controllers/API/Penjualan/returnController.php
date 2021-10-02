@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API\Penjualan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Barang;
 use App\Models\Penjualan\DataReturn;
+use App\Models\Penjualan\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -61,20 +63,40 @@ class ReturnController extends Controller
      */
     public function store(Request $request)
     {
-        // foreach ($request->dataLama as $key => $value) {
-        //     $count = count($request->dataLama);
-        //     for ($i = 0; $i < $count; $i++) {
-        //         $value->aaa = $request->dataLama[$i]['jumlah_satuan_dijual'] - $request->dataLama[$i]['jumlah_satuan_dijual_lama'];
-        //     }
-        // }
-        // return $request->all();
         $validator = $this->validasi($request);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        //
+        if ($request->dataLama) {
+            // $hasil =[];
+            $count = count($request->dataLama);
+            for ($i=0; $i < $count; $i++) { 
+                if($request->dataLama[$i]['total_satuan_jual_lama'] < $request->dataLama[$i]['total_satuan_jual']){
+                    $hasil = $request->dataLama[$i]['total_satuan_jual'] - $request->dataLama[$i]['total_satuan_jual_lama'];
+                    $idBarang = $request->dataLama[$i]['barang_id'];
+                    if ($idBarang) {
+                        $barang = Barang::where('uuid',$idBarang)->first();
+                        // $terjualSekarang = $barang->terjual + $hasil;
+                        // $sisaSekarang = $barang->terjual - $hasil;
+                        $terjualSekarang = $barang->terjual + $request->dataLama[$i]['total_satuan_jual'];
+                        $sisaSekarang = $barang->sisa - $request->dataLama[$i]['total_satuan_jual'];
+                        Barang::where('uuid',$idBarang)->update([
+                            'terjual' => $terjualSekarang,
+                            'sisa' => $sisaSekarang,
+                        ]);
+                    }
+
+                }
+            }
+        }
+        // return $hasil;
+        // //
         $total = explode(",", $request->total);
         // return (preg_replace('/\D/', '', $total[0]) / 1000);
+        Sale::where('uuid',$request->uuidSale)->update([
+            'status_bayar' => 2,
+                'status_pengiriman' => 2,
+        ]);
         DataReturn::create([
             'uuid' => Str::uuid(),
             'biaya_kirim' => $request->biaya_kirims,
