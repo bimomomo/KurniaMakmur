@@ -520,15 +520,31 @@
                   />
                 </div>
                 <div class="col-lg-2">
-                  <label for="form-control">Total Bayar</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="forms.harga_akhir"
-                    readonly
-                    placeholder="Total Bayar"
-                  />
-                  <small> {{ formatRupiah(forms.harga_akhir) }} </small>
+                  <div class="row">
+                    <label for="form-control">Total Bayar</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="forms.harga_akhir"
+                      placeholder="Total Bayar"
+                      v-if="editTotalBayar"
+                    />
+                    <input
+                      v-else
+                      type="text"
+                      class="form-control"
+                      v-model="forms.harga_akhir"
+                      readonly
+                      placeholder="Total Bayar"
+                    />
+                    <small> {{ formatRupiah(forms.harga_akhir) }} </small>
+                    <button
+                      class="btn btn-warning btn-sm"
+                      @click="changeEditBayar"
+                    >
+                      <i class="bx bx-edit"></i>
+                    </button>
+                  </div>
                 </div>
                 <!-- {{ totalbayars() }} -->
               </div>
@@ -1151,6 +1167,7 @@ export default {
   data() {
     //  Save variabel object or array 'ex: users{}'
     return {
+      editTotalBayar: false,
       dataReturn: [],
       all_select: false,
       deleteItems: [],
@@ -1216,6 +1233,25 @@ export default {
     };
   },
   methods: {
+    changeEditBayar() {
+      if (this.editTotalBayar == false) {
+        Swal.fire({
+          title: "Yakin Ingin Merubah Total Bayar ? ",
+          // text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Oke!",
+        }).then((result) => {
+          if (result.value) {
+            this.editTotalBayar = true;
+          }
+        });
+      } else {
+        this.editTotalBayar = false;
+      }
+    },
     cancelOrder(uuid) {
       Swal.fire({
         title: "Batal Pesanan?",
@@ -1370,6 +1406,7 @@ export default {
     },
     edit(uuid) {
       this.showEditModal();
+      this.editTotalBayar = false;
       this.dataDetail = null;
       axios.get("api/sale", { params: { uuid: uuid } }).then((res) => {
         this.dataDetail = res.data;
@@ -1380,6 +1417,8 @@ export default {
           element.jumlah_satuan_dijual_lama = element.jumlah_satuan_dijual;
           element.jumlah_satuan_isi_lama = element.jumlah_satuan_isi;
           element.total_satuan_jual_lama = element.total_satuan_jual;
+          element.HargaSatuanLama =
+            element.harga_akhir / element.total_satuan_jual;
         });
         // this.form.uuidInvJual = res.data.uuidInvJual;
         // this.form.uuidSale = res.data.uuidSale;
