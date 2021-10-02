@@ -26,7 +26,7 @@ const Toast = Swal.mixin({
 });
 window.Toast = Toast;
 
-Vue.component('my-return', require('./components/penjualan/dataReturn.vue').default);
+// Vue.component('my-return', require('./components/penjualan/dataReturn.vue').default);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 let routes = [
     //DASHBOARD

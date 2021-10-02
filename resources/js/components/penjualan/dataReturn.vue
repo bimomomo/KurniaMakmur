@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-      <button class="btn btn-primary btn-sm" @click="showModal">
+      <button class="btn btn-primary btn-sm" @click="showModalDataReturn">
         <i class="bx bx-plus"></i>Tambah
       </button>
     </div>
