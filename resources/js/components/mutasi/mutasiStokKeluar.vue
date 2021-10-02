@@ -2,17 +2,24 @@
   <div class="card">
     <div class="card-header">
       <div class="row">
-        <div class="form-group col-md-3">
-          <label>Pencarian Berdasarkan Gudang</label>
-          <multiselect
-            v-model="form.gudang"
-            label="gudang"
-            track-by="gudang"
-            :options="dataGudang"
-            :class="{ 'is-invalid': form.errors.has('nama_barang') }"
-            @input="setGudang"
-          >
-          </multiselect>
+        <div class="col-lg-3">
+          <div class="form-group">
+            <!-- <label>Pencarian Berdasarkan Gudang</label> -->
+            <multiselect
+              v-model="form.gudang"
+              label="gudang"
+              track-by="gudang"
+              :options="dataGudang"
+              :class="{ 'is-invalid': form.errors.has('nama_barang') }"
+              @input="setGudang"
+            >
+            </multiselect>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <button class="btn btn-warning btn-sm" @click="loadUsers">
+            <i class="bx bx-refresh"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -227,6 +234,7 @@ export default {
     },
     // Load data pada tabel with axios
     loadUsers() {
+      this.form.gudang = null;
       this.getDataGudang();
       // axios.get("api/golongan").then(({ data }) => (this.golongans = data));
       axios.get("api/mutasi-keluar").then((res) => {

@@ -209,8 +209,8 @@ export default {
       });
     },
 
-    labelBarang({ nama, keterangan }) {
-      return `${nama} | ${keterangan}`;
+    labelBarang({ nama, gudang }) {
+      return `${nama} | ${gudang}`;
     },
     getDataBarang() {
       axios.get("api/barang").then((res) => {

@@ -70,22 +70,25 @@ class ReturnController extends Controller
         if ($request->dataLama) {
             // $hasil =[];
             $count = count($request->dataLama);
-            for ($i=0; $i < $count; $i++) { 
-                if($request->dataLama[$i]['total_satuan_jual_lama'] < $request->dataLama[$i]['total_satuan_jual']){
+            for ($i = 0; $i < $count; $i++) {
+                if ($request->dataLama[$i]['total_satuan_jual_lama'] < $request->dataLama[$i]['total_satuan_jual']) {
                     $hasil = $request->dataLama[$i]['total_satuan_jual'] - $request->dataLama[$i]['total_satuan_jual_lama'];
                     $idBarang = $request->dataLama[$i]['barang_id'];
                     if ($idBarang) {
-                        $barang = Barang::where('uuid',$idBarang)->first();
+                        $barang = Barang::where('uuid', $idBarang)->first();
                         // $terjualSekarang = $barang->terjual + $hasil;
                         // $sisaSekarang = $barang->terjual - $hasil;
                         $terjualSekarang = $barang->terjual + $request->dataLama[$i]['total_satuan_jual'];
                         $sisaSekarang = $barang->sisa - $request->dataLama[$i]['total_satuan_jual'];
-                        Barang::where('uuid',$idBarang)->update([
-                            'terjual' => $terjualSekarang,
-                            'sisa' => $sisaSekarang,
-                        ]);
+                        if ($sisaSekarang < 0) {
+                            return response()->json(['pesan' => 'Stok Tidak Terpenuhi'], 400);
+                        } else {
+                            Barang::where('uuid', $idBarang)->update([
+                                'terjual' => $terjualSekarang,
+                                'sisa' => $sisaSekarang,
+                            ]);
+                        }
                     }
-
                 }
             }
         }
@@ -93,9 +96,9 @@ class ReturnController extends Controller
         // //
         $total = explode(",", $request->total);
         // return (preg_replace('/\D/', '', $total[0]) / 1000);
-        Sale::where('uuid',$request->uuidSale)->update([
+        Sale::where('uuid', $request->uuidSale)->update([
             'status_bayar' => 2,
-                'status_pengiriman' => 2,
+            'status_pengiriman' => 2,
         ]);
         DataReturn::create([
             'uuid' => Str::uuid(),
