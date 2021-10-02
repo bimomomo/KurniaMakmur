@@ -16,12 +16,12 @@ class CheckAccessPermission
      */
     public function handle(Request $request, Closure $next)
     {
-		$controlArray = explode("\\",$request->route()->action['controller']);
-		$module = strtoupper($controlArray[4]);
 		$hakses = json_decode(auth('api')->user()->hak_akses, true);
 		if (!$hakses || !str_contains('API',$request->route()->action['controller'])) {
 			return $next($request);
 		}
+		$controlArray = explode("\\",$request->route()->action['controller']);
+		$module = strtoupper($controlArray[4]);
 		$method = $request->method();
 		if (str_contains('delete',$request->route()->uri)) {
 			$method = 'delete';

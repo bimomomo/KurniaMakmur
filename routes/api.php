@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\User\PengumumanController;
 use App\Http\Controllers\API\User\HakAksesController;
@@ -40,6 +41,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // });
 
 Route::middleware('auth:api')->group(function () {
+	Route::get('dashboarddata', [DashboardController::class, 'getDashboardData']);
 	//User
 	Route::apiResources(['user' => UserController::class,]);
 	Route::apiResources(['pengumuman' => PengumumanController::class,]);
