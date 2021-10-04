@@ -31,13 +31,13 @@ class Sale extends Model
         'status_pengiriman',
     ];
 
-	protected $appends = ['pelanggan'];
-	public function getPelangganAttribute()
-	{
-		if ($this->attributes['pelanggan_id']) {
-			$plg = DB::table('pelanggan')->where('uuid', $this->attributes['pelanggan_id'])->first();
-			return $plg->nama;
-		}
-		return null;
-	}
+    protected $appends = ['pelanggan'];
+    public function getPelangganAttribute()
+    {
+        if (array_key_exists('pelanggan_id', $this->attributes)) {
+            $plg = DB::table('pelanggan')->where('uuid', $this->attributes['pelanggan_id'])->first();
+            return $plg->nama;
+        }
+        return null;
+    }
 }
