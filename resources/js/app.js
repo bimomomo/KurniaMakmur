@@ -8,9 +8,15 @@ Vue.use(VueRouter);
 
 // register vform
 import {
-    Form
+	Form
 } from "vform";
 window.Form = Form;
+
+//register ApexChart
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
 
 // register swall alert
 let Fire = new Vue();
@@ -19,126 +25,126 @@ window.Fire = Fire;
 import Swal from "sweetalert2";
 window.Swal = Swal;
 const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
+	toast: true,
+	position: "top-end",
+	showConfirmButton: false,
+	timer: 3000,
 });
 window.Toast = Toast;
 
 // Vue.component('my-return', require('./components/penjualan/dataReturn.vue').default);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 let routes = [
-    //DASHBOARD
-    {
-        path: "/",
-        component: require("./components/DashboardMain.vue").default,
-    },
+	//DASHBOARD
+	{
+		path: "/",
+		component: require("./components/DashboardMain.vue").default,
+	},
 	//USER
 	{
-        path: "/user",
-        component: require("./components/user/user.vue").default,
+		path: "/user",
+		component: require("./components/user/user.vue").default,
 	},
 	{
-        path: "/pengumuman",
-        component: require("./components/user/pengumuman.vue").default,
+		path: "/pengumuman",
+		component: require("./components/user/pengumuman.vue").default,
 	},
 	{
-        path: "/hakakses",
-        component: require("./components/user/hakakses.vue").default,
+		path: "/hakakses",
+		component: require("./components/user/hakakses.vue").default,
 	},
 	//SETTING
 	{
-        path: "/metodebayar",
-        component: require("./components/setting/metodebayar.vue").default,
+		path: "/metodebayar",
+		component: require("./components/setting/metodebayar.vue").default,
 	},
 	{
-        path: "/generalsetting",
-        component: require("./components/setting/generalsetting.vue").default,
+		path: "/generalsetting",
+		component: require("./components/setting/generalsetting.vue").default,
 	},
 	//MASTER
-    {
-        path: "/master-kategori",
-        component: require("./components/master/kategori.vue").default,
-    },
-    {
-        path: "/master-brand",
-        component: require("./components/master/brand.vue").default,
-    },
-    {
-        path: "/master-gudang",
-        component: require("./components/master/gudang.vue").default,
-    },
-    {
-        path: "/master-satuan",
-        component: require("./components/master/satuan.vue").default,
-    },
-    {
-        path: "/master-barang",
-        component: require("./components/master/barang.vue").default,
-    },
-    {
-        path: "/mutasi-stock-masuk",
-        component: require("./components/mutasi/mutasistockmasuk.vue").default,
-    },
-    {
-        path: "/mutasi-stock-keluar",
-        component: require("./components/mutasi/mutasiStokKeluar.vue").default,
-    },
-    {
-        path: "/tambah-invoice",
-        component: require("./components/penjualan/invoicejual.vue").default,
-    },
-    {
-        path: "/checkout-invoice",
-        name: "checkout-invoice",
-        props:true,
-        component: require("./components/penjualan/checkout.vue").default,
-    },
-    {
-        path: "/data-invoice",
-        component: require("./components/penjualan/datainvoice.vue").default,
-    },
-    {
-        path: "/data-pelanggan",
-        component: require("./components/master/pelanggan.vue").default,
-    },
-    {
-        path: "/data-pegawai",
-        component: require("./components/master/driver.vue").default,
-    },
-    {
-        path: "/invoice-penjualan",
-        component: require("./components/laporan/invoicepenjualan.vue").default,
-    },
-    {
-        path: "/invoice-pengiriman",
-        component: require("./components/laporan/invoicepengiriman.vue").default,
-    },
-    {
-        path: "/transaksi-pelanggan",
-        component: require("./components/laporan/transaksipelanggan.vue").default,
-    },
-    {
-        path: "/my-notes",
-        component: require("./components/notes/myNotes.vue").default,
-    },
-    {
-        path: "/my-return",
-        component: require("./components/penjualan/dataReturn.vue").default,
-    },
+	{
+		path: "/master-kategori",
+		component: require("./components/master/kategori.vue").default,
+	},
+	{
+		path: "/master-brand",
+		component: require("./components/master/brand.vue").default,
+	},
+	{
+		path: "/master-gudang",
+		component: require("./components/master/gudang.vue").default,
+	},
+	{
+		path: "/master-satuan",
+		component: require("./components/master/satuan.vue").default,
+	},
+	{
+		path: "/master-barang",
+		component: require("./components/master/barang.vue").default,
+	},
+	{
+		path: "/mutasi-stock-masuk",
+		component: require("./components/mutasi/mutasistockmasuk.vue").default,
+	},
+	{
+		path: "/mutasi-stock-keluar",
+		component: require("./components/mutasi/mutasiStokKeluar.vue").default,
+	},
+	{
+		path: "/tambah-invoice",
+		component: require("./components/penjualan/invoicejual.vue").default,
+	},
+	{
+		path: "/checkout-invoice",
+		name: "checkout-invoice",
+		props:true,
+		component: require("./components/penjualan/checkout.vue").default,
+	},
+	{
+		path: "/data-invoice",
+		component: require("./components/penjualan/datainvoice.vue").default,
+	},
+	{
+		path: "/data-pelanggan",
+		component: require("./components/master/pelanggan.vue").default,
+	},
+	{
+		path: "/data-pegawai",
+		component: require("./components/master/driver.vue").default,
+	},
+	{
+		path: "/invoice-penjualan",
+		component: require("./components/laporan/invoicepenjualan.vue").default,
+	},
+	{
+		path: "/invoice-pengiriman",
+		component: require("./components/laporan/invoicepengiriman.vue").default,
+	},
+	{
+		path: "/transaksi-pelanggan",
+		component: require("./components/laporan/transaksipelanggan.vue").default,
+	},
+	{
+		path: "/my-notes",
+		component: require("./components/notes/myNotes.vue").default,
+	},
+	{
+		path: "/my-return",
+		component: require("./components/penjualan/dataReturn.vue").default,
+	},
 ]
 
 Vue.mixin({
-    methods: {
-        formatRupiah(isisan) {
-            var isi = new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-            }).format(isisan);
-            return isi;
-        },
-    },
+	methods: {
+		formatRupiah(isisan) {
+			var isi = new Intl.NumberFormat("id-ID", {
+				style: "currency",
+				currency: "IDR",
+			}).format(isisan);
+			return isi;
+		},
+	},
 });
 
 //Axios Default/Global
@@ -177,10 +183,10 @@ axios.interceptors.response.use(
 )
 
 const router = new VueRouter({
-    mode: "history",
-    routes,
+	mode: "history",
+	routes,
 });
 const app = new Vue({
-    el: '#app',
-    router,
+	el: '#app',
+	router,
 });

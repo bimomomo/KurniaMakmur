@@ -30,4 +30,14 @@ class Sale extends Model
         'status_bayar',
         'status_pengiriman',
     ];
+
+	protected $appends = ['pelanggan'];
+	public function getPelangganAttribute()
+	{
+		if ($this->attributes['pelanggan_id']) {
+			$plg = DB::table('pelanggan')->where('uuid', $this->attributes['pelanggan_id'])->first();
+			return $plg->nama;
+		}
+		return null;
+	}
 }

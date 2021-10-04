@@ -36,6 +36,7 @@
         "via": "0.0.1",
         "vue-apexcharts": "^1.6.2",
         "vue-html2pdf": "^1.8.0",
+        "vue-marquee-text-component": "^1.2.0",
         "vue-multiselect": "^2.1.6",
         "vue-router": "^3.5.2",
         "vue-sweetalert2": "^5.0.2",
